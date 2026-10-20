@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#050d1a">
+  <title>PINCIANO — Próximamente · Valladolid</title>
+  <meta name="description" content="PINCIANO. Indumentaria de raíz castellana forjada en Valladolid. Próximamente.">
+  <link rel="icon" type="image/svg+xml" href="assets/branding/logo-monograma/logo_pinciano_p_white.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="loading">
+
+  <!-- =====================================================================
+       TEXTURA DE GRANO TEXTIL / CELULOIDE (SVG FILTER PURO)
+       ===================================================================== -->
+  <svg class="grain-svg" aria-hidden="true">
+    <filter id="textile-noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#textile-noise)" />
+  </svg>
+
+  <!-- =====================================================================
+       CURSOR TÁCTICO DE PRECISIÓN (ESCRITORIO) + RETÍCULA TÁCTIL (MÓVIL)
+       ===================================================================== -->
+  <div class="tactical-cursor" id="cursor">
+    <div class="cursor-crosshair">
+      <span class="ch-h"></span>
+      <span class="ch-v"></span>
+    </div>
+    <div class="cursor-coords" id="cursorCoords">X:000 Y:000</div>
+  </div>
+  <div id="touchReticleContainer" class="touch-reticle-container" aria-hidden="true"></div>
+
+  <!-- =====================================================================
+       TELÓN DE ENTRADA / PRELOADER CINÉTICO
+       ===================================================================== -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-panel preloader-top"></div>
+    <div class="preloader-panel preloader-bottom"></div>
+    <div class="preloader-content">
+      <div class="preloader-meta">
+        <span>PINCIA // VALLADOLID</span>
+        <span>ACCESO // ARCHIVO 00</span>
+      </div>
+      <div class="preloader-emblem">
+        <svg viewBox="0 0 425 638" class="preloader-p-svg">
+          <g transform="translate(0,638) scale(0.1,-0.1)">
+            <path class="preloader-path" d="M400 5959 c0 -13 8 -23 20 -26 12 -3 52 -21 90 -39 114 -54 183 -141 228 -285 15 -50 17 -256 19 -2636 2 -1421 7 -2583 11 -2583 4 0 16 23 26 51 27 77 337 827 876 2119 81 195 203 488 270 650 121 292 335 805 516 1239 52 123 93 226 91 228 -2 1 -210 -102 -463 -230 -252 -127 -471 -238 -487 -244 l-27 -13 0 796 0 795 343 -3 c313 -4 349 -6 420 -26 289 -80 518 -277 635 -546 126 -292 141 -703 35 -1031 -58 -181 -191 -385 -318 -488 -114 -92 -225 -143 -383 -176 l-84 -18 -39 -93 c-21 -51 -39 -97 -39 -102 0 -11 136 -10 300 2 420 32 752 169 1010 416 279 268 426 636 406 1019 -15 309 -128 578 -332 794 -218 230 -498 368 -867 428 -89 15 -234 17 -1179 20 l-1078 4 0 -22z m1170 -1784 c0 -15 -236 -1132 -325 -1535 -31 -140 -78 -358 -105 -485 -27 -126 -65 -300 -83 -385 -19 -85 -47 -221 -63 -302 -15 -81 -29 -146 -31 -145 -1 2 2 66 7 143 5 76 23 402 40 724 17 322 41 790 55 1040 13 250 27 514 31 585 l6 130 227 117 c216 112 241 124 241 113z"/>
+          </g>
+        </svg>
+      </div>
+      <div class="preloader-bottom-bar">
+        <div class="preloader-Brand">PINCIANO</div>
+        <div class="preloader-counter" id="preloaderCounter">00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       CABECERA TÉCNICA SUPERIOR
+       ===================================================================== -->
+  <header class="site-header">
+    <div class="header-cell header-brand">
+      <a href="#top" class="brand-anchor" data-magnetic>
+        <svg viewBox="0 0 425 638" class="nav-monogram">
+          <g transform="translate(0,638) scale(0.1,-0.1)">
+            <path d="M400 5959 c0 -13 8 -23 20 -26 12 -3 52 -21 90 -39 114 -54 183 -141 228 -285 15 -50 17 -256 19 -2636 2 -1421 7 -2583 11 -2583 4 0 16 23 26 51 27 77 337 827 876 2119 81 195 203 488 270 650 121 292 335 805 516 1239 52 123 93 226 91 228 -2 1 -210 -102 -463 -230 -252 -127 -471 -238 -487 -244 l-27 -13 0 796 0 795 343 -3 c313 -4 349 -6 420 -26 289 -80 518 -277 635 -546 126 -292 141 -703 35 -1031 -58 -181 -191 -385 -318 -488 -114 -92 -225 -143 -383 -176 l-84 -18 -39 -93 c-21 -51 -39 -97 -39 -102 0 -11 136 -10 300 2 420 32 752 169 1010 416 279 268 426 636 406 1019 -15 309 -128 578 -332 794 -218 230 -498 368 -867 428 -89 15 -234 17 -1179 20 l-1078 4 0 -22z m1170 -1784 c0 -15 -236 -1132 -325 -1535 -31 -140 -78 -358 -105 -485 -27 -126 -65 -300 -83 -385 -19 -85 -47 -221 -63 -302 -15 -81 -29 -146 -31 -145 -1 2 2 66 7 143 5 76 23 402 40 724 17 322 41 790 55 1040 13 250 27 514 31 585 l6 130 227 117 c216 112 241 124 241 113z"/>
+          </g>
+        </svg>
+        <span class="nav-brand-text">PINCIANO</span>
+      </a>
+    </div>
+
+    <div class="header-cell header-coords">
+      <span class="meta-label">ORIGEN // COORD</span>
+      <span class="meta-value">41°39′08″N 04°43′24″W · VALLADOLID</span>
+    </div>
+
+    <div class="header-cell header-color-spec">
+      <span class="meta-label">TONO BASE</span>
+      <span class="meta-value"><i class="swatch-inline"></i>AZUL MAHÓN // CAMISA</span>
+    </div>
+
+    <div class="header-cell header-nav">
+      <span class="coming-soon-pill">
+        <i class="status-square"></i> EN TALLER // PRÓXIMAMENTE
+      </span>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- =====================================================================
+         BLOQUE CENTRAL — PANTALLA «PRÓXIMAMENTE»
+         ===================================================================== -->
+    <section class="hero-grid">
+      <!-- Columna Izquierda: Tipografía Monumental + Aviso de Apertura -->
+      <div class="hero-main">
+        <div class="crosshair-mark top-left">+</div>
+        <div class="crosshair-mark top-right">+</div>
+
+        <div class="hero-top-meta">
+          <span class="flag-bar"></span>
+          <span class="serial-tag">EXPEDIENTE N.º 001 // VALLADOLID · CASTILLA</span>
+        </div>
+
+        <div class="hero-title-wrap">
+          <div class="line-mask">
+            <h1 class="hero-title">PINCIANO</h1>
+          </div>
+          <div class="line-mask">
+            <div class="coming-soon-banner">
+              <span class="cs-stamp">PROXIMAMENTE</span>
+              <span class="cs-tag">LOTE 00 // EN PRODUCCIÓN</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-statement-grid reveal-scroll">
+          <div class="statement-num">00</div>
+          <div class="statement-body">
+            <p class="statement-lead">
+              Indumentaria de raíz castellana forjada en la antigua Corte sobre el azul mahón de trinchera. Nuestro primer lote se encuentra actualmente en taller.
+            </p>
+
+            <!-- Mini-terminal para apuntarse al aviso de apertura -->
+            <form class="notify-box" id="notifyForm">
+              <label for="notifyInput" class="notify-label">RECIBIR AVISO DE APERTURA // ACCESO PRIORITARIO</label>
+              <div class="notify-row">
+                <input
+                  type="text"
+                  id="notifyInput"
+                  placeholder="TU @INSTAGRAM, TELEGRAM O CORREO"
+                  required
+                >
+                <button type="submit" class="btn-industrial btn-primary notify-btn" data-magnetic>
+                  <span class="btn-text">ANOTAR</span>
+                  <span class="btn-code">↗</span>
+                </button>
+              </div>
+              <div class="stamp-confirmation" id="notifyConfirmation" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="hero-bottom-specs reveal-scroll">
+          <div class="spec-item">
+            <span class="spec-k">ORIGEN</span>
+            <span class="spec-v">VALLADOLID (PINCIA)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-k">IDENTIDAD</span>
+            <span class="spec-v">RAÍZ CASTELLANA</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-k">ESTADO ACTUAL</span>
+            <span class="spec-v" style="color: var(--gold);">PRÓXIMA APERTURA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Emblema Interactivo 3D de la "P" Afilada -->
+      <div class="hero-emblem-stage" id="heroStage">
+        <div class="stage-grid-lines"></div>
+        <div class="stage-corner sc-tl">ESC 1:1</div>
+        <div class="stage-corner sc-tr">ISOTIPO OFICIAL</div>
+        <div class="stage-corner sc-bl">TRAZO: CURVAS BÉZIER</div>
+        <div class="stage-corner sc-br" id="stageAngle">ROT: 0.0°</div>
+
+        <div class="monogram-3d-wrapper" id="monogramParallax">
+          <!-- Sombra técnica desplazada -->
+          <svg viewBox="0 0 425 638" class="hero-p-svg hero-p-wireframe" aria-hidden="true">
+            <g transform="translate(0,638) scale(0.1,-0.1)">
+              <path d="M400 5959 c0 -13 8 -23 20 -26 12 -3 52 -21 90 -39 114 -54 183 -141 228 -285 15 -50 17 -256 19 -2636 2 -1421 7 -2583 11 -2583 4 0 16 23 26 51 27 77 337 827 876 2119 81 195 203 488 270 650 121 292 335 805 516 1239 52 123 93 226 91 228 -2 1 -210 -102 -463 -230 -252 -127 -471 -238 -487 -244 l-27 -13 0 796 0 795 343 -3 c313 -4 349 -6 420 -26 289 -80 518 -277 635 -546 126 -292 141 -703 35 -1031 -58 -181 -191 -385 -318 -488 -114 -92 -225 -143 -383 -176 l-84 -18 -39 -93 c-21 -51 -39 -97 -39 -102 0 -11 136 -10 300 2 420 32 752 169 1010 416 279 268 426 636 406 1019 -15 309 -128 578 -332 794 -218 230 -498 368 -867 428 -89 15 -234 17 -1179 20 l-1078 4 0 -22z m1170 -1784 c0 -15 -236 -1132 -325 -1535 -31 -140 -78 -358 -105 -485 -27 -126 -65 -300 -83 -385 -19 -85 -47 -221 -63 -302 -15 -81 -29 -146 -31 -145 -1 2 2 66 7 143 5 76 23 402 40 724 17 322 41 790 55 1040 13 250 27 514 31 585 l6 130 227 117 c216 112 241 124 241 113z"/>
+            </g>
+          </svg>
+          <!-- Monograma principal -->
+          <svg viewBox="0 0 425 638" class="hero-p-svg hero-p-solid" id="heroMainSvg">
+            <g transform="translate(0,638) scale(0.1,-0.1)">
+              <path id="heroMainPath" d="M400 5959 c0 -13 8 -23 20 -26 12 -3 52 -21 90 -39 114 -54 183 -141 228 -285 15 -50 17 -256 19 -2636 2 -1421 7 -2583 11 -2583 4 0 16 23 26 51 27 77 337 827 876 2119 81 195 203 488 270 650 121 292 335 805 516 1239 52 123 93 226 91 228 -2 1 -210 -102 -463 -230 -252 -127 -471 -238 -487 -244 l-27 -13 0 796 0 795 343 -3 c313 -4 349 -6 420 -26 289 -80 518 -277 635 -546 126 -292 141 -703 35 -1031 -58 -181 -191 -385 -318 -488 -114 -92 -225 -143 -383 -176 l-84 -18 -39 -93 c-21 -51 -39 -97 -39 -102 0 -11 136 -10 300 2 420 32 752 169 1010 416 279 268 426 636 406 1019 -15 309 -128 578 -332 794 -218 230 -498 368 -867 428 -89 15 -234 17 -1179 20 l-1078 4 0 -22z m1170 -1784 c0 -15 -236 -1132 -325 -1535 -31 -140 -78 -358 -105 -485 -27 -126 -65 -300 -83 -385 -19 -85 -47 -221 -63 -302 -15 -81 -29 -146 -31 -145 -1 2 2 66 7 143 5 76 23 402 40 724 17 322 41 790 55 1040 13 250 27 514 31 585 l6 130 227 117 c216 112 241 124 241 113z"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="stage-caption">
+          <span>MONOGRAMA «P» AFILADO</span>
+          <div class="stage-caption-btns">
+            <button type="button" class="wireframe-toggle" id="heroTraceBtn">[ ▶ TRAZAR ]</button>
+            <button type="button" class="wireframe-toggle" id="heroWireframeBtn">[ MODO TRAZO ]</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         CINTAS CINÉTICAS DE TRINCHERA (DOBLE MARQUEE EN DIRECCIÓN OPUESTA)
+         ===================================================================== -->
+    <section class="kinetic-bands" aria-label="Bandas tipográficas en movimiento">
+      <div class="marquee-band band-primary">
+        <div class="marquee-track">
+          <span>PINCIANO</span><i class="sep">◆</i>
+          <span>PRÓXIMAMENTE</span><i class="sep">◆</i>
+          <span>VALLADOLID</span><i class="sep">◆</i>
+          <span>RAÍZ CASTELLANA</span><i class="sep">◆</i>
+          <span>DROP 00 EN TALLER</span><i class="sep">◆</i>
+          <span>PINCIANO</span><i class="sep">◆</i>
+          <span>PRÓXIMAMENTE</span><i class="sep">◆</i>
+          <span>VALLADOLID</span><i class="sep">◆</i>
+          <span>RAÍZ CASTELLANA</span><i class="sep">◆</i>
+          <span>DROP 00 EN TALLER</span><i class="sep">◆</i>
+        </div>
+        <div class="marquee-track" aria-hidden="true">
+          <span>PINCIANO</span><i class="sep">◆</i>
+          <span>PRÓXIMAMENTE</span><i class="sep">◆</i>
+          <span>VALLADOLID</span><i class="sep">◆</i>
+          <span>RAÍZ CASTELLANA</span><i class="sep">◆</i>
+          <span>DROP 00 EN TALLER</span><i class="sep">◆</i>
+          <span>PINCIANO</span><i class="sep">◆</i>
+          <span>PRÓXIMAMENTE</span><i class="sep">◆</i>
+          <span>VALLADOLID</span><i class="sep">◆</i>
+          <span>RAÍZ CASTELLANA</span><i class="sep">◆</i>
+          <span>DROP 00 EN TALLER</span><i class="sep">◆</i>
+        </div>
+      </div>
+
+      <div class="marquee-band band-secondary">
+        <div class="marquee-track marquee-reverse">
+          <span>ANTIGUA CORTE DE CASTILLA</span><i class="sep">//</i>
+          <span>AZUL MAHÓN DE TRINCHERA</span><i class="sep">//</i>
+          <span>ESPÍRITU TRADICIONAL</span><i class="sep">//</i>
+          <span>PRÓXIMA APERTURA</span><i class="sep">//</i>
+          <span>ANTIGUA CORTE DE CASTILLA</span><i class="sep">//</i>
+          <span>AZUL MAHÓN DE TRINCHERA</span><i class="sep">//</i>
+          <span>ESPÍRITU TRADICIONAL</span><i class="sep">//</i>
+          <span>PRÓXIMA APERTURA</span><i class="sep">//</i>
+        </div>
+        <div class="marquee-track marquee-reverse" aria-hidden="true">
+          <span>ANTIGUA CORTE DE CASTILLA</span><i class="sep">//</i>
+          <span>AZUL MAHÓN DE TRINCHERA</span><i class="sep">//</i>
+          <span>ESPÍRITU TRADICIONAL</span><i class="sep">//</i>
+          <span>PRÓXIMA APERTURA</span><i class="sep">//</i>
+          <span>ANTIGUA CORTE DE CASTILLA</span><i class="sep">//</i>
+          <span>AZUL MAHÓN DE TRINCHERA</span><i class="sep">//</i>
+          <span>ESPÍRITU TRADICIONAL</span><i class="sep">//</i>
+          <span>PRÓXIMA APERTURA</span><i class="sep">//</i>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       FOOTER MONUMENTAL
+       ===================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-giant-word" aria-hidden="true">PINCIANO</div>
+    <div class="footer-bottom-bar">
+      <span>© PINCIANO — VALLADOLID (ESPAÑA)</span>
+      <span>ARCHIVO TEXTIL // PRÓXIMAMENTE</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

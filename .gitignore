@@ -1,0 +1,19 @@
+# Archivos del sistema y editores
+.DS_Store
+*.tmp
+.idea/
+.vscode/
+
+# Archivos internos de producción, borradores de Inkscape y candidatos de IA
+# (Se mantienen en tu Mac pero NO se suben al repositorio público de GitHub)
+assets/candidates/
+assets/prendas/
+assets/mockups/
+assets/branding/previews/
+assets/branding/logo-completo/
+assets/branding/logo-monograma/*.png
+assets/branding/logo-monograma/logo_pinciano_p.svg
+assets/branding/logo-monograma/logo_pinciano_p_black.svg
+
+# Backup local de la web completa hasta el lanzamiento
+web_completa_backup.html
