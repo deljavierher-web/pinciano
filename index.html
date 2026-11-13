@@ -43,7 +43,7 @@
         </a>
 
         <nav class="nav-links" aria-label="Navegación principal">
-          <a href="#calculadora">Calculadora</a>
+          <a href="calculadora.html">Calculadora</a>
           <a href="#metodo">Método</a>
           <a href="#acceso">Canales</a>
           <a href="#faq">FAQ</a>
@@ -81,7 +81,7 @@
 
       <div class="mobile-menu" id="mobile-menu" hidden>
         <div class="container mobile-menu-inner">
-          <a href="#calculadora">Calculadora M &lt; 1</a>
+          <a href="calculadora.html">Calculadora M &lt; 1</a>
           <a href="#metodo">Método y filtros</a>
           <a href="#acceso">Canal Free y VIP</a>
           <a href="#faq">Preguntas frecuentes</a>
@@ -130,7 +130,7 @@
                 </svg>
                 Entrar vía Telegram
               </a>
-              <a href="#calculadora" class="btn btn-ghost">Probar calculadora M &lt; 1</a>
+              <a href="calculadora.html" class="btn btn-ghost">Abrir calculadora M &lt; 1</a>
             </div>
 
             <div class="hero-specs">
@@ -175,9 +175,6 @@
                   </button>
                   <button class="tab-btn" data-sample="2" type="button" role="tab" aria-selected="false">
                     Fútbol
-                  </button>
-                  <button class="tab-btn" data-sample="3" type="button" role="tab" aria-selected="false">
-                    1X2
                   </button>
                 </div>
 
@@ -226,109 +223,35 @@
         </div>
       </section>
 
-      <!-- INTERACTIVE CALCULATOR -->
+      <!-- CALCULATOR LAUNCH SECTION (DEDICATED PAGE) -->
       <section class="section" id="calculadora">
-        <div class="container calc-grid">
-          <div class="calc-info">
-            <div class="eyebrow">MOTOR MATEMÁTICO</div>
-            <h2>Comprueba cualquier arbitraje al instante.</h2>
-            <p class="muted-copy">
-              Introduce cuotas de <strong>2 vías</strong> (tenis, Over/Under, hándicap) o <strong>3 vías</strong> (1X2 en fútbol) junto a tu capital. El cálculo replica exactamente la lógica de nuestro motor: margen implícito, banda segura del <code>3%–8%</code> y redondeo anti-limitación al euro verificando que ninguna pata quede en negativo.
-            </p>
-
-            <div class="formula-box" id="live-formula-box">
-              <span class="formula-kicker">FÓRMULA EN VIVO</span>
-              <code id="live-formula-text">M = 1/2.15 + 1/2.05 = 0.9529 &lt; 1.0000</code>
-            </div>
-
-            <div class="preset-wrap">
-              <span class="preset-label">CARGAR EJEMPLO RÁPIDO</span>
-              <div class="preset-row">
-                <button type="button" class="preset-btn" data-preset="tennis">Tenis 2 vías (+4.94%)</button>
-                <button type="button" class="preset-btn" data-preset="nba">NBA Props (+7.17%)</button>
-                <button type="button" class="preset-btn" data-preset="football1x2">Fútbol 1X2 (+3.14%)</button>
-                <button type="button" class="preset-btn" data-preset="none">Sin surebet (M ≥ 1)</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="calc-panel">
-            <div class="calc-controls-top">
-              <div class="segmented" role="group" aria-label="Tipo de mercado">
-                <button type="button" class="seg-btn active" data-ways="2">2 vías</button>
-                <button type="button" class="seg-btn" data-ways="3">3 vías (1X2)</button>
-              </div>
-
-              <label class="round-toggle">
-                <input type="checkbox" id="round-toggle" checked />
-                <span class="toggle-track" aria-hidden="true"></span>
-                <span>Redondeo 1 €</span>
-              </label>
-            </div>
-
-            <div class="calc-inputs" id="calc-inputs">
-              <label class="field">
-                <span id="lbl-odd-a">Cuota 1 / A</span>
-                <input id="odd-a" type="number" step="0.01" min="1.01" value="2.15" />
-              </label>
-              <label class="field" id="field-odd-x" hidden>
-                <span>Cuota Empate (X)</span>
-                <input id="odd-x" type="number" step="0.01" min="1.01" value="3.55" />
-              </label>
-              <label class="field">
-                <span id="lbl-odd-b">Cuota 2 / B</span>
-                <input id="odd-b" type="number" step="0.01" min="1.01" value="2.05" />
-              </label>
-              <label class="field">
-                <span>Capital (€)</span>
-                <input id="bankroll" type="number" step="5" min="10" value="100" />
-              </label>
-            </div>
-
-            <div class="bank-presets-bar">
-              <span>Capital rápido:</span>
-              <div class="bank-presets-btns">
-                <button type="button" class="mini-chip" data-bank="50">50 €</button>
-                <button type="button" class="mini-chip active" data-bank="100">100 €</button>
-                <button type="button" class="mini-chip" data-bank="250">250 €</button>
-                <button type="button" class="mini-chip" data-bank="500">500 €</button>
+        <div class="container">
+          <div class="calc-teaser-card">
+            <div class="calc-teaser-copy">
+              <div class="eyebrow">HERRAMIENTA INDEPENDIENTE · SOLO 2 VÍAS</div>
+              <h2>¿Una casa te limita el importe máximo? Calcúlalo en 2 segundos.</h2>
+              <p class="muted-copy">
+                Nuestra calculadora dedicada abre en pantalla completa y funciona tanto por <strong>capital total</strong> como fijando el <strong>máximo permitido en Casa 1 o Casa 2</strong>. Además, cada alerta en Telegram incluye un enlace cifrado que ya precarga ambas cuotas.
+              </p>
+              <div class="calc-teaser-actions">
+                <a href="calculadora.html" class="btn btn-primary">Abrir Calculadora M &lt; 1 →</a>
+                <span class="calc-teaser-note">Sin 3 vías · Céntimos exactos o redondeo 1 €</span>
               </div>
             </div>
 
-            <div class="calc-results" id="calc-results">
-              <div class="calc-verdict is-valid" id="calc-verdict">
-                <span class="verdict-dot" aria-hidden="true"></span>
-                <span id="verdict-text">Surebet válida · Dentro del filtro seguro (3%–8%)</span>
+            <div class="calc-teaser-preview" aria-hidden="true">
+              <div class="teaser-mini-row">
+                <span>🏠 Casa 2 · Cuota <code>1.57</code></span>
+                <strong>Máx. 30 €</strong>
               </div>
-
-              <div class="res-metrics">
-                <div class="res-metric-box">
-                  <span>Margen implícito (M)</span>
-                  <strong id="res-m" class="mono">0.9529</strong>
-                </div>
-                <div class="res-metric-box">
-                  <span>ROI teórico</span>
-                  <strong id="res-roi" class="mono accent">+4.94%</strong>
-                </div>
-                <div class="res-metric-box">
-                  <span>Beneficio neto mín.</span>
-                  <strong id="res-min-net" class="mono accent">+4.55 €</strong>
-                </div>
+              <div class="teaser-mini-arrow">↓ Recalcula cobertura exacta</div>
+              <div class="teaser-mini-row is-accent">
+                <span>🏠 Casa 1 · Cuota <code>4.00</code></span>
+                <strong>Apostar 12 € <small>(11.78 €)</small></strong>
               </div>
-
-              <div class="alloc-wrap">
-                <div class="alloc-head">
-                  <span>Reparto de capital</span>
-                  <span class="mono" id="res-total-stake">Total invertido: 100 €</span>
-                </div>
-                <div class="alloc-bar" id="alloc-bar" aria-hidden="true">
-                  <div class="alloc-seg seg-0" style="width: 49%"></div>
-                  <div class="alloc-seg seg-1" style="width: 51%"></div>
-                </div>
-              </div>
-
-              <div class="res-legs" id="res-legs">
-                <!-- Populated dynamically by app.js -->
+              <div class="teaser-mini-foot">
+                <span>Inversión: 42 €</span>
+                <span class="accent">Neto mín.: +5.10 €</span>
               </div>
             </div>
           </div>
