@@ -66,11 +66,11 @@
 
   let activeMode = 'bankroll'; // 'bankroll' | 'lockA' | 'lockB'
   let signalMeta = {
-    book1: 'Casa 1',
-    book2: 'Casa 2',
-    pick1: 'Selección 1',
-    pick2: 'Selección 2',
-    event: '',
+    book1: 'Bet365',
+    book2: 'Luckia',
+    pick1: '1ª Mitad Córners Over 5.5',
+    pick2: '1ª Mitad Córners Under 5.5',
+    event: 'Países Bajos vs Grecia (Ejemplo +17.89%)',
     startTime: '',
   };
 
@@ -340,21 +340,29 @@
       minNetEl.className = 'mono accent';
       verdictEl.className = 'calc-verdict is-warn';
       verdictTextEl.textContent = 'Surebet válida aunque por debajo del filtro mínimo (3.0% ROI)';
-    } else if (res.roiPercent > 8.0) {
+    } else if (res.roiPercent > 25.0) {
       roiEl.textContent = `+${res.roiPercent.toFixed(2)}%`;
       roiEl.className = 'mono accent';
       minNetEl.textContent = `+${res.minNetProfit.toFixed(2)} €`;
       minNetEl.className = 'mono accent';
       verdictEl.className = 'calc-verdict is-warn';
       verdictTextEl.textContent =
-        'ROI > 8.0% · Cálculo válido (precaución: fuera de la banda conservadora 3%–8%)';
+        'ROI > 25% · Verifica manualmente si existe error palpable antes de confirmar';
+    } else if (res.roiPercent >= 12.0) {
+      roiEl.textContent = `+${res.roiPercent.toFixed(2)}%`;
+      roiEl.className = 'mono accent';
+      minNetEl.textContent = `+${res.minNetProfit.toFixed(2)} €`;
+      minNetEl.className = 'mono accent';
+      verdictEl.className = 'calc-verdict is-valid';
+      verdictTextEl.textContent =
+        'Surebet válida de alto margen (+12%+) · Verifica cuotas y límites antes de apostar';
     } else {
       roiEl.textContent = `+${res.roiPercent.toFixed(2)}%`;
       roiEl.className = 'mono accent';
       minNetEl.textContent = `+${res.minNetProfit.toFixed(2)} €`;
       minNetEl.className = 'mono accent';
       verdictEl.className = 'calc-verdict is-valid';
-      verdictTextEl.textContent = 'Surebet válida · Dentro de la banda segura (3.0%–8.0% ROI)';
+      verdictTextEl.textContent = 'Surebet válida · Dentro de la banda estable (3.0%–8.0%+ ROI)';
     }
 
     allocBarEl.innerHTML = res.legs
@@ -439,30 +447,44 @@
       oddA: '4.00',
       oddB: '1.57',
       stakeB: '30',
-      book1: 'Casa 1',
-      book2: 'Casa 2',
-      pick1: 'Opción 1',
-      pick2: 'Opción 2',
+      book1: 'Bet365',
+      book2: 'Winamax (ES)',
+      pick1: 'Lado A',
+      pick2: 'Lado B (Limitado 30 €)',
+      event: 'Límite de casa (+12.75% ROI)',
     },
-    tennis: {
+    football: {
       mode: 'bankroll',
-      oddA: '2.15',
-      oddB: '2.05',
+      oddA: '3.25',
+      oddB: '1.85',
       bank: '100',
       book1: 'Bet365',
-      book2: 'Winamax',
-      pick1: 'Jugador 1',
-      pick2: 'Jugador 2',
+      book2: 'Luckia',
+      pick1: '1ª Mitad Córners Over 5.5',
+      pick2: '1ª Mitad Córners Under 5.5',
+      event: 'Países Bajos vs Grecia (+17.89%)',
     },
     nba: {
       mode: 'bankroll',
-      oddA: '2.90',
-      oddB: '1.70',
+      oddA: '3.00',
+      oddB: '1.93',
       bank: '100',
-      book1: 'LeoVegas',
+      book1: 'Betfair (ES)',
       book2: 'Marca Apuestas',
-      pick1: 'Over 10.5',
-      pick2: 'Under 10.5',
+      pick1: 'Rebotes Dean Wade Over 5.5',
+      pick2: 'Rebotes Dean Wade Under 5.5',
+      event: 'Philadelphia 76ers vs Toronto Raptors (+17.44%)',
+    },
+    winamax: {
+      mode: 'bankroll',
+      oddA: '2.95',
+      oddB: '1.85',
+      bank: '100',
+      book1: 'Winamax (ES)',
+      book2: 'Luckia',
+      pick1: '1ª Mitad Córners Over 5.5',
+      pick2: '1ª Mitad Córners Under 5.5',
+      event: 'Países Bajos vs Grecia (+13.70%)',
     },
     none: {
       mode: 'bankroll',
@@ -473,6 +495,7 @@
       book2: 'Casa 2',
       pick1: 'Selección 1',
       pick2: 'Selección 2',
+      event: '',
     },
   };
 
@@ -485,7 +508,7 @@
         book2: p.book2,
         pick1: p.pick1,
         pick2: p.pick2,
-        event: '',
+        event: p.event || '',
         startTime: '',
       };
       oddAInput.value = p.oddA;

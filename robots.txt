@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /cpm
+Disallow: /cpm/
+
+Sitemap: https://pinciano.es/sitemap.xml

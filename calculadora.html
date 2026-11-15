@@ -3,12 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora M &lt; 1 (2 vías y límites por casa) — Pinciano Radar</title>
+    <title>Calculadora de Surebets M &lt; 1 y Límites (Bet365, Winamax, Sportium, Betfair) — Pinciano Radar</title>
     <meta
       name="description"
-      content="Calculadora matemática de arbitraje deportivo de 2 vías. Calcula por capital total o introduciendo la apuesta máxima permitida en cualquier casa."
+      content="Calculadora matemática de arbitraje deportivo de 2 vías en España. Reparte stakes o calcula la cobertura exacta cuando Bet365, Winamax, Sportium o Betfair limitan tu apuesta máxima."
     />
+    <link rel="canonical" href="https://pinciano.es/calculadora" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Calculadora de Surebets y Límites por Casa — Pinciano Radar" />
+    <meta
+      property="og:description"
+      content="Calcula cobertura M < 1 por capital total o límite máximo en Bet365, Winamax, Sportium y Betfair. Redondeo a 1 € sin patas negativas."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pinciano.es/calculadora" />
+    <meta property="og:locale" content="es_ES" />
     <meta name="theme-color" content="#080b10" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "name": "Calculadora de Arbitraje Deportivo M < 1 — Pinciano Radar",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Web",
+            "url": "https://pinciano.es/calculadora",
+            "inLanguage": "es-ES",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR"
+            },
+            "description": "Calculadora gratuita de surebets de 2 vías para repartir stakes o cubrir límites máximos en casas reguladas en España (Bet365, Betfair, Winamax, Sportium)."
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "¿Cómo calcular una surebet cuando una casa limita el importe máximo?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Introduce el importe máximo permitido en la casa limitada (por ejemplo 30 € en Winamax o Bet365) y la calculadora calcula S_contrapartida = (S_limitada × Cuota_limitada) / Cuota_contrapartida para equilibrar el beneficio neto en ambos resultados."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Cuándo hay arbitraje matemático en apuestas de 2 vías?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Existe arbitraje siempre que M = (1 / Cuota 1) + (1 / Cuota 2) sea estrictamente menor que 1.0000. El porcentaje de ROI se obtiene como ((1 / M) - 1) × 100."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,6 +90,7 @@
 
         <nav class="nav-links" aria-label="Navegación principal">
           <a href="index.html">Inicio</a>
+          <a href="index.html#escaparate">Escaparate +12%</a>
           <a href="index.html#metodo">Método</a>
           <a href="index.html#acceso">Canales</a>
           <a
@@ -75,6 +128,7 @@
       <div class="mobile-menu" id="mobile-menu" hidden>
         <div class="container mobile-menu-inner">
           <a href="index.html">← Volver a la landing</a>
+          <a href="index.html#escaparate">Escaparate +12%</a>
           <a href="index.html#metodo">Método y filtros</a>
           <a href="index.html#acceso">Canal Free y VIP</a>
           <a
@@ -155,8 +209,8 @@
                         type="text"
                         inputmode="decimal"
                         autocomplete="off"
-                        value="2.15"
-                        placeholder="ej. 4.00"
+                        value="3.25"
+                        placeholder="ej. 3.25"
                       />
                     </label>
                     <label class="field">
@@ -192,8 +246,8 @@
                         type="text"
                         inputmode="decimal"
                         autocomplete="off"
-                        value="2.05"
-                        placeholder="ej. 1.57"
+                        value="1.85"
+                        placeholder="ej. 1.85"
                       />
                     </label>
                     <label class="field">
@@ -279,7 +333,7 @@
 
                 <div class="formula-share-row">
                   <code id="live-formula-text" class="formula-inline">
-                    M = 1/2.15 + 1/2.05 = 0.9529 &lt; 1.0000
+                    M = 1/3.25 + 1/1.85 = 0.8482 &lt; 1.0000
                   </code>
                   <button type="button" class="mini-chip" id="copy-enc-link-btn">
                     Copiar enlace cifrado
@@ -287,18 +341,21 @@
                 </div>
               </div>
 
-              <!-- QUICK PRESETS -->
+              <!-- QUICK PRESETS (SOLO +12% CON CASAS GRANDES) -->
               <div class="preset-wrap">
-                <span class="preset-label">EJEMPLOS RÁPIDOS DE PRUEBA</span>
+                <span class="preset-label">EJEMPLOS REALES +12% CON CASAS PRINCIPALES</span>
                 <div class="preset-row">
                   <button type="button" class="preset-btn" data-preset="limit">
-                    Límite casa: 4.00 vs 1.57 (máx 30 €)
+                    Límite Bet365/Winamax: 4.00 vs 1.57 (máx 30 €)
                   </button>
-                  <button type="button" class="preset-btn" data-preset="tennis">
-                    Tenis 2 vías: 2.15 vs 2.05 (100 €)
+                  <button type="button" class="preset-btn" data-preset="football">
+                    Fútbol · Bet365: 3.25 vs 1.85 (+17.89%)
                   </button>
                   <button type="button" class="preset-btn" data-preset="nba">
-                    NBA Props: 2.90 vs 1.70 (100 €)
+                    NBA · Betfair ES: 3.00 vs 1.93 (+17.44%)
+                  </button>
+                  <button type="button" class="preset-btn" data-preset="winamax">
+                    Córners · Winamax ES: 2.95 vs 1.85 (+13.70%)
                   </button>
                   <button type="button" class="preset-btn" data-preset="none">
                     Sin surebet: 1.90 vs 1.95
@@ -306,6 +363,45 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO GUIDE FOR LIMITS IN SPANISH BOOKIES -->
+      <section class="section section-bordered calc-seo-guide" id="guia-limites">
+        <div class="container">
+          <div class="section-head">
+            <div class="eyebrow">GUÍA PRÁCTICA EN ESPAÑA (.ES)</div>
+            <h2>Cómo cubrir límites de apuesta en Bet365, Winamax, Sportium o Betfair.</h2>
+            <p class="muted-copy">
+              En mercados con desajustes altos (<strong>+12% ROI o más</strong>), es habitual que una casa limite el importe máximo por ticket antes de corregir la cuota. Si apuestas primero la pata con límite y cubres después en la otra casa, bloqueas el retorno independientemente del marcador.
+            </p>
+          </div>
+
+          <div class="steps-grid">
+            <article class="step-card">
+              <span class="step-num">01 · PATAS CON LÍMITE</span>
+              <h3>Fija el máximo en la casa restrictiva</h3>
+              <p>
+                Escribe tu tope permitido directamente en <em>Apuesta / Máx. (€)</em> de la Casa 1 o Casa 2 (por ejemplo 30 € en Winamax o Bet365). La herramienta bloquea esa pata y calcula la cobertura exacta en Sportium, Betfair o la contrapartida elegida.
+              </p>
+            </article>
+
+            <article class="step-card">
+              <span class="step-num">02 · REDONDEO ANTI-DETECCIÓN</span>
+              <h3>Redondea la contrapartida a 1 €</h3>
+              <p>
+                Evitar decimales como <code>76.43 €</code> reduce señales algorítmicas de arbitraje. Activa el redondeo a 1 € para ajustar la contrapartida al euro entero y confirmar al momento que ambos escenarios siguen en positivo.
+              </p>
+            </article>
+
+            <article class="step-card">
+              <span class="step-num">03 · SEÑALES EN DIRECTO</span>
+              <h3>Del escaparate +12% a Telegram</h3>
+              <p>
+                Consulta casos históricos en nuestro <a href="index.html#escaparate" class="inline-link">Escaparate +12%</a>, entra gratis en la <a href="https://t.me/+oJbqxd4sg2BhZjNk" target="_blank" rel="noopener" class="inline-link">Comunidad Free</a> o solicita el radar en vivo T+0 en <a href="https://t.me/surebets_pinciano_bot" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a>.
+              </p>
+            </article>
           </div>
         </div>
       </section>

@@ -1,0 +1,328 @@
+{
+  "generated_at": "2026-11-15T14:44:00.277441+00:00",
+  "min_roi_percent": 12.0,
+  "delay_hours": 2.0,
+  "stats": {
+    "total_detected": 4742,
+    "total_12_plus": 388,
+    "big_bookies_12_plus": {
+      "Betfair": 87,
+      "William Hill": 23,
+      "Marca Apuestas": 25,
+      "Winamax": 52,
+      "888sport": 23,
+      "Bet365": 68
+    }
+  },
+  "featured_cases": [
+    {
+      "kind": "detailed",
+      "roi_percent": 17.89,
+      "match": "Países Bajos vs Grecia",
+      "sport_league": "⚽ UEFA Nations League",
+      "starts_at": "13.11.2026 20:45",
+      "detected_at": "2026-11-12T18:12:51+00:00",
+      "big_bookies": [
+        "Bet365"
+      ],
+      "legs": [
+        {
+          "pick": "1ª Mitad Corners Over 5.5",
+          "bookie": "Bet365",
+          "price": 3.25,
+          "stake_100": 36.27
+        },
+        {
+          "pick": "1ª Mitad Corners Under 5.5",
+          "bookie": "Luckia",
+          "price": 1.85,
+          "stake_100": 63.73
+        }
+      ]
+    },
+    {
+      "kind": "detailed",
+      "roi_percent": 17.44,
+      "match": "Philadelphia 76ers vs Toronto Raptors",
+      "sport_league": "🏀 NBA",
+      "starts_at": "13.11.2026 01:10",
+      "detected_at": "2026-11-12T18:28:09+00:00",
+      "big_bookies": [
+        "Betfair",
+        "Marca Apuestas"
+      ],
+      "legs": [
+        {
+          "pick": "Rebotes Dean Wade Over 5.5",
+          "bookie": "Betfair (ES)",
+          "price": 3.0,
+          "stake_100": 39.15
+        },
+        {
+          "pick": "Rebotes Dean Wade Under 5.5",
+          "bookie": "Marca Apuestas",
+          "price": 1.93,
+          "stake_100": 60.85
+        }
+      ]
+    },
+    {
+      "kind": "detailed",
+      "roi_percent": 14.75,
+      "match": "Países Bajos vs Grecia",
+      "sport_league": "⚽ UEFA Nations League",
+      "starts_at": "13.11.2026 20:45",
+      "detected_at": "2026-11-12T18:16:50+00:00",
+      "big_bookies": [
+        "Bet365"
+      ],
+      "legs": [
+        {
+          "pick": "1ª Mitad Corners Over 6.5",
+          "bookie": "Bet365",
+          "price": 5.5,
+          "stake_100": 20.86
+        },
+        {
+          "pick": "1ª Mitad Corners Under 6.5",
+          "bookie": "Luckia",
+          "price": 1.45,
+          "stake_100": 79.14
+        }
+      ]
+    },
+    {
+      "kind": "detailed",
+      "roi_percent": 13.7,
+      "match": "Países Bajos vs Grecia",
+      "sport_league": "⚽ UEFA Nations League",
+      "starts_at": "13.11.2026 20:45",
+      "detected_at": "2026-11-12T18:10:29+00:00",
+      "big_bookies": [
+        "Winamax"
+      ],
+      "legs": [
+        {
+          "pick": "1ª Mitad Corners Over 5.5",
+          "bookie": "Winamax (ES)",
+          "price": 2.95,
+          "stake_100": 38.54
+        },
+        {
+          "pick": "1ª Mitad Corners Under 5.5",
+          "bookie": "Luckia",
+          "price": 1.85,
+          "stake_100": 61.46
+        }
+      ]
+    },
+    {
+      "kind": "detailed",
+      "roi_percent": 12.0,
+      "match": "Países Bajos vs Grecia",
+      "sport_league": "⚽ UEFA Nations League",
+      "starts_at": "13.11.2026 20:45",
+      "detected_at": "2026-11-12T18:09:38+00:00",
+      "big_bookies": [
+        "Bet365"
+      ],
+      "legs": [
+        {
+          "pick": "1ª Mitad Corners Under 4.5",
+          "bookie": "Luckia",
+          "price": 2.4,
+          "stake_100": 46.67
+        },
+        {
+          "pick": "1ª Mitad Corners Over 4.5",
+          "bookie": "Bet365 (y otras)",
+          "price": 2.1,
+          "stake_100": 53.33
+        }
+      ]
+    }
+  ],
+  "delayed_feed": [
+    {
+      "id": "b2ae8ec84329",
+      "event_id": "tg_57f2a86c703b",
+      "market": "Goles (3.5)",
+      "bookmakers": [
+        "888sport (ES)",
+        "Betfair (ES)"
+      ],
+      "big_bookies": [
+        "Betfair",
+        "888sport"
+      ],
+      "roi_percent": 13.51,
+      "detected_at": "2026-11-15T12:43:31.616932+00:00"
+    },
+    {
+      "id": "6b498d47175c",
+      "event_id": "tg_d26266ac34db",
+      "market": "Goles (2.5)",
+      "bookmakers": [
+        "888sport (ES)",
+        "Betfair (ES)"
+      ],
+      "big_bookies": [
+        "Betfair",
+        "888sport"
+      ],
+      "roi_percent": 16.67,
+      "detected_at": "2026-11-15T12:35:06.162219+00:00"
+    },
+    {
+      "id": "2e39a3e9d6db",
+      "event_id": "tg_fede44f04762",
+      "market": "Goles (3.5)",
+      "bookmakers": [
+        "888sport (ES)",
+        "Betfair (ES)"
+      ],
+      "big_bookies": [
+        "Betfair",
+        "888sport"
+      ],
+      "roi_percent": 21.17,
+      "detected_at": "2026-11-15T12:35:01.118411+00:00"
+    },
+    {
+      "id": "c74c0d3dc3f2",
+      "event_id": "tg_ccda49fbe0f8",
+      "market": "Local or Draw",
+      "bookmakers": [
+        "JOKERBET",
+        "Betfair (ES)",
+        "Monopoly",
+        "LeoVegas (ES)",
+        "Paf (ES)",
+        "SpeedyBet (ES)"
+      ],
+      "big_bookies": [
+        "Betfair"
+      ],
+      "roi_percent": 13.2,
+      "detected_at": "2026-11-15T12:18:08.493274+00:00"
+    },
+    {
+      "id": "49db42be6858",
+      "event_id": "tg_cf4f7408c56b",
+      "market": "Local To Qualify",
+      "bookmakers": [
+        "JOKERBET",
+        "Betfair (ES)",
+        "eBingo"
+      ],
+      "big_bookies": [
+        "Betfair"
+      ],
+      "roi_percent": 16.64,
+      "detected_at": "2026-11-15T12:16:47.506485+00:00"
+    },
+    {
+      "id": "0207b1e7e886",
+      "event_id": "tg_c3436ecc2da1",
+      "market": "Games Asiático Handicap Local -3.5",
+      "bookmakers": [
+        "William Hill (ES)",
+        "Winamax (ES)"
+      ],
+      "big_bookies": [
+        "Winamax",
+        "William Hill"
+      ],
+      "roi_percent": 12.78,
+      "detected_at": "2026-11-15T11:31:28.706549+00:00"
+    },
+    {
+      "id": "25557b900520",
+      "event_id": "tg_49eee3cda5af",
+      "market": "Goles (3.5)",
+      "bookmakers": [
+        "Marca Apuestas",
+        "Winamax (ES)"
+      ],
+      "big_bookies": [
+        "Winamax",
+        "Marca Apuestas"
+      ],
+      "roi_percent": 20.21,
+      "detected_at": "2026-11-15T11:29:35.952869+00:00"
+    },
+    {
+      "id": "d1a5c95303a3",
+      "event_id": "tg_88b77687ec65",
+      "market": "Goles (4)",
+      "bookmakers": [
+        "Marca Apuestas",
+        "Winamax (ES)"
+      ],
+      "big_bookies": [
+        "Winamax",
+        "Marca Apuestas"
+      ],
+      "roi_percent": 23.53,
+      "detected_at": "2026-11-15T11:29:30.633254+00:00"
+    },
+    {
+      "id": "5138f0861fab",
+      "event_id": "tg_390cd10ed892",
+      "market": "Empate o visitante",
+      "bookmakers": [
+        "Betify",
+        "Bet365"
+      ],
+      "big_bookies": [
+        "Bet365"
+      ],
+      "roi_percent": 17.52,
+      "detected_at": "2026-11-15T11:09:20.395373+00:00"
+    },
+    {
+      "id": "7746509fbf68",
+      "event_id": "tg_ac9591189a7f",
+      "market": "Local or Draw",
+      "bookmakers": [
+        "Marca Apuestas",
+        "Bet365"
+      ],
+      "big_bookies": [
+        "Bet365",
+        "Marca Apuestas"
+      ],
+      "roi_percent": 14.1,
+      "detected_at": "2026-11-15T10:56:24.906670+00:00"
+    },
+    {
+      "id": "0181d9ac09f5",
+      "event_id": "tg_f11d1da76463",
+      "market": "Local or Draw",
+      "bookmakers": [
+        "SpeedyBet (ES)",
+        "Paf (ES)",
+        "Betfair (ES)"
+      ],
+      "big_bookies": [
+        "Betfair"
+      ],
+      "roi_percent": 18.3,
+      "detected_at": "2026-11-15T07:56:49.915926+00:00"
+    },
+    {
+      "id": "63975ecea828",
+      "event_id": "tg_782b383f9e91",
+      "market": "Local or Draw",
+      "bookmakers": [
+        "SpeedyBet (ES)",
+        "Betfair (ES)"
+      ],
+      "big_bookies": [
+        "Betfair"
+      ],
+      "roi_percent": 23.04,
+      "detected_at": "2026-11-15T07:54:53.100947+00:00"
+    }
+  ]
+}
