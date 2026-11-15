@@ -3,6 +3,8 @@
 *.tmp
 .idea/
 .vscode/
+.wrangler/
+.dev.vars
 
 # Archivos internos de producción, borradores de Inkscape y candidatos de IA
 # (Se mantienen en tu Mac pero NO se suben al repositorio público de GitHub)

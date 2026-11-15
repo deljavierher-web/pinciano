@@ -199,7 +199,32 @@
     }
   }
 
+  let calcUseTracked = false;
+
+  function sendFunnelBeacon(eventName) {
+    if (window.location.protocol === 'file:') return;
+    const payload = JSON.stringify({ event: eventName });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/cpm/t', payload);
+    } else if (window.fetch) {
+      fetch('/cpm/t', { method: 'POST', body: payload, keepalive: true }).catch(() => {});
+    }
+  }
+
+  document.addEventListener('click', (ev) => {
+    const link = ev.target && ev.target.closest ? ev.target.closest('a[href*="t.me/"]') : null;
+    if (!link) return;
+    const href = link.getAttribute('href') || '';
+    if (href.includes('t.me/+')) sendFunnelBeacon('click_free_community');
+    else if (href.includes('t.me/pincianoradar')) sendFunnelBeacon('click_free_channel');
+    else if (href.includes('surebets_pinciano_bot')) sendFunnelBeacon('click_vip_bot');
+  });
+
   function renderResults(sourceField) {
+    if (!calcUseTracked && sourceField && sourceField !== 'init') {
+      calcUseTracked = true;
+      sendFunnelBeacon('calc_use');
+    }
     const oa = parseDecimal(oddAInput.value);
     const ob = parseDecimal(oddBInput.value);
     const sa = parseDecimal(stakeAInput.value);
