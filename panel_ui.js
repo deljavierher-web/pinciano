@@ -349,7 +349,7 @@ export function renderPanelHtml() {
       left: 0; right: 0; bottom: 0;
       z-index: 30;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 4px;
       padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
       background: rgba(12, 20, 17, 0.96);
@@ -368,6 +368,65 @@ export function renderPanelHtml() {
     }
     .tab.active { color: var(--accent); background: var(--accent-soft); }
     .empty { color: var(--muted); font-size: 0.85rem; padding: 6px 0; }
+    .vip-sync { font-size: 0.76rem; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .vip-sync .live { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(0,255,135,0.15); }
+    .vip-sync.stale .live { background: var(--warn); box-shadow: 0 0 0 3px rgba(255,181,71,0.15); }
+    .vip-search {
+      width: 100%; min-height: 40px; padding: 0 12px; border-radius: 10px; margin-top: 8px;
+      border: 1px solid var(--border); background: var(--surface-2); color: inherit; font-size: 0.86rem;
+    }
+    .vip-card { position: relative; overflow: hidden; }
+    .vip-card.urgent { border-color: rgba(255,92,108,0.45); }
+    .vip-card.soon { border-color: rgba(255,181,71,0.4); }
+    .vip-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .vip-name { font-weight: 700; font-size: 0.98rem; }
+    .vip-sub { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+    .vip-cd { font-family: var(--font-mono); font-weight: 700; font-size: 1.28rem; margin-top: 10px; letter-spacing: 0.01em; }
+    .vip-cd.urgent { color: var(--danger); }
+    .vip-cd.soon { color: var(--warn); }
+    .vip-cd.ok { color: var(--accent); }
+    .vip-cd-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .vip-bar { height: 5px; border-radius: 999px; background: rgba(255,255,255,0.06); overflow: hidden; margin-top: 8px; }
+    .vip-bar > div { height: 100%; border-radius: 999px; background: var(--accent); transition: width .4s; }
+    .vip-card.soon .vip-bar > div { background: var(--warn); }
+    .vip-card.urgent .vip-bar > div { background: var(--danger); }
+    .vip-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+    .btn-act { min-height: 42px; border-radius: 10px; font-weight: 700; font-size: 0.86rem; border: 1px solid var(--border); background: var(--surface-2); color: inherit; }
+    .btn-act.extend { border-color: var(--border-accent); color: var(--accent); background: var(--accent-soft); }
+    .btn-act.kick { border-color: rgba(255,92,108,0.35); color: var(--danger); background: var(--danger-soft); }
+    .btn-act:disabled { opacity: 0.45; }
+    .b-trial { color: #7DD3FC; background: rgba(125,211,252,0.12); border-color: rgba(125,211,252,0.3); }
+    .b-paid { color: var(--accent); background: var(--accent-soft); border-color: var(--border-accent); }
+    .b-founder { color: #FCD34D; background: rgba(252,211,77,0.12); border-color: rgba(252,211,77,0.35); }
+    .vip-pending { margin-top: 10px; font-size: 0.78rem; padding: 8px 10px; border-radius: 9px; background: rgba(192,132,252,0.12); border: 1px solid rgba(192,132,252,0.3); color: #E9D5FF; }
+    .log-row { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; font-size: 0.8rem; }
+    .log-ico { font-size: 0.95rem; line-height: 1.2; }
+    .log-meta { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+    .modal-bg { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.62); backdrop-filter: blur(4px); display: none; align-items: flex-end; justify-content: center; }
+    .modal-bg.open { display: flex; }
+    .modal {
+      width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px 18px 0 0;
+      padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+    }
+    @media (min-width: 640px) { .modal-bg { align-items: center; } .modal { border-radius: 18px; } }
+    .modal h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .modal .m-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+    .m-dates { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-bottom: 12px; }
+    .m-date { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 9px 10px; }
+    .m-date .k { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .m-date .v { font-weight: 700; font-size: 0.86rem; margin-top: 2px; }
+    .m-date.new .v { color: var(--accent); }
+    .m-check { display: flex; gap: 10px; align-items: flex-start; font-size: 0.84rem; padding: 8px 0; }
+    .m-check input { width: 18px; height: 18px; margin-top: 1px; accent-color: #00FF87; }
+    .m-check small { display: block; color: var(--muted); font-size: 0.74rem; }
+    .tg-preview { margin: 8px 0 14px; padding: 12px; border-radius: 12px 12px 12px 4px; background: #17212B; border: 1px solid #22303D; font-size: 0.84rem; line-height: 1.45; color: #E7EEF5; }
+    .tg-preview .tg-btn { margin-top: 10px; text-align: center; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.07); font-size: 0.8rem; font-weight: 600; }
+    .tg-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+    .m-actions { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
+    .m-err { color: var(--danger); font-size: 0.8rem; min-height: 1em; margin-bottom: 8px; }
+    .toast { position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 70; background: #0F1A16; border: 1px solid var(--border-accent); color: var(--accent); padding: 10px 14px; border-radius: 10px; font-size: 0.84rem; font-weight: 600; display: none; max-width: 92vw; }
+    .toast.show { display: block; }
   </style>
 </head>
 <body>
@@ -441,13 +500,45 @@ export function renderPanelHtml() {
         <button type="button" class="btn-sm btn-accent" style="width:100%;min-height:44px" id="btn-refresh-2">Actualizar datos ahora</button>
       </div>
     </section>
+    <!-- 5. VIP -->
+    <section class="view" id="view-vip" aria-label="Usuarios dentro del VIP">
+      <div class="kpi-grid" id="vip-kpis"></div>
+      <div class="card">
+        <div class="card-title"><span>Usuarios en el VIP</span><span class="badge mono" id="vip-count">0</span></div>
+        <div class="vip-sync" id="vip-sync"><span class="live"></span><span>Cargando...</span></div>
+        <div class="chips" id="vip-flt" style="margin-top:10px;margin-bottom:0">
+          <button type="button" class="chip on" data-vf="all">Todos</button>
+          <button type="button" class="chip" data-vf="trial">Prueba 48 h</button>
+          <button type="button" class="chip" data-vf="paid">De pago</button>
+          <button type="button" class="chip" data-vf="soon">Caducan &lt; 48 h</button>
+        </div>
+        <input type="search" class="vip-search" id="vip-q" placeholder="Buscar por nombre, @alias o ID" autocomplete="off" />
+      </div>
+      <div class="list" id="vip-list"></div>
+      <div class="card" id="vip-log"></div>
+    </section>
   </main>
+
+  <div class="modal-bg" id="vip-modal" role="dialog" aria-modal="true" aria-labelledby="vm-title">
+    <div class="modal">
+      <h3 id="vm-title"></h3>
+      <div class="m-sub" id="vm-sub"></div>
+      <div id="vm-body"></div>
+      <div class="m-err" id="vm-err"></div>
+      <div class="m-actions">
+        <button type="button" class="btn-act" id="vm-cancel">Cancelar</button>
+        <button type="button" class="btn-act" id="vm-ok"></button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
 
   <nav class="tabbar" aria-label="Navegación principal">
     <button type="button" class="tab active" data-tab="hoy"><span>Hoy</span></button>
     <button type="button" class="tab" data-tab="agenda"><span>Calendario</span></button>
     <button type="button" class="tab" data-tab="ranking"><span>Ranking</span></button>
     <button type="button" class="tab" data-tab="embudo"><span>Embudo</span></button>
+    <button type="button" class="tab" data-tab="vip"><span>VIP</span></button>
   </nav>
 
   <script>
@@ -1150,11 +1241,320 @@ export function renderPanelHtml() {
           .catch(function () { document.getElementById('sync-ts').textContent = 'Error de red'; });
       }
 
+
+      // ── Pestaña VIP ──────────────────────────────────────────────────────────
+      var vip = { data: null, filter: 'all', q: '', modal: null, poll: null, tick: null, busy: false };
+      var VIP_PRICE = 25, FOUNDER_PRICE = 12.5, FOUNDERS_LIMIT = 25;
+      var WD = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+      var MO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+      function eur(v) { return (v % 1 === 0 ? String(v) : v.toFixed(2).replace('.', ',')) + ' €'; }
+      function madridDate(ms) {
+        var p = {};
+        new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
+          .formatToParts(new Date(ms)).forEach(function (x) { p[x.type] = x.value; });
+        return p;
+      }
+      function longDate(ms) {
+        var p = madridDate(ms);
+        var wdIdx = new Date(Number(p.year), Number(p.month) - 1, Number(p.day)).getDay();
+        return WD[wdIdx] + ' ' + Number(p.day) + ' de ' + MO[Number(p.month) - 1] + ' a las ' + p.hour + ':' + p.minute;
+      }
+      function shortDate(ms) {
+        var p = madridDate(ms);
+        return p.weekday.replace('.', '') + ' ' + p.day + '/' + p.month + ' · ' + p.hour + ':' + p.minute;
+      }
+      function cdParts(ms) {
+        var diff = ms - Date.now();
+        if (diff <= 0) return { txt: 'Expulsión inminente', cls: 'urgent', diff: diff };
+        var s = Math.floor(diff / 1000);
+        var d = Math.floor(s / 86400); s -= d * 86400;
+        var h = Math.floor(s / 3600); s -= h * 3600;
+        var m = Math.floor(s / 60); s -= m * 60;
+        var txt = (d > 0 ? d + 'd ' : '') + pad2(h) + 'h ' + pad2(m) + 'm ' + pad2(s) + 's';
+        var cls = diff < 86400000 ? 'urgent' : (diff < 2 * 86400000 ? 'soon' : 'ok');
+        return { txt: txt, cls: cls, diff: diff };
+      }
+      function agoText(iso) {
+        if (!iso) return 'nunca';
+        var mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+        if (mins < 1) return 'hace unos segundos';
+        if (mins < 60) return 'hace ' + mins + ' min';
+        var h = Math.round(mins / 60);
+        return h < 48 ? 'hace ' + h + ' h' : 'hace ' + Math.round(h / 24) + ' días';
+      }
+      function memberName(m) { return m.first_name || (m.username ? '@' + m.username : 'Usuario ' + m.telegram_id); }
+      function planBadge(m) {
+        if (m.plan === 'trial') return '<span class="badge b-trial">Prueba 48 h</span>';
+        if (m.founder_number != null) return '<span class="badge b-founder">Fundador #' + m.founder_number + ' · ' + eur(FOUNDER_PRICE) + '</span>';
+        return '<span class="badge b-paid">Pagado · ' + eur(VIP_PRICE) + '/mes</span>';
+      }
+      function periodMs(m) {
+        if (m.plan === 'trial') {
+          var g = new Date(m.granted_at).getTime(), l = new Date(m.limit_at).getTime();
+          return (l > g) ? (l - g) : 48 * 3600000;
+        }
+        return 30 * 86400000;
+      }
+      function pendingFor(tid) {
+        var q = (vip.data && vip.data.queue) || [];
+        for (var i = 0; i < q.length; i += 1) if (Number(q[i].telegram_id) === Number(tid)) return q[i];
+        return null;
+      }
+      function findMember(tid) {
+        var ms = (vip.data && vip.data.members) || [];
+        for (var i = 0; i < ms.length; i += 1) if (Number(ms[i].telegram_id) === Number(tid)) return ms[i];
+        return null;
+      }
+
+      function renderVip() {
+        var d = vip.data || { members: [], queue: [], log: [] };
+        var members = (d.members || []).slice().sort(function (a, b) { return new Date(a.limit_at) - new Date(b.limit_at); });
+        var nTrial = members.filter(function (m) { return m.plan === 'trial'; }).length;
+        var nPaid = members.length - nTrial;
+        var nSoon = members.filter(function (m) { return new Date(m.limit_at).getTime() - Date.now() < 48 * 3600000; }).length;
+        var mrr = members.reduce(function (acc, m) { return acc + (m.plan === 'trial' ? 0 : (m.founder_number != null ? FOUNDER_PRICE : VIP_PRICE)); }, 0);
+        document.getElementById('vip-kpis').innerHTML =
+          kpi('En el VIP', members.length, nTrial + ' prueba · ' + nPaid + ' pago') +
+          kpi('Ingreso mensual', eur(mrr), 'Suscripciones activas') +
+          kpi('Prueba 48 h', nTrial, 'Pendientes de convertir') +
+          kpi('Caducan < 48 h', nSoon, 'Revisa renovaciones');
+        document.getElementById('vip-count').textContent = members.length;
+
+        var syncEl = document.getElementById('vip-sync');
+        var stale = !d.synced_at || (Date.now() - new Date(d.synced_at).getTime() > 20 * 60000);
+        syncEl.className = 'vip-sync' + (stale ? ' stale' : '');
+        syncEl.innerHTML = '<span class="live"></span><span>' +
+          (d.synced_at ? 'Datos del bot ' + esc(agoText(d.synced_at)) : 'El bot aún no ha enviado el listado') +
+          (stale && d.synced_at ? ' · el bot podría estar parado' : '') +
+          ((d.queue || []).length ? ' · ' + d.queue.length + ' acción(es) en cola' : '') + '</span>';
+
+        var q = vip.q.trim().toLowerCase();
+        var list = members.filter(function (m) {
+          if (vip.filter === 'trial' && m.plan !== 'trial') return false;
+          if (vip.filter === 'paid' && m.plan === 'trial') return false;
+          if (vip.filter === 'soon' && new Date(m.limit_at).getTime() - Date.now() >= 48 * 3600000) return false;
+          if (!q) return true;
+          return (String(m.first_name || '') + ' ' + String(m.username || '') + ' ' + m.telegram_id).toLowerCase().indexOf(q.replace('@', '')) !== -1;
+        });
+
+        document.getElementById('vip-list').innerHTML = list.length ? list.map(function (m) {
+          var lim = new Date(m.limit_at).getTime();
+          var cd = cdParts(lim);
+          var pct = Math.max(0, Math.min(100, (cd.diff / periodMs(m)) * 100));
+          var pend = pendingFor(m.telegram_id);
+          var alias = m.username ? '@' + esc(m.username) + ' · ' : '';
+          var since = m.granted_at ? 'Dentro desde ' + esc(shortDate(new Date(m.granted_at).getTime())) : '';
+          return '<div class="card vip-card ' + cd.cls + '" data-tid="' + m.telegram_id + '">' +
+            '<div class="vip-head"><div><div class="vip-name">' + esc(memberName(m)) + '</div>' +
+            '<div class="vip-sub mono">' + alias + m.telegram_id + '</div></div>' + planBadge(m) + '</div>' +
+            '<div class="vip-cd ' + cd.cls + '" data-cd="' + lim + '">' + esc(cd.txt) + '</div>' +
+            '<div class="vip-cd-lbl">' + (m.plan === 'trial' ? 'Fin de la prueba' : 'Fin del mes pagado') + ': ' + esc(shortDate(lim)) + '</div>' +
+            '<div class="vip-bar"><div style="width:' + pct.toFixed(1) + '%"></div></div>' +
+            (since ? '<div class="vip-sub" style="margin-top:6px">' + since + (m.source ? ' · origen: ' + esc(m.source) : '') + '</div>' : '') +
+            (pend
+              ? '<div class="vip-pending">⏳ En cola: <b>' + (pend.action === 'kick' ? 'echar del VIP' : '+' + (pend.days === 30 ? '1 mes' : pend.days + ' días')) + '</b> · el bot lo aplica en unos segundos</div>'
+              : '<div class="vip-actions">' +
+                  '<button type="button" class="btn-act extend" data-vip-act="extend" data-tid="' + m.telegram_id + '">+1 mes</button>' +
+                  '<button type="button" class="btn-act kick" data-vip-act="kick" data-tid="' + m.telegram_id + '">Echar</button>' +
+                '</div>') +
+          '</div>';
+        }).join('') : '<div class="card"><p class="empty">' + (members.length ? 'Nadie coincide con el filtro.' : 'No hay nadie dentro del VIP ahora mismo.') + '</p></div>';
+
+        var log = d.log || [];
+        document.getElementById('vip-log').innerHTML =
+          '<div class="card-title"><span>Últimas acciones</span></div>' +
+          (log.length ? '<div class="list">' + log.slice(0, 12).map(function (r) {
+            var ico = !r.ok ? '⚠️' : (r.action === 'kick' ? '⛔' : '➕');
+            var what = r.action === 'kick' ? 'Echar' : ('+' + (r.days === 30 || !r.days ? '1 mes' : r.days + ' días'));
+            return '<div class="row-card log-row"><span class="log-ico">' + ico + '</span><div><b>' + esc(what) + '</b> · ' + esc(r.name || r.telegram_id) +
+              '<div>' + esc(r.message || '') + '</div><div class="log-meta">' + esc(r.applied_at ? shortDate(new Date(r.applied_at).getTime()) : '') + '</div></div></div>';
+          }).join('') + '</div>' : '<p class="empty">Aún no hay acciones desde el panel.</p>');
+      }
+
+      function kpi(label, val, sub) {
+        return '<div class="card"><div class="kpi-label">' + esc(label) + '</div><div class="kpi-val mono">' + esc(val) + '</div><div class="kpi-sub">' + esc(sub) + '</div></div>';
+      }
+
+      function tickCountdowns() {
+        document.querySelectorAll('[data-cd]').forEach(function (el) {
+          var cd = cdParts(Number(el.getAttribute('data-cd')));
+          el.textContent = cd.txt;
+          el.className = 'vip-cd ' + cd.cls;
+        });
+      }
+
+      function loadVip(silent) {
+        if (!silent) document.getElementById('vip-sync').innerHTML = '<span class="live"></span><span>Actualizando...</span>';
+        return fetch('/cpm/api/vip', { credentials: 'same-origin' })
+          .then(function (r) { if (r.status === 401) { location.reload(); return null; } return r.json(); })
+          .then(function (d) {
+            if (!d) return;
+            var hadQueue = vip.data && (vip.data.queue || []).length;
+            vip.data = d;
+            if (!vip.modal) renderVip();
+            if (hadQueue && !(d.queue || []).length && (d.log || [])[0]) toast((d.log[0].ok ? '✅ ' : '⚠️ ') + d.log[0].message);
+            scheduleVipPoll();
+          })
+          .catch(function () { document.getElementById('vip-sync').innerHTML = '<span class="live"></span><span>Error de red</span>'; });
+      }
+
+      function vipTabActive() { return document.getElementById('view-vip').classList.contains('active'); }
+      function scheduleVipPoll() {
+        clearTimeout(vip.poll);
+        if (!vipTabActive()) return;
+        var fast = vip.data && (vip.data.queue || []).length;
+        vip.poll = setTimeout(function () { loadVip(true); }, fast ? 5000 : 45000);
+      }
+
+      function toast(msg) {
+        var t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(function () { t.classList.remove('show'); }, 5000);
+      }
+
+      function extendPreview(m, paid) {
+        var lim = new Date(m.limit_at).getTime();
+        var base = Math.max(Date.now(), lim);
+        var until = base + 30 * 86400000;
+        var founderLine;
+        if (m.founder_number != null) founderLine = '💎 Plan: <b>Fundador #' + m.founder_number + '/' + FOUNDERS_LIMIT + '</b> · ' + eur(FOUNDER_PRICE) + '/mes de por vida';
+        else founderLine = '💎 Plan: <b>VIP mensual</b> · ' + eur(VIP_PRICE) + '/mes' + (paid ? '<br><span style="opacity:.7">(si quedan plazas Fundador, se le asigna una al registrar el cobro)</span>' : '');
+        return {
+          until: until,
+          html: '✅ <b>Acceso VIP renovado</b><br><br>' + (m.first_name ? 'Hola ' + esc(m.first_name) + ', ' : '') +
+            'tu suscripción a la <b>Comunidad VIP</b> se ha ampliado <b>1 mes</b>.<br><br>' +
+            '📅 <b>Tienes acceso hasta el ' + esc(longDate(until)) + '</b> (hora de Madrid).<br>' + founderLine + '<br>' +
+            '🔔 Te avisaremos 48 h antes de la fecha para que no pierdas ninguna alerta.<br><br>' +
+            '<i>Pago mensual. Te das de baja cuando quieras. +18</i>'
+        };
+      }
+      function kickPreview(m) {
+        var price = m.founder_number != null ? FOUNDER_PRICE : VIP_PRICE;
+        return '🔒 <b>Tu acceso a la Comunidad VIP ha finalizado</b><br><br>' +
+          'Sigues teniendo la <b>Comunidad Free</b> con alertas seleccionadas y la calculadora.<br><br>' +
+          '💎 Si quieres volver al VIP: <b>' + eur(price) + '/mes</b>' + (m.founder_number != null ? ' (tu tarifa Fundador #' + m.founder_number + ' sigue reservada)' : '') +
+          '. Pulsa abajo y te mandamos un enlace nuevo.<br><br><i>Pago mensual. Te das de baja cuando quieras. +18</i>' +
+          '<div class="tg-btn">💎 Volver al VIP (1 mes)</div><div class="tg-btn">🎯 Ir a la Comunidad Free</div>';
+      }
+
+      function openVipModal(kind, tid) {
+        var m = findMember(tid);
+        if (!m) return;
+        vip.modal = { kind: kind, tid: tid };
+        var lim = new Date(m.limit_at).getTime();
+        document.getElementById('vm-err').textContent = '';
+        var ok = document.getElementById('vm-ok');
+        ok.disabled = false;
+        if (kind === 'extend') {
+          document.getElementById('vm-title').textContent = 'Ampliar 1 mes a ' + memberName(m);
+          document.getElementById('vm-sub').textContent = (m.plan === 'trial' ? 'Pasa de prueba 48 h a mensualidad. ' : '') + 'El mes se suma a la fecha de fin actual, no se pierde tiempo.';
+          ok.className = 'btn-act extend';
+          ok.textContent = 'Confirmar +1 mes';
+        } else {
+          document.getElementById('vm-title').textContent = 'Echar a ' + memberName(m) + ' del VIP';
+          document.getElementById('vm-sub').textContent = 'Sale ahora del grupo VIP. Podrá volver si renueva (no queda bloqueado).';
+          ok.className = 'btn-act kick';
+          ok.textContent = 'Echar ahora';
+        }
+        renderModalBody(m, lim);
+        document.getElementById('vip-modal').classList.add('open');
+      }
+
+      function renderModalBody(m, lim) {
+        var kind = vip.modal.kind;
+        var paidEl = document.getElementById('vm-paid');
+        var notifEl = document.getElementById('vm-notify');
+        var paid = paidEl ? paidEl.checked : true;
+        var notify = notifEl ? notifEl.checked : true;
+        var html = '';
+        if (kind === 'extend') {
+          var pv = extendPreview(m, paid);
+          html += '<div class="m-dates"><div class="m-date"><div class="k">Ahora acaba</div><div class="v">' + esc(shortDate(lim)) + '</div></div><div>→</div>' +
+            '<div class="m-date new"><div class="k">Nueva fecha</div><div class="v">' + esc(shortDate(pv.until)) + '</div></div></div>' +
+            '<label class="m-check"><input type="checkbox" id="vm-paid"' + (paid ? ' checked' : '') + '><span>Registrar como cobro<small>Cuenta para ingresos y Analytics. Desmárcalo si es un mes de cortesía.</small></span></label>';
+          html += '<label class="m-check"><input type="checkbox" id="vm-notify"' + (notify ? ' checked' : '') + '><span>Avisar al usuario por Telegram<small>Le llega este mensaje del bot:</small></span></label>';
+          if (notify) html += '<div class="tg-preview">' + pv.html + '</div>';
+        } else {
+          html += '<div class="m-dates"><div class="m-date"><div class="k">Le quedaba</div><div class="v">' + esc(cdParts(lim).txt) + '</div></div><div>→</div>' +
+            '<div class="m-date"><div class="k">Sale</div><div class="v" style="color:var(--danger)">Ahora</div></div></div>';
+          html += '<label class="m-check"><input type="checkbox" id="vm-notify"' + (notify ? ' checked' : '') + '><span>Avisar al usuario por Telegram<small>Le llega este mensaje del bot:</small></span></label>';
+          if (notify) html += '<div class="tg-preview">' + kickPreview(m) + '</div>';
+        }
+        document.getElementById('vm-body').innerHTML = html;
+      }
+
+      function closeVipModal() {
+        vip.modal = null;
+        document.getElementById('vip-modal').classList.remove('open');
+        renderVip();
+      }
+
+      function submitVipModal() {
+        if (!vip.modal || vip.busy) return;
+        var paidEl = document.getElementById('vm-paid');
+        var notifEl = document.getElementById('vm-notify');
+        var body = { action: vip.modal.kind, telegram_id: vip.modal.tid, notify: notifEl ? notifEl.checked : true };
+        if (vip.modal.kind === 'extend') { body.days = 30; body.paid = paidEl ? paidEl.checked : true; }
+        var ok = document.getElementById('vm-ok');
+        ok.disabled = true;
+        vip.busy = true;
+        fetch('/cpm/api/vip/action', {
+          method: 'POST', credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+        }).then(function (r) { return r.json().then(function (j) { return { status: r.status, j: j }; }); })
+          .then(function (res) {
+            vip.busy = false;
+            if (res.status === 401) { location.reload(); return; }
+            if (!res.j.ok) {
+              var map = { not_in_vip: 'Este usuario ya no figura en el VIP.', already_pending: 'Ya hay una acción en cola para este usuario.', queue_full: 'Cola llena, espera unos segundos.' };
+              document.getElementById('vm-err').textContent = map[res.j.error] || ('No se pudo encolar (' + (res.j.error || res.status) + ').');
+              ok.disabled = false;
+              return;
+            }
+            vip.data.queue = (vip.data.queue || []).concat([res.j.queued]);
+            closeVipModal();
+            toast('⏳ Enviado al bot. Se aplica en unos segundos.');
+            scheduleVipPoll();
+          })
+          .catch(function () { vip.busy = false; ok.disabled = false; document.getElementById('vm-err').textContent = 'Error de red. Inténtalo de nuevo.'; });
+      }
+
+      document.getElementById('vip-list').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-vip-act]');
+        if (!b) return;
+        openVipModal(b.getAttribute('data-vip-act'), Number(b.getAttribute('data-tid')));
+      });
+      document.getElementById('vm-body').addEventListener('change', function () {
+        if (!vip.modal) return;
+        var m = findMember(vip.modal.tid);
+        if (m) renderModalBody(m, new Date(m.limit_at).getTime());
+      });
+      document.getElementById('vm-cancel').addEventListener('click', closeVipModal);
+      document.getElementById('vm-ok').addEventListener('click', submitVipModal);
+      document.getElementById('vip-modal').addEventListener('click', function (e) { if (e.target.id === 'vip-modal') closeVipModal(); });
+      if (typeof document.addEventListener === 'function') {
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && vip.modal) closeVipModal(); });
+      }
+      document.getElementById('vip-flt').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-vf]');
+        if (!b) return;
+        vip.filter = b.getAttribute('data-vf');
+        document.querySelectorAll('#vip-flt .chip').forEach(function (c) { c.classList.toggle('on', c === b); });
+        renderVip();
+      });
+      document.getElementById('vip-q').addEventListener('input', function (e) { vip.q = e.target.value || ''; renderVip(); });
+      vip.tick = setInterval(tickCountdowns, 1000);
+
       document.querySelectorAll('.tab').forEach(function (btn) {
         btn.addEventListener('click', function () {
           var t = btn.getAttribute('data-tab');
           document.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('active', b === btn); });
           document.querySelectorAll('.view').forEach(function (v) { v.classList.toggle('active', v.id === 'view-' + t); });
+          if (t === 'vip') loadVip(); else clearTimeout(vip.poll);
+          try { history.replaceState(null, '', t === 'hoy' ? '/cpm' : '/cpm#' + t); } catch (err) {}
         });
       });
 
@@ -1174,13 +1574,14 @@ export function renderPanelHtml() {
         if (state.data) renderAgenda(state.data);
       });
 
-      document.getElementById('btn-refresh').addEventListener('click', loadData);
+      document.getElementById('btn-refresh').addEventListener('click', function () { loadData(); if (vipTabActive()) loadVip(); });
       document.getElementById('btn-refresh-2').addEventListener('click', loadData);
       document.getElementById('btn-logout').addEventListener('click', function () {
         fetch('/cpm/logout', { method: 'POST', credentials: 'same-origin' }).then(function () { location.reload(); });
       });
 
       loadData();
+      if (location.hash === '#vip') { var vt = document.querySelector('.tab[data-tab="vip"]'); if (vt) vt.click(); }
     })();
   </script>
 </body>

@@ -33,6 +33,14 @@ const GO_KEY_PREFIX = 'go_';
 const REF_KEY_PREFIX = 'ref_v1:';
 const REF_PATH_RE = /^\/a\/([A-Za-z0-9_-]{1,64})\/?$/;
 
+// Pestaña VIP del CRM: el panel encola acciones, el bot del Mac las aplica y devuelve el listado.
+const VIP_ROSTER_KEY = 'vip_roster_v1';
+const VIP_QUEUE_KEY = 'vip_queue_v1';
+const VIP_LOG_KEY = 'vip_log_v1';
+const VIP_LOG_MAX = 40;
+const VIP_QUEUE_MAX = 50;
+const VIP_ACTIONS = new Set(['kick', 'extend']);
+
 const memoryRateLimit = new Map();
 const encoder = new TextEncoder();
 
@@ -404,6 +412,94 @@ async function trackClick(env, eventName) {
   await env.PINCIANO_CPM.put(VISITS_KEY, JSON.stringify(visits));
 }
 
+async function kvJson(env, key, fallback) {
+  if (!env.PINCIANO_CPM) return fallback;
+  const v = await env.PINCIANO_CPM.get(key, { type: 'json' }).catch(() => null);
+  return v == null ? fallback : v;
+}
+
+function sameOriginWrite(request, url) {
+  const origin = request.headers.get('Origin');
+  if (origin && origin !== url.origin) return false;
+  const ct = (request.headers.get('Content-Type') || '').toLowerCase();
+  return ct.includes('application/json');
+}
+
+function newActionId() {
+  const b = new Uint8Array(9);
+  crypto.getRandomValues(b);
+  return `a_${Date.now().toString(36)}_${bytesToBase64Url(b)}`;
+}
+
+async function enqueueVipAction(env, body) {
+  const action = String(body.action || '');
+  const tid = Number(body.telegram_id);
+  if (!VIP_ACTIONS.has(action) || !Number.isSafeInteger(tid) || tid <= 0) {
+    return { status: 400, data: { ok: false, error: 'invalid_action' } };
+  }
+  const roster = await kvJson(env, VIP_ROSTER_KEY, { members: [] });
+  const member = (roster.members || []).find((m) => Number(m.telegram_id) === tid);
+  if (!member) {
+    return { status: 404, data: { ok: false, error: 'not_in_vip' } };
+  }
+  const queue = await kvJson(env, VIP_QUEUE_KEY, []);
+  if (queue.some((q) => Number(q.telegram_id) === tid)) {
+    return { status: 409, data: { ok: false, error: 'already_pending' } };
+  }
+  if (queue.length >= VIP_QUEUE_MAX) {
+    return { status: 429, data: { ok: false, error: 'queue_full' } };
+  }
+  let days = Math.round(Number(body.days || 30));
+  if (!Number.isFinite(days)) days = 30;
+  days = Math.max(1, Math.min(62, days));
+  const item = {
+    id: newActionId(),
+    action,
+    telegram_id: tid,
+    name: String(member.first_name || member.username || tid).slice(0, 64),
+    days: action === 'extend' ? days : undefined,
+    paid: action === 'extend' ? body.paid !== false : undefined,
+    notify: body.notify !== false,
+    requested_at: new Date().toISOString(),
+  };
+  queue.push(item);
+  await env.PINCIANO_CPM.put(VIP_QUEUE_KEY, JSON.stringify(queue));
+  return { status: 200, data: { ok: true, queued: item } };
+}
+
+async function applyVipSync(env, payload) {
+  const members = Array.isArray(payload.members) ? payload.members.slice(0, 2000) : [];
+  const results = Array.isArray(payload.results) ? payload.results.slice(0, VIP_QUEUE_MAX) : [];
+  const syncedAt = new Date().toISOString();
+  await env.PINCIANO_CPM.put(
+    VIP_ROSTER_KEY,
+    JSON.stringify({ members, generated_at: payload.generated_at || syncedAt, synced_at: syncedAt }),
+  );
+  if (results.length) {
+    const doneIds = new Set(results.map((r) => String(r.id || '')));
+    const queue = await kvJson(env, VIP_QUEUE_KEY, []);
+    const done = queue.filter((q) => doneIds.has(q.id));
+    await env.PINCIANO_CPM.put(VIP_QUEUE_KEY, JSON.stringify(queue.filter((q) => !doneIds.has(q.id))));
+    const log = await kvJson(env, VIP_LOG_KEY, []);
+    for (const r of results) {
+      const q = done.find((x) => x.id === String(r.id || '')) || {};
+      log.unshift({
+        id: String(r.id || ''),
+        action: String(r.action || q.action || ''),
+        telegram_id: Number(r.telegram_id || q.telegram_id || 0),
+        name: q.name || '',
+        days: q.days,
+        ok: Boolean(r.ok),
+        message: String(r.message || '').slice(0, 300),
+        requested_at: q.requested_at || null,
+        applied_at: syncedAt,
+      });
+    }
+    await env.PINCIANO_CPM.put(VIP_LOG_KEY, JSON.stringify(log.slice(0, VIP_LOG_MAX)));
+  }
+  return { ok: true, members: members.length, results: results.length, synced_at: syncedAt };
+}
+
 async function parseLoginBody(request) {
   const ct = (request.headers.get('Content-Type') || '').toLowerCase();
   if (ct.includes('application/json')) {
@@ -516,6 +612,27 @@ export default {
         return jsonResponse({ ...summarizeVisits(rawVisits), ref_clicks: await readRefClicks(env) }, 200);
       }
 
+      if (path === '/cpm/api/vip/queue' && method === 'GET') {
+        if (!isBearerAuthorized(request, env)) {
+          return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
+        }
+        return jsonResponse({ ok: true, actions: await kvJson(env, VIP_QUEUE_KEY, []) }, 200);
+      }
+
+      if (path === '/cpm/api/vip/sync' && method === 'POST') {
+        if (!isBearerAuthorized(request, env)) {
+          return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
+        }
+        if (!env.PINCIANO_CPM) {
+          return jsonResponse({ ok: false, error: 'kv_not_bound' }, 503);
+        }
+        const payload = await request.json().catch(() => null);
+        if (!payload || typeof payload !== 'object') {
+          return jsonResponse({ ok: false, error: 'invalid_json' }, 400);
+        }
+        return jsonResponse(await applyVipSync(env, payload), 200);
+      }
+
       // Sesiones de usuario para /cpm y /cpm/api/data
       const sessionCookie = getCookie(request, COOKIE_NAME);
       const authed = await verifySessionToken(sessionCookie, env.CPM_SESSION_SECRET);
@@ -539,6 +656,36 @@ export default {
           alerts: ['Esperando la primera sincronización desde sync_cpm.py.'],
         };
         return jsonResponse({ ...base, visits }, 200);
+      }
+
+      if (path === '/cpm/api/vip' && method === 'GET') {
+        if (!authed) {
+          return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
+        }
+        const [roster, queue, log] = await Promise.all([
+          kvJson(env, VIP_ROSTER_KEY, { members: [], generated_at: null, synced_at: null }),
+          kvJson(env, VIP_QUEUE_KEY, []),
+          kvJson(env, VIP_LOG_KEY, []),
+        ]);
+        return jsonResponse({ ok: true, ...roster, queue, log, server_time: new Date().toISOString() }, 200);
+      }
+
+      if (path === '/cpm/api/vip/action' && method === 'POST') {
+        if (!authed) {
+          return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
+        }
+        if (!sameOriginWrite(request, url)) {
+          return jsonResponse({ ok: false, error: 'forbidden' }, 403);
+        }
+        if (!env.PINCIANO_CPM) {
+          return jsonResponse({ ok: false, error: 'kv_not_bound' }, 503);
+        }
+        const body = await request.json().catch(() => null);
+        if (!body || typeof body !== 'object') {
+          return jsonResponse({ ok: false, error: 'invalid_json' }, 400);
+        }
+        const out = await enqueueVipAction(env, body);
+        return jsonResponse(out.data, out.status);
       }
 
       if ((path === '/cpm' || path === '/cpm/') && method === 'GET') {
