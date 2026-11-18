@@ -14,6 +14,13 @@ const ALLOWED_CLICK_EVENTS = new Set([
   'calc_use',
 ]);
 
+// Rutas de atribución pinciano.es/a/<código> -> 302 al deep link del bot.
+// Códigos y bot confirmados por Surebet-Telegram (solo [A-Za-z0-9_-], <=64).
+const REF_BOT_USERNAME = 'surebets_pinciano_bot';
+const REF_CODES = ['yt_f1', 'yt_f2', 'yt_f3', 'yt_f4', 'yt_f5'];
+const REF_KEY_PREFIX = 'ref_v1:';
+const REF_PATH_RE = /^\/a\/([A-Za-z0-9_-]{1,64})\/?$/;
+
 const memoryRateLimit = new Map();
 const encoder = new TextEncoder();
 
@@ -326,6 +333,43 @@ async function trackVisit(env, url, userAgent) {
   await env.PINCIANO_CPM.put(VISITS_KEY, JSON.stringify(visits));
 }
 
+function refDestination(code) {
+  return `https://t.me/${REF_BOT_USERNAME}?start=${code}`;
+}
+
+// Contador por ruta y día (Europe/Madrid): clave ref_v1:<código>:<YYYY-MM-DD> = entero.
+// Una clave por ruta/día reduce la contención frente a un único JSON global.
+async function trackRefClick(env, code) {
+  if (!env.PINCIANO_CPM) return;
+  const key = `${REF_KEY_PREFIX}${code}:${madridDay()}`;
+  const cur = Number(await env.PINCIANO_CPM.get(key).catch(() => 0)) || 0;
+  await env.PINCIANO_CPM.put(key, String(cur + 1));
+}
+
+async function readRefClicks(env) {
+  const out = { codes: REF_CODES.slice(), total: {}, by_day: {}, today: {}, updated_at: null };
+  for (const c of REF_CODES) out.total[c] = 0;
+  if (!env.PINCIANO_CPM || typeof env.PINCIANO_CPM.list !== 'function') return out;
+  const today = madridDay();
+  let cursor;
+  do {
+    const page = await env.PINCIANO_CPM.list({ prefix: REF_KEY_PREFIX, cursor }).catch(() => null);
+    if (!page) break;
+    for (const k of page.keys || []) {
+      const [code, day] = k.name.slice(REF_KEY_PREFIX.length).split(':');
+      if (!code || !day) continue;
+      const n = Number(await env.PINCIANO_CPM.get(k.name).catch(() => 0)) || 0;
+      out.total[code] = (out.total[code] || 0) + n;
+      out.by_day[day] = out.by_day[day] || {};
+      out.by_day[day][code] = n;
+      if (day === today) out.today[code] = n;
+    }
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  out.updated_at = new Date().toISOString();
+  return out;
+}
+
 async function trackClick(env, eventName) {
   if (!env.PINCIANO_CPM || !ALLOWED_CLICK_EVENTS.has(eventName)) return;
   const visits = (await env.PINCIANO_CPM.get(VISITS_KEY, { type: 'json' }).catch(() => null)) || emptyVisits();
@@ -444,7 +488,7 @@ export default {
         const rawVisits = env.PINCIANO_CPM
           ? await env.PINCIANO_CPM.get(VISITS_KEY, { type: 'json' }).catch(() => null)
           : null;
-        return jsonResponse(summarizeVisits(rawVisits), 200);
+        return jsonResponse({ ...summarizeVisits(rawVisits), ref_clicks: await readRefClicks(env) }, 200);
       }
 
       // Sesiones de usuario para /cpm y /cpm/api/data
@@ -480,6 +524,30 @@ export default {
       }
 
       return jsonResponse({ ok: false, error: 'not_found' }, 404);
+    }
+
+    // 2b) Rutas de atribución /a/<código>: 302 al deep link del bot + contador por ruta y día
+    const refMatch = (method === 'GET' || method === 'HEAD') ? REF_PATH_RE.exec(path) : null;
+    if (refMatch && REF_CODES.includes(refMatch[1].toLowerCase())) {
+      const code = refMatch[1].toLowerCase();
+      const ua = request.headers.get('User-Agent') || '';
+      // Solo se cuentan GET de navegadores reales; HEAD y bots redirigen sin contar.
+      if (method === 'GET' && ua && !BOT_UA_RE.test(ua)) {
+        if (ctx && typeof ctx.waitUntil === 'function') {
+          ctx.waitUntil(trackRefClick(env, code));
+        } else {
+          await trackRefClick(env, code);
+        }
+      }
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: refDestination(code),
+          'Cache-Control': 'no-store',
+          'X-Robots-Tag': 'noindex, nofollow',
+          'Referrer-Policy': 'no-referrer',
+        },
+      });
     }
 
     // 3) Tráfico público: tracking ligero en / y /calculadora + passthrough a ASSETS

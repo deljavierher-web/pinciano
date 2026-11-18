@@ -9,6 +9,7 @@
       "/cpm",
       "/cpm/*",
       "/",
+      "/a/*",
       "/calculadora",
       "/calculadora.html"
     ]
