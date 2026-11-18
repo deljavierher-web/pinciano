@@ -425,6 +425,18 @@ export function renderPanelHtml() {
     .tg-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
     .m-actions { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
     .m-err { color: var(--danger); font-size: 0.8rem; min-height: 1em; margin-bottom: 8px; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .seg button { min-height: 40px; border-radius: 9px; font-weight: 700; font-size: 0.86rem; color: var(--muted); }
+    .seg button.on { background: var(--accent-soft); color: var(--accent); }
+    .ul-filters { display: grid; gap: 6px; margin-top: 10px; font-size: 0.8rem; }
+    .ul-filters .k { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
+    .tag { font-size: 0.72rem; padding: 2px 7px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface-2); }
+    .roi-big { font-family: var(--font-mono); font-weight: 700; color: var(--accent); }
+    .b-block { color: var(--danger); background: var(--danger-soft); border-color: rgba(255,92,108,0.35); }
+    .b-pause { color: var(--muted); }
+    .b-pendpay { color: var(--warn); background: var(--warn-soft); border-color: rgba(255,181,71,0.3); }
+    .vip-actions.one { grid-template-columns: 1fr; }
     .toast { position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 70; background: #0F1A16; border: 1px solid var(--border-accent); color: var(--accent); padding: 10px 14px; border-radius: 10px; font-size: 0.84rem; font-weight: 600; display: none; max-width: 92vw; }
     .toast.show { display: block; }
   </style>
@@ -501,7 +513,25 @@ export function renderPanelHtml() {
       </div>
     </section>
     <!-- 5. VIP -->
-    <section class="view" id="view-vip" aria-label="Usuarios dentro del VIP">
+    <section class="view" id="view-vip" aria-label="Clientes VIP y Ultra">
+      <div class="seg" id="vip-seg">
+        <button type="button" class="on" data-seg="vip">💎 Comunidad VIP</button>
+        <button type="button" data-seg="ultra">👑 Bot Ultra</button>
+      </div>
+      <div id="pane-ultra" style="display:none;gap:12px">
+        <div class="kpi-grid" id="ul-kpis"></div>
+        <div class="card">
+          <div class="card-title"><span>Clientes Bot Ultra</span><span class="badge mono" id="ul-count">0</span></div>
+          <div class="chips" id="ul-flt" style="margin-bottom:0">
+            <button type="button" class="chip on" data-uf="all">Todos</button>
+            <button type="button" class="chip" data-uf="active">Activos</button>
+            <button type="button" class="chip" data-uf="pending">Pendientes de pago</button>
+            <button type="button" class="chip" data-uf="blocked">Bloqueados / pausa</button>
+          </div>
+        </div>
+        <div class="list" id="ul-list"></div>
+      </div>
+      <div id="pane-vip" style="display:grid;gap:12px">
       <div class="kpi-grid" id="vip-kpis"></div>
       <div class="card">
         <div class="card-title"><span>Usuarios en el VIP</span><span class="badge mono" id="vip-count">0</span></div>
@@ -515,6 +545,7 @@ export function renderPanelHtml() {
         <input type="search" class="vip-search" id="vip-q" placeholder="Buscar por nombre, @alias o ID" autocomplete="off" />
       </div>
       <div class="list" id="vip-list"></div>
+      </div>
       <div class="card" id="vip-log"></div>
     </section>
   </main>
@@ -538,7 +569,7 @@ export function renderPanelHtml() {
     <button type="button" class="tab" data-tab="agenda"><span>Calendario</span></button>
     <button type="button" class="tab" data-tab="ranking"><span>Ranking</span></button>
     <button type="button" class="tab" data-tab="embudo"><span>Embudo</span></button>
-    <button type="button" class="tab" data-tab="vip"><span>VIP</span></button>
+    <button type="button" class="tab" data-tab="vip"><span>Clientes</span></button>
   </nav>
 
   <script>
@@ -1243,7 +1274,7 @@ export function renderPanelHtml() {
 
 
       // ── Pestaña VIP ──────────────────────────────────────────────────────────
-      var vip = { data: null, filter: 'all', q: '', modal: null, poll: null, tick: null, busy: false };
+      var vip = { data: null, filter: 'all', q: '', modal: null, poll: null, tick: null, busy: false, seg: 'vip', uf: 'all' };
       var VIP_PRICE = 25, FOUNDER_PRICE = 12.5, FOUNDERS_LIMIT = 25;
       var WD = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
       var MO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -1296,10 +1327,76 @@ export function renderPanelHtml() {
         }
         return 30 * 86400000;
       }
-      function pendingFor(tid) {
+      function isUltraAct(a) { return String(a || '').indexOf('ultra_') === 0; }
+      function pendingFor(tid, ultra) {
         var q = (vip.data && vip.data.queue) || [];
-        for (var i = 0; i < q.length; i += 1) if (Number(q[i].telegram_id) === Number(tid)) return q[i];
+        for (var i = 0; i < q.length; i += 1) {
+          if (Number(q[i].telegram_id) === Number(tid) && isUltraAct(q[i].action) === Boolean(ultra)) return q[i];
+        }
         return null;
+      }
+      function findUltra(tid) {
+        var ms = (vip.data && vip.data.ultra) || [];
+        for (var i = 0; i < ms.length; i += 1) if (Number(ms[i].telegram_id) === Number(tid)) return ms[i];
+        return null;
+      }
+      function ultraBadge(u) {
+        if (u.status === 'active') return '<span class="badge b-paid">✅ Activo</span>';
+        if (u.status === 'blocked') return '<span class="badge b-block">⛔ Bloqueado</span>';
+        if (u.status === 'paused') return '<span class="badge b-pause">⏸ En pausa</span>';
+        return '<span class="badge b-pendpay">' + (u.awaiting_proof ? '📎 Esperando justificante' : '⏳ Pendiente de pago') + '</span>';
+      }
+      function tags(list, emptyTxt) {
+        if (!list || !list.length) return '<div class="tags"><span class="tag">' + esc(emptyTxt) + '</span></div>';
+        return '<div class="tags">' + list.map(function (x) { return '<span class="tag">' + esc(x) + '</span>'; }).join('') + '</div>';
+      }
+      function renderUltra() {
+        var d = vip.data || {};
+        var all = (d.ultra || []).slice();
+        var order = { active: 0, pending: 1, paused: 2, blocked: 3 };
+        function rank(x) { return x.status in order ? order[x.status] : 9; }
+        all.sort(function (a, b) { return rank(a) - rank(b) || String(b.updated_at || '').localeCompare(String(a.updated_at || '')); });
+        var nAct = all.filter(function (u) { return u.status === 'active'; }).length;
+        var nPend = all.filter(function (u) { return u.status === 'pending'; }).length;
+        var nProof = all.filter(function (u) { return u.awaiting_proof; }).length;
+        var nBlock = all.filter(function (u) { return u.status === 'blocked' || u.status === 'paused'; }).length;
+        document.getElementById('ul-kpis').innerHTML =
+          kpi('Ultra activos', nAct, 'Reciben alertas por privado') +
+          kpi('Pendientes de pago', nPend, nProof + ' con pago en curso') +
+          kpi('Bloqueados / pausa', nBlock, 'Sin alertas') +
+          kpi('Precio', '30 €', 'Pago único');
+        document.getElementById('ul-count').textContent = all.length;
+        var list = all.filter(function (u) {
+          if (vip.uf === 'all') return true;
+          if (vip.uf === 'blocked') return u.status === 'blocked' || u.status === 'paused';
+          return u.status === vip.uf;
+        });
+        document.getElementById('ul-list').innerHTML = list.length ? list.map(function (u) {
+          var pend = pendingFor(u.telegram_id, true);
+          var alias = u.username ? '@' + esc(u.username) + ' · ' : '';
+          var since = u.activated_at ? 'Activo desde ' + esc(shortDate(new Date(u.activated_at).getTime())) : (u.created_at ? 'Solicitado ' + esc(shortDate(new Date(u.created_at).getTime())) : '');
+          var btn = '';
+          if (pend) {
+            btn = '<div class="vip-pending">⏳ En cola: <b>' + (pend.action === 'ultra_block' ? 'bloquear' : 'desbloquear') + '</b> · el bot lo aplica en unos segundos</div>';
+          } else if (u.status === 'active') {
+            btn = '<div class="vip-actions one"><button type="button" class="btn-act kick" data-vip-act="ultra_block" data-tid="' + u.telegram_id + '">⛔ Bloquear Ultra</button></div>';
+          } else if (u.status === 'blocked' || u.status === 'paused') {
+            btn = '<div class="vip-actions one"><button type="button" class="btn-act extend" data-vip-act="ultra_unblock" data-tid="' + u.telegram_id + '">✅ Desbloquear y reactivar</button></div>';
+          } else {
+            btn = '<div class="vip-sub" style="margin-top:10px">Se activa desde el grupo Admin al validar su justificante.</div>';
+          }
+          return '<div class="card vip-card">' +
+            '<div class="vip-head"><div><div class="vip-name">' + esc(memberName(u)) + '</div>' +
+            '<div class="vip-sub mono">' + alias + u.telegram_id + '</div></div>' + ultraBadge(u) + '</div>' +
+            '<div class="ul-filters">' +
+              '<div><span class="k">ROI mínimo</span> <span class="roi-big">≥ ' + esc(Number(u.min_roi || 0).toFixed(0)) + ' %</span></div>' +
+              '<div><span class="k">Casas</span>' + tags(u.houses, 'Todas') + '</div>' +
+              '<div><span class="k">Deportes</span>' + tags(u.sports, 'Todos') + '</div>' +
+              (u.notes ? '<div><span class="k">Comentario</span><div>' + esc(u.notes) + '</div></div>' : '') +
+            '</div>' +
+            (since ? '<div class="vip-sub" style="margin-top:8px">' + since + '</div>' : '') +
+            btn + '</div>';
+        }).join('') : '<div class="card"><p class="empty">' + (all.length ? 'Nadie coincide con el filtro.' : 'Todavía no hay clientes Ultra.') + '</p></div>';
       }
       function findMember(tid) {
         var ms = (vip.data && vip.data.members) || [];
@@ -1342,7 +1439,7 @@ export function renderPanelHtml() {
           var lim = new Date(m.limit_at).getTime();
           var cd = cdParts(lim);
           var pct = Math.max(0, Math.min(100, (cd.diff / periodMs(m)) * 100));
-          var pend = pendingFor(m.telegram_id);
+          var pend = pendingFor(m.telegram_id, false);
           var alias = m.username ? '@' + esc(m.username) + ' · ' : '';
           var since = m.granted_at ? 'Dentro desde ' + esc(shortDate(new Date(m.granted_at).getTime())) : '';
           return '<div class="card vip-card ' + cd.cls + '" data-tid="' + m.telegram_id + '">' +
@@ -1361,12 +1458,13 @@ export function renderPanelHtml() {
           '</div>';
         }).join('') : '<div class="card"><p class="empty">' + (members.length ? 'Nadie coincide con el filtro.' : 'No hay nadie dentro del VIP ahora mismo.') + '</p></div>';
 
+        renderUltra();
         var log = d.log || [];
         document.getElementById('vip-log').innerHTML =
           '<div class="card-title"><span>Últimas acciones</span></div>' +
           (log.length ? '<div class="list">' + log.slice(0, 12).map(function (r) {
-            var ico = !r.ok ? '⚠️' : (r.action === 'kick' ? '⛔' : '➕');
-            var what = r.action === 'kick' ? 'Echar' : ('+' + (r.days === 30 || !r.days ? '1 mes' : r.days + ' días'));
+            var ico = !r.ok ? '⚠️' : (r.action === 'kick' || r.action === 'ultra_block' ? '⛔' : (r.action === 'ultra_unblock' ? '✅' : '➕'));
+            var what = r.action === 'kick' ? 'Echar del VIP' : r.action === 'ultra_block' ? 'Bloquear Ultra' : r.action === 'ultra_unblock' ? 'Desbloquear Ultra' : ('+' + (r.days === 30 || !r.days ? '1 mes' : r.days + ' días') + ' VIP');
             return '<div class="row-card log-row"><span class="log-ico">' + ico + '</span><div><b>' + esc(what) + '</b> · ' + esc(r.name || r.telegram_id) +
               '<div>' + esc(r.message || '') + '</div><div class="log-meta">' + esc(r.applied_at ? shortDate(new Date(r.applied_at).getTime()) : '') + '</div></div></div>';
           }).join('') + '</div>' : '<p class="empty">Aún no hay acciones desde el panel.</p>');
@@ -1440,7 +1538,37 @@ export function renderPanelHtml() {
           '<div class="tg-btn">💎 Volver al VIP (1 mes)</div><div class="tg-btn">🎯 Ir a la Comunidad Free</div>';
       }
 
+      function ultraPreview(u, blocked) {
+        if (blocked) {
+          return '⛔ <b>Tu Premium Ultra ha sido bloqueado.</b><br><br>Desde este momento dejas de recibir tus alertas personalizadas por privado.<br>' +
+            'Si crees que es un error o quieres aclararlo, habla con el jefe.<div class="tg-btn">💬 Hablar con el jefe</div>';
+        }
+        return '✅ <b>Tu Premium Ultra vuelve a estar activo.</b><br><br>' +
+          '• <b>Casas:</b> ' + esc((u.houses || []).join(', ') || 'Todas') + '<br>' +
+          '• <b>ROI mínimo:</b> ' + esc(Number(u.min_roi || 0).toFixed(0)) + ' %<br>' +
+          '• <b>Deportes:</b> ' + esc((u.sports || []).join(', ') || 'Todos') + '<br><br>' +
+          'Desde ya vuelves a recibir aquí, al instante, las surebets que cumplen tus filtros.';
+      }
+
       function openVipModal(kind, tid) {
+        if (isUltraAct(kind)) {
+          var u = findUltra(tid);
+          if (!u) return;
+          vip.modal = { kind: kind, tid: tid };
+          var blocked = kind === 'ultra_block';
+          document.getElementById('vm-err').textContent = '';
+          document.getElementById('vm-title').textContent = (blocked ? 'Bloquear el Ultra de ' : 'Reactivar el Ultra de ') + memberName(u);
+          document.getElementById('vm-sub').textContent = blocked
+            ? 'Deja de recibir alertas personalizadas al momento y no podrá reactivarlo por su cuenta con /ultra.'
+            : 'Vuelve a recibir alertas con sus mismos filtros. No se le cobra de nuevo.';
+          var okb = document.getElementById('vm-ok');
+          okb.disabled = false;
+          okb.className = 'btn-act ' + (blocked ? 'kick' : 'extend');
+          okb.textContent = blocked ? 'Bloquear ahora' : 'Reactivar Ultra';
+          renderModalBody(u, 0);
+          document.getElementById('vip-modal').classList.add('open');
+          return;
+        }
         var m = findMember(tid);
         if (!m) return;
         vip.modal = { kind: kind, tid: tid };
@@ -1470,6 +1598,12 @@ export function renderPanelHtml() {
         var paid = paidEl ? paidEl.checked : true;
         var notify = notifEl ? notifEl.checked : true;
         var html = '';
+        if (isUltraAct(kind)) {
+          html += '<label class="m-check"><input type="checkbox" id="vm-notify"' + (notify ? ' checked' : '') + '><span>Avisar al usuario por Telegram<small>Le llega este mensaje del bot:</small></span></label>';
+          if (notify) html += '<div class="tg-preview">' + ultraPreview(m, kind === 'ultra_block') + '</div>';
+          document.getElementById('vm-body').innerHTML = html;
+          return;
+        }
         if (kind === 'extend') {
           var pv = extendPreview(m, paid);
           html += '<div class="m-dates"><div class="m-date"><div class="k">Ahora acaba</div><div class="v">' + esc(shortDate(lim)) + '</div></div><div>→</div>' +
@@ -1509,7 +1643,7 @@ export function renderPanelHtml() {
             vip.busy = false;
             if (res.status === 401) { location.reload(); return; }
             if (!res.j.ok) {
-              var map = { not_in_vip: 'Este usuario ya no figura en el VIP.', already_pending: 'Ya hay una acción en cola para este usuario.', queue_full: 'Cola llena, espera unos segundos.' };
+              var map = { not_ultra: 'Este usuario ya no tiene ficha Ultra.', not_in_vip: 'Este usuario ya no figura en el VIP.', already_pending: 'Ya hay una acción en cola para este usuario.', queue_full: 'Cola llena, espera unos segundos.' };
               document.getElementById('vm-err').textContent = map[res.j.error] || ('No se pudo encolar (' + (res.j.error || res.status) + ').');
               ok.disabled = false;
               return;
@@ -1522,13 +1656,31 @@ export function renderPanelHtml() {
           .catch(function () { vip.busy = false; ok.disabled = false; document.getElementById('vm-err').textContent = 'Error de red. Inténtalo de nuevo.'; });
       }
 
-      document.getElementById('vip-list').addEventListener('click', function (e) {
+      function onActClick(e) {
         var b = e.target.closest('[data-vip-act]');
         if (!b) return;
         openVipModal(b.getAttribute('data-vip-act'), Number(b.getAttribute('data-tid')));
+      }
+      document.getElementById('vip-list').addEventListener('click', onActClick);
+      document.getElementById('ul-list').addEventListener('click', onActClick);
+      document.getElementById('vip-seg').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-seg]');
+        if (!b) return;
+        vip.seg = b.getAttribute('data-seg');
+        document.querySelectorAll('#vip-seg button').forEach(function (c) { c.classList.toggle('on', c === b); });
+        document.getElementById('pane-vip').style.display = vip.seg === 'vip' ? 'grid' : 'none';
+        document.getElementById('pane-ultra').style.display = vip.seg === 'ultra' ? 'grid' : 'none';
+      });
+      document.getElementById('ul-flt').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-uf]');
+        if (!b) return;
+        vip.uf = b.getAttribute('data-uf');
+        document.querySelectorAll('#ul-flt .chip').forEach(function (c) { c.classList.toggle('on', c === b); });
+        renderUltra();
       });
       document.getElementById('vm-body').addEventListener('change', function () {
         if (!vip.modal) return;
+        if (isUltraAct(vip.modal.kind)) { var u = findUltra(vip.modal.tid); if (u) renderModalBody(u, 0); return; }
         var m = findMember(vip.modal.tid);
         if (m) renderModalBody(m, new Date(m.limit_at).getTime());
       });

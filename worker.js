@@ -39,7 +39,8 @@ const VIP_QUEUE_KEY = 'vip_queue_v1';
 const VIP_LOG_KEY = 'vip_log_v1';
 const VIP_LOG_MAX = 40;
 const VIP_QUEUE_MAX = 50;
-const VIP_ACTIONS = new Set(['kick', 'extend']);
+const VIP_ACTIONS = new Set(['kick', 'extend', 'ultra_block', 'ultra_unblock']);
+const isUltraAction = (a) => String(a || '').startsWith('ultra_');
 
 const memoryRateLimit = new Map();
 const encoder = new TextEncoder();
@@ -437,13 +438,15 @@ async function enqueueVipAction(env, body) {
   if (!VIP_ACTIONS.has(action) || !Number.isSafeInteger(tid) || tid <= 0) {
     return { status: 400, data: { ok: false, error: 'invalid_action' } };
   }
-  const roster = await kvJson(env, VIP_ROSTER_KEY, { members: [] });
-  const member = (roster.members || []).find((m) => Number(m.telegram_id) === tid);
+  const roster = await kvJson(env, VIP_ROSTER_KEY, { members: [], ultra: [] });
+  const ultra = isUltraAction(action);
+  const pool = ultra ? roster.ultra || [] : roster.members || [];
+  const member = pool.find((m) => Number(m.telegram_id) === tid);
   if (!member) {
-    return { status: 404, data: { ok: false, error: 'not_in_vip' } };
+    return { status: 404, data: { ok: false, error: ultra ? 'not_ultra' : 'not_in_vip' } };
   }
   const queue = await kvJson(env, VIP_QUEUE_KEY, []);
-  if (queue.some((q) => Number(q.telegram_id) === tid)) {
+  if (queue.some((q) => Number(q.telegram_id) === tid && isUltraAction(q.action) === ultra)) {
     return { status: 409, data: { ok: false, error: 'already_pending' } };
   }
   if (queue.length >= VIP_QUEUE_MAX) {
@@ -469,11 +472,12 @@ async function enqueueVipAction(env, body) {
 
 async function applyVipSync(env, payload) {
   const members = Array.isArray(payload.members) ? payload.members.slice(0, 2000) : [];
+  const ultra = Array.isArray(payload.ultra) ? payload.ultra.slice(0, 2000) : [];
   const results = Array.isArray(payload.results) ? payload.results.slice(0, VIP_QUEUE_MAX) : [];
   const syncedAt = new Date().toISOString();
   await env.PINCIANO_CPM.put(
     VIP_ROSTER_KEY,
-    JSON.stringify({ members, generated_at: payload.generated_at || syncedAt, synced_at: syncedAt }),
+    JSON.stringify({ members, ultra, generated_at: payload.generated_at || syncedAt, synced_at: syncedAt }),
   );
   if (results.length) {
     const doneIds = new Set(results.map((r) => String(r.id || '')));
@@ -663,7 +667,7 @@ export default {
           return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
         }
         const [roster, queue, log] = await Promise.all([
-          kvJson(env, VIP_ROSTER_KEY, { members: [], generated_at: null, synced_at: null }),
+          kvJson(env, VIP_ROSTER_KEY, { members: [], ultra: [], generated_at: null, synced_at: null }),
           kvJson(env, VIP_QUEUE_KEY, []),
           kvJson(env, VIP_LOG_KEY, []),
         ]);
