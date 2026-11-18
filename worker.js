@@ -18,6 +18,16 @@ const ALLOWED_CLICK_EVENTS = new Set([
 // Códigos y bot confirmados por Surebet-Telegram (solo [A-Za-z0-9_-], <=64).
 const REF_BOT_USERNAME = 'surebets_pinciano_bot';
 const REF_CODES = ['yt_f1', 'yt_f2', 'yt_f3', 'yt_f4', 'yt_f5'];
+// Códigos de Instagram/anuncios: NO saltan directos a Telegram. /a/<código> lleva a la landing
+// limpia /empieza?c=<código> y el botón de la landing pasa por /ir/<código> hacia el bot.
+const LANDING_CODES = [
+  'ig_bio',
+  'ig_f1', 'ig_f2', 'ig_f3', 'ig_f4', 'ig_f5',
+  'ad_ig_1', 'ad_ig_2', 'ad_ig_3', 'ad_ig_4', 'ad_ig_5',
+];
+const LANDING_PATH = '/empieza';
+const GO_PATH_RE = /^\/ir\/([A-Za-z0-9_-]{1,64})\/?$/;
+const GO_KEY_PREFIX = 'go_';
 const REF_KEY_PREFIX = 'ref_v1:';
 const REF_PATH_RE = /^\/a\/([A-Za-z0-9_-]{1,64})\/?$/;
 
@@ -333,6 +343,18 @@ async function trackVisit(env, url, userAgent) {
   await env.PINCIANO_CPM.put(VISITS_KEY, JSON.stringify(visits));
 }
 
+async function landingIsPublished(env, url) {
+  if (!env.ASSETS || typeof env.ASSETS.fetch !== 'function') return false;
+  try {
+    const res = await env.ASSETS.fetch(
+      new Request(new URL(LANDING_PATH, url.origin).toString(), { method: 'GET', redirect: 'manual' }),
+    );
+    return res.status === 200;
+  } catch {
+    return false;
+  }
+}
+
 function refDestination(code) {
   return `https://t.me/${REF_BOT_USERNAME}?start=${code}`;
 }
@@ -347,8 +369,9 @@ async function trackRefClick(env, code) {
 }
 
 async function readRefClicks(env) {
-  const out = { codes: REF_CODES.slice(), total: {}, by_day: {}, today: {}, updated_at: null };
-  for (const c of REF_CODES) out.total[c] = 0;
+  const tracked = [...REF_CODES, ...LANDING_CODES, ...LANDING_CODES.map((c) => GO_KEY_PREFIX + c)];
+  const out = { codes: tracked, total: {}, by_day: {}, today: {}, updated_at: null };
+  for (const c of tracked) out.total[c] = 0;
   if (!env.PINCIANO_CPM || typeof env.PINCIANO_CPM.list !== 'function') return out;
   const today = madridDay();
   let cursor;
@@ -526,28 +549,53 @@ export default {
       return jsonResponse({ ok: false, error: 'not_found' }, 404);
     }
 
-    // 2b) Rutas de atribución /a/<código>: 302 al deep link del bot + contador por ruta y día
-    const refMatch = (method === 'GET' || method === 'HEAD') ? REF_PATH_RE.exec(path) : null;
-    if (refMatch && REF_CODES.includes(refMatch[1].toLowerCase())) {
-      const code = refMatch[1].toLowerCase();
-      const ua = request.headers.get('User-Agent') || '';
-      // Solo se cuentan GET de navegadores reales; HEAD y bots redirigen sin contar.
-      if (method === 'GET' && ua && !BOT_UA_RE.test(ua)) {
-        if (ctx && typeof ctx.waitUntil === 'function') {
-          ctx.waitUntil(trackRefClick(env, code));
-        } else {
-          await trackRefClick(env, code);
-        }
+    // 2b) Rutas de atribución /a/<código>: contador por ruta y día + 302
+    //     yt_fN            -> deep link directo del bot
+    //     ig_* / ad_ig_*   -> landing limpia /empieza?c=<código> (solo si la landing está publicada)
+    //     /ir/<código>     -> deep link del bot (botón de la landing), contado como go_<código>
+    const isRead = method === 'GET' || method === 'HEAD';
+    const refMatch = isRead ? REF_PATH_RE.exec(path) : null;
+    const goMatch = isRead ? GO_PATH_RE.exec(path) : null;
+    const refCode = refMatch ? refMatch[1].toLowerCase() : null;
+    const goCode = goMatch ? goMatch[1].toLowerCase() : null;
+    const isDirectCode = refCode !== null && REF_CODES.includes(refCode);
+    const isLandingCode = refCode !== null && LANDING_CODES.includes(refCode);
+    const isGoCode = goCode !== null && LANDING_CODES.includes(goCode);
+
+    if (isDirectCode || isLandingCode || isGoCode) {
+      let location = null;
+      let countKey = null;
+      if (isDirectCode) {
+        location = refDestination(refCode);
+        countKey = refCode;
+      } else if (isGoCode) {
+        location = refDestination(goCode);
+        countKey = GO_KEY_PREFIX + goCode;
+      } else if (await landingIsPublished(env, url)) {
+        location = `${url.origin}${LANDING_PATH}?c=${refCode}`;
+        countKey = refCode;
       }
-      return new Response(null, {
-        status: 302,
-        headers: {
-          Location: refDestination(code),
-          'Cache-Control': 'no-store',
-          'X-Robots-Tag': 'noindex, nofollow',
-          'Referrer-Policy': 'no-referrer',
-        },
-      });
+      if (location !== null) {
+        const ua = request.headers.get('User-Agent') || '';
+        // Solo se cuentan GET de navegadores reales; HEAD y bots redirigen sin contar.
+        if (method === 'GET' && ua && !BOT_UA_RE.test(ua)) {
+          if (ctx && typeof ctx.waitUntil === 'function') {
+            ctx.waitUntil(trackRefClick(env, countKey));
+          } else {
+            await trackRefClick(env, countKey);
+          }
+        }
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: location,
+            'Cache-Control': 'no-store',
+            'X-Robots-Tag': 'noindex, nofollow',
+            'Referrer-Policy': 'no-referrer',
+          },
+        });
+      }
+      // Landing aún sin publicar: el código no redirige (cae al 404 de ASSETS).
     }
 
     // 3) Tráfico público: tracking ligero en / y /calculadora + passthrough a ASSETS
