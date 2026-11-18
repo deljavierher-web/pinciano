@@ -434,7 +434,7 @@ document.addEventListener('click', (ev) => {
   const link = ev.target && ev.target.closest ? ev.target.closest('a[href*="t.me/"]') : null;
   if (!link) return;
   const href = link.getAttribute('href') || '';
-  if (href.includes('t.me/+') || href.includes('start=comunidad')) sendFunnelBeacon('click_free_community');
+  if (href.includes('t.me/+') || href.includes('start=comunidad') || /start=web_(index|calc)_/.test(href)) sendFunnelBeacon('click_free_community');
   else if (href.includes('t.me/pincianoradar')) sendFunnelBeacon('click_free_channel');
   else if (href.includes('surebets_pinciano_bot')) sendFunnelBeacon('click_vip_bot');
 });

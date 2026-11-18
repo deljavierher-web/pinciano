@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /cpm
 Disallow: /cpm/
+Disallow: /ir/
+Disallow: /a/
 
 Sitemap: https://pinciano.es/sitemap.xml

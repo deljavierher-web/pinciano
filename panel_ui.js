@@ -1317,11 +1317,12 @@ export function renderPanelHtml() {
       function memberName(m) { return m.first_name || (m.username ? '@' + m.username : 'Usuario ' + m.telegram_id); }
       function planBadge(m) {
         if (m.plan === 'trial') return '<span class="badge b-trial">Prueba 48 h</span>';
+        if (m.plan === 'referral') return '<span class="badge b-trial">🤝 Días por referidos</span>';
         if (m.founder_number != null) return '<span class="badge b-founder">Fundador #' + m.founder_number + ' · ' + eur(FOUNDER_PRICE) + '</span>';
         return '<span class="badge b-paid">Pagado · ' + eur(VIP_PRICE) + '/mes</span>';
       }
       function periodMs(m) {
-        if (m.plan === 'trial') {
+        if (m.plan === 'trial' || m.plan === 'referral') {
           var g = new Date(m.granted_at).getTime(), l = new Date(m.limit_at).getTime();
           return (l > g) ? (l - g) : 48 * 3600000;
         }
@@ -1408,14 +1409,14 @@ export function renderPanelHtml() {
       function renderVip() {
         var d = vip.data || { members: [], queue: [], log: [] };
         var members = (d.members || []).slice().sort(function (a, b) { return new Date(a.limit_at) - new Date(b.limit_at); });
-        var nTrial = members.filter(function (m) { return m.plan === 'trial'; }).length;
-        var nPaid = members.length - nTrial;
+        var nTrial = members.filter(function (m) { return m.plan === 'trial' || m.plan === 'referral'; }).length;
+        var nPaid = members.filter(function (m) { return m.plan === 'monthly'; }).length;
         var nSoon = members.filter(function (m) { return new Date(m.limit_at).getTime() - Date.now() < 48 * 3600000; }).length;
-        var mrr = members.reduce(function (acc, m) { return acc + (m.plan === 'trial' ? 0 : (m.founder_number != null ? FOUNDER_PRICE : VIP_PRICE)); }, 0);
+        var mrr = members.reduce(function (acc, m) { return acc + (m.plan !== 'monthly' ? 0 : (m.founder_number != null ? FOUNDER_PRICE : VIP_PRICE)); }, 0);
         document.getElementById('vip-kpis').innerHTML =
-          kpi('En el VIP', members.length, nTrial + ' prueba · ' + nPaid + ' pago') +
+          kpi('En el VIP', members.length, nTrial + ' gratis · ' + nPaid + ' pago') +
           kpi('Ingreso mensual', eur(mrr), 'Suscripciones activas') +
-          kpi('Prueba 48 h', nTrial, 'Pendientes de convertir') +
+          kpi('Prueba / referidos', nTrial, 'Pendientes de convertir') +
           kpi('Caducan < 48 h', nSoon, 'Revisa renovaciones');
         document.getElementById('vip-count').textContent = members.length;
 
@@ -1429,8 +1430,8 @@ export function renderPanelHtml() {
 
         var q = vip.q.trim().toLowerCase();
         var list = members.filter(function (m) {
-          if (vip.filter === 'trial' && m.plan !== 'trial') return false;
-          if (vip.filter === 'paid' && m.plan === 'trial') return false;
+          if (vip.filter === 'trial' && m.plan === 'monthly') return false;
+          if (vip.filter === 'paid' && m.plan !== 'monthly') return false;
           if (vip.filter === 'soon' && new Date(m.limit_at).getTime() - Date.now() >= 48 * 3600000) return false;
           if (!q) return true;
           return (String(m.first_name || '') + ' ' + String(m.username || '') + ' ' + m.telegram_id).toLowerCase().indexOf(q.replace('@', '')) !== -1;
@@ -1447,7 +1448,7 @@ export function renderPanelHtml() {
             '<div class="vip-head"><div><div class="vip-name">' + esc(memberName(m)) + '</div>' +
             '<div class="vip-sub mono">' + alias + m.telegram_id + '</div></div>' + planBadge(m) + '</div>' +
             '<div class="vip-cd ' + cd.cls + '" data-cd="' + lim + '">' + esc(cd.txt) + '</div>' +
-            '<div class="vip-cd-lbl">' + (m.plan === 'trial' ? 'Fin de la prueba' : 'Fin del mes pagado') + ': ' + esc(shortDate(lim)) + '</div>' +
+            '<div class="vip-cd-lbl">' + (m.plan === 'trial' ? 'Fin de la prueba' : m.plan === 'referral' ? 'Fin de los días por referidos' : 'Fin del mes pagado') + ': ' + esc(shortDate(lim)) + '</div>' +
             '<div class="vip-bar"><div style="width:' + pct.toFixed(1) + '%"></div></div>' +
             (since ? '<div class="vip-sub" style="margin-top:6px">' + since + (m.source ? ' · origen: ' + esc(m.source) : '') + '</div>' : '') +
             (pend

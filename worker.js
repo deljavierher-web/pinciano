@@ -27,6 +27,13 @@ const LANDING_CODES = [
   // Reel «Cómo entrar» (X y Telegram) y tráfico orgánico sin código en /empieza
   'x_entrada', 'tg_entrada', 'web_empieza',
 ];
+// Guías SEO (/guias/*): su CTA va directo a /ir/seo_<tema> -> bot con ?start=web_seo_<tema>,
+// contado como go_seo_<tema>.
+// No pasan por /empieza ni tienen ruta /a/. Un código por guía (+ el índice /guias/).
+const SEO_CODES = [
+  'seo_guias', 'seo_que_es', 'seo_calcular', 'seo_bet365_winamax', 'seo_limitaciones',
+  'seo_comparativa', 'seo_tenis', 'seo_nba', 'seo_legal', 'seo_ganancias', 'seo_glosario',
+];
 const LANDING_PATH = '/empieza';
 const GO_PATH_RE = /^\/ir\/([A-Za-z0-9_-]{1,64})\/?$/;
 const GO_KEY_PREFIX = 'go_';
@@ -367,7 +374,9 @@ async function landingIsPublished(env, url) {
 }
 
 function refDestination(code) {
-  return `https://t.me/${REF_BOT_USERNAME}?start=${code}`;
+  // Guías SEO: el bot recibe web_seo_<tema> (misma familia web_* que portada y calculadora).
+  const start = SEO_CODES.includes(code) ? `web_${code}` : code;
+  return `https://t.me/${REF_BOT_USERNAME}?start=${start}`;
 }
 
 // Contador por ruta y día (Europe/Madrid): clave ref_v1:<código>:<YYYY-MM-DD> = entero.
@@ -380,7 +389,12 @@ async function trackRefClick(env, code) {
 }
 
 async function readRefClicks(env) {
-  const tracked = [...REF_CODES, ...LANDING_CODES, ...LANDING_CODES.map((c) => GO_KEY_PREFIX + c)];
+  const tracked = [
+    ...REF_CODES,
+    ...LANDING_CODES,
+    ...LANDING_CODES.map((c) => GO_KEY_PREFIX + c),
+    ...SEO_CODES.map((c) => GO_KEY_PREFIX + c),
+  ];
   const out = { codes: tracked, total: {}, by_day: {}, today: {}, updated_at: null };
   for (const c of tracked) out.total[c] = 0;
   if (!env.PINCIANO_CPM || typeof env.PINCIANO_CPM.list !== 'function') return out;
@@ -713,7 +727,7 @@ export default {
     const goCode = goMatch ? goMatch[1].toLowerCase() : null;
     const isDirectCode = refCode !== null && REF_CODES.includes(refCode);
     const isLandingCode = refCode !== null && LANDING_CODES.includes(refCode);
-    const isGoCode = goCode !== null && LANDING_CODES.includes(goCode);
+    const isGoCode = goCode !== null && (LANDING_CODES.includes(goCode) || SEO_CODES.includes(goCode));
 
     if (isDirectCode || isLandingCode || isGoCode) {
       let location = null;
