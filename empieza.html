@@ -39,7 +39,7 @@
     <h1>Mismo partido, dos precios distintos. Te avisamos cuando pasa.</h1>
     <p class="lead">Un radar que compara los precios de un mismo partido entre operadores con licencia en España y te manda un aviso gratis al móvil cuando no coinciden.</p>
 
-    <a id="cta" class="cta" href="/ir/ad_ig_1">Recibir alertas gratis</a>
+    <a id="cta" class="cta" href="/ir/web_empieza">Recibir alertas gratis</a>
     <p class="tg-note">Necesitas Telegram (gratis). ¿No lo tienes? Descárgalo para
       <a href="https://apps.apple.com/app/telegram-messenger/id686449807" rel="noopener">iPhone</a> o para
       <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" rel="noopener">Android</a>.</p>
@@ -74,7 +74,7 @@
       var m = /[?&]c=([A-Za-z0-9_-]{1,64})/.exec(location.search);
       if (!m) return;
       var code = m[1].toLowerCase();
-      if (/^(ig_bio|ig_f[1-5]|ad_ig_[1-5])$/.test(code)) {
+      if (/^(ig_bio|ig_f[1-5]|ad_ig_[1-5]|x_entrada|tg_entrada|web_empieza)$/.test(code)) {
         document.getElementById("cta").href = "/ir/" + code;
       }
     })();
