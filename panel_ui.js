@@ -526,7 +526,7 @@ export function renderPanelHtml() {
             <button type="button" class="chip on" data-uf="all">Todos</button>
             <button type="button" class="chip" data-uf="active">Activos</button>
             <button type="button" class="chip" data-uf="pending">Pendientes de pago</button>
-            <button type="button" class="chip" data-uf="blocked">Bloqueados / pausa</button>
+            <button type="button" class="chip" data-uf="blocked">Sin acceso</button>
           </div>
         </div>
         <div class="list" id="ul-list"></div>
@@ -1344,6 +1344,7 @@ export function renderPanelHtml() {
         if (u.status === 'active') return '<span class="badge b-paid">✅ Activo</span>';
         if (u.status === 'blocked') return '<span class="badge b-block">⛔ Bloqueado</span>';
         if (u.status === 'paused') return '<span class="badge b-pause">⏸ En pausa</span>';
+        if (u.status === 'expired') return '<span class="badge b-pause">⌛ Caducado' + (u.awaiting_proof ? ' · renovando' : '') + '</span>';
         return '<span class="badge b-pendpay">' + (u.awaiting_proof ? '📎 Esperando justificante' : '⏳ Pendiente de pago') + '</span>';
       }
       function tags(list, emptyTxt) {
@@ -1353,22 +1354,22 @@ export function renderPanelHtml() {
       function renderUltra() {
         var d = vip.data || {};
         var all = (d.ultra || []).slice();
-        var order = { active: 0, pending: 1, paused: 2, blocked: 3 };
+        var order = { active: 0, pending: 1, expired: 2, paused: 3, blocked: 4 };
         function rank(x) { return x.status in order ? order[x.status] : 9; }
         all.sort(function (a, b) { return rank(a) - rank(b) || String(b.updated_at || '').localeCompare(String(a.updated_at || '')); });
         var nAct = all.filter(function (u) { return u.status === 'active'; }).length;
         var nPend = all.filter(function (u) { return u.status === 'pending'; }).length;
         var nProof = all.filter(function (u) { return u.awaiting_proof; }).length;
-        var nBlock = all.filter(function (u) { return u.status === 'blocked' || u.status === 'paused'; }).length;
+        var nBlock = all.filter(function (u) { return u.status === 'blocked' || u.status === 'paused' || u.status === 'expired'; }).length;
         document.getElementById('ul-kpis').innerHTML =
           kpi('Ultra activos', nAct, 'Reciben alertas por privado') +
           kpi('Pendientes de pago', nPend, nProof + ' con pago en curso') +
-          kpi('Bloqueados / pausa', nBlock, 'Sin alertas') +
+          kpi('Sin acceso', nBlock, 'Caducados, en pausa o bloqueados') +
           kpi('Precio', '30 €', 'Pago único');
         document.getElementById('ul-count').textContent = all.length;
         var list = all.filter(function (u) {
           if (vip.uf === 'all') return true;
-          if (vip.uf === 'blocked') return u.status === 'blocked' || u.status === 'paused';
+          if (vip.uf === 'blocked') return u.status === 'blocked' || u.status === 'paused' || u.status === 'expired';
           return u.status === vip.uf;
         });
         document.getElementById('ul-list').innerHTML = list.length ? list.map(function (u) {
@@ -1380,7 +1381,7 @@ export function renderPanelHtml() {
             btn = '<div class="vip-pending">⏳ En cola: <b>' + (pend.action === 'ultra_block' ? 'bloquear' : 'desbloquear') + '</b> · el bot lo aplica en unos segundos</div>';
           } else if (u.status === 'active') {
             btn = '<div class="vip-actions one"><button type="button" class="btn-act kick" data-vip-act="ultra_block" data-tid="' + u.telegram_id + '">⛔ Bloquear Ultra</button></div>';
-          } else if (u.status === 'blocked' || u.status === 'paused') {
+          } else if (u.status === 'blocked' || u.status === 'paused' || u.status === 'expired') {
             btn = '<div class="vip-actions one"><button type="button" class="btn-act extend" data-vip-act="ultra_unblock" data-tid="' + u.telegram_id + '">✅ Desbloquear y reactivar</button></div>';
           } else {
             btn = '<div class="vip-sub" style="margin-top:10px">Se activa desde el grupo Admin al validar su justificante.</div>';
