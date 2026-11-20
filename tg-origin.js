@@ -1,4 +1,4 @@
-/* Atribución de altas: reescribe los botones ?start=comunidad del bot a
+/* Atribución de altas: reescribe los enlaces ?start=comunidad y ?start=web del bot a
    web_<página>_<origen> (solo [A-Za-z0-9_-], <= 64). El origen sale de utm_source o del
    referrer de la primera visita de la sesión (sessionStorage). Sin cookies ni red. */
 (function () {
@@ -56,6 +56,10 @@
   var start = 'web_' + page + '_' + origin;
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(start)) return;
 
-  var links = document.querySelectorAll('a[href="' + BOT + 'comunidad"]');
-  for (var i = 0; i < links.length; i++) links[i].setAttribute('href', BOT + start);
+  // Botones ?start=comunidad y enlaces de texto ?start=web: ambos pasan a web_<página>_<origen>.
+  var sels = ['a[href="' + BOT + 'comunidad"]', 'a[href="' + BOT + 'web"]'];
+  for (var s = 0; s < sels.length; s++) {
+    var links = document.querySelectorAll(sels[s]);
+    for (var i = 0; i < links.length; i++) links[i].setAttribute('href', BOT + start);
+  }
 })();
