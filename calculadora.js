@@ -417,10 +417,27 @@
     renderResults('bankroll');
   });
 
+  // Seleccionar el valor al entrar para poder escribir encima. Se hace de forma síncrona y solo
+  // mientras el usuario no haya tecleado: un setTimeout seleccionaba el primer dígito ya escrito
+  // y el siguiente lo sobrescribía (escribir 2.48 dejaba «.48»).
   [stakeAInput, stakeBInput, bankrollInput, oddAInput, oddBInput].forEach((el) => {
+    const clearPending = () => {
+      el.dataset.selectOnClick = '';
+    };
     el.addEventListener('focus', () => {
-      setTimeout(() => el.select(), 0);
+      el.dataset.selectOnClick = '1';
+      el.select();
     });
+    // el clic (mouseup) recoloca el cursor y deshace la selección: se repite una vez, si no se ha tecleado
+    el.addEventListener('click', () => {
+      if (el.dataset.selectOnClick === '1') {
+        el.select();
+        clearPending();
+      }
+    });
+    el.addEventListener('keydown', clearPending);
+    el.addEventListener('input', clearPending);
+    el.addEventListener('blur', clearPending);
   });
 
   roundToggle.addEventListener('change', () => renderResults('round'));
@@ -534,10 +551,13 @@
         event: '',
         startTime: '',
       };
+      // «Limpiar señal» vacía todos los campos (cuotas, importes y capital), no solo la etiqueta.
       activeMode = 'bankroll';
-      bankrollInput.value = '100';
+      [oddAInput, oddBInput, stakeAInput, stakeBInput, bankrollInput].forEach((el) => {
+        el.value = '';
+      });
       syncLabels();
-      renderResults('clear');
+      renderResults('init');
       if (window.history && window.history.replaceState) {
         window.history.replaceState({}, document.title, window.location.pathname);
       }

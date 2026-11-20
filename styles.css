@@ -1590,7 +1590,13 @@ h2 {
   .steps-grid,
   .tiers-grid,
   .faq-layout {
-    grid-template-columns: 1fr;
+    /* minmax(0,1fr): una sola columna que NO crece por el contenido (el terminal del hero desbordaba <464 px) */
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-grid > *,
+  .calc-grid > * {
+    min-width: 0;
   }
 
   .pipeline-bar {
