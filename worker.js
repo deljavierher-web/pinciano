@@ -5,7 +5,7 @@ const VISITS_KEY = 'visits_v1';
 const COOKIE_NAME = 'cpm_session';
 const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_S = 900; // 15 min
-const BOT_UA_RE = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|curl|wget|python-requests|httpx|lighthouse|pingdom|uptime|headless/i;
+const BOT_UA_RE = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|facebot|whatsapp|telegrambot|slackbot|discordbot|linkedinbot|applebot|pinterest|metainspector|embedly|iframely|linkpreview|vkshare|skypeuripreview|snapchat|google-inspectiontool|googleother|curl|wget|python-requests|httpx|go-http-client|axios|node-fetch|undici|aiohttp|okhttp|libwww-perl|lighthouse|pingdom|uptime|headless|puppeteer|playwright|scrapy/i;
 const STATIC_EXT_RE = /\.(css|js|mjs|png|jpe?g|webp|gif|svg|ico|mp4|webm|woff2?|ttf|map|json|xml|txt)$/i;
 const ALLOWED_CLICK_EVENTS = new Set([
   'click_free_community',
@@ -17,13 +17,14 @@ const ALLOWED_CLICK_EVENTS = new Set([
 // Rutas de atribución pinciano.es/a/<código> -> 302 al deep link del bot.
 // Códigos y bot confirmados por Surebet-Telegram (solo [A-Za-z0-9_-], <=64).
 const REF_BOT_USERNAME = 'surebets_pinciano_bot';
-const REF_CODES = ['yt_f1', 'yt_f2', 'yt_f3', 'yt_f4', 'yt_f5', 'yt_entrada'];
-// Códigos de Instagram/anuncios: NO saltan directos a Telegram. /a/<código> lleva a la landing
+const REF_CODES = ['yt_entrada', 'x_arb', 'x_promo'];
+// Códigos de Instagram/anuncios/YouTube funnel: NO saltan directos a Telegram. /a/<código> lleva a la landing
 // limpia /empieza?c=<código> y el botón de la landing pasa por /ir/<código> hacia el bot.
 const LANDING_CODES = [
   'ig_bio',
   'ig_f1', 'ig_f2', 'ig_f3', 'ig_f4', 'ig_f5',
   'ad_ig_1', 'ad_ig_2', 'ad_ig_3', 'ad_ig_4', 'ad_ig_5',
+  'yt_f1', 'yt_f2', 'yt_f3', 'yt_f4', 'yt_f5',
   // Reel «Cómo entrar» (X y Telegram) y tráfico orgánico sin código en /empieza
   'x_entrada', 'tg_entrada', 'web_empieza',
 ];
@@ -373,9 +374,33 @@ async function landingIsPublished(env, url) {
   }
 }
 
+function isPrefetchOrBotRequest(request) {
+  const ua = request.headers.get('User-Agent') || '';
+  if (!ua || BOT_UA_RE.test(ua)) return true;
+  const purpose = (request.headers.get('Purpose') || '').toLowerCase();
+  const secPurpose = (request.headers.get('Sec-Purpose') || '').toLowerCase();
+  const xPurpose = (request.headers.get('X-Purpose') || '').toLowerCase();
+  const xMoz = (request.headers.get('X-Moz') || '').toLowerCase();
+  return (
+    purpose.includes('prefetch') ||
+    purpose.includes('preview') ||
+    secPurpose.includes('prefetch') ||
+    secPurpose.includes('prerender') ||
+    secPurpose.includes('preview') ||
+    xPurpose.includes('preview') ||
+    xPurpose.includes('prefetch') ||
+    xMoz.includes('prefetch')
+  );
+}
+
 function refDestination(code) {
-  // Guías SEO: el bot recibe web_seo_<tema> (misma familia web_* que portada y calculadora).
-  const start = SEO_CODES.includes(code) ? `web_${code}` : code;
+  // Guías SEO: el bot recibe web_seo_<tema>; yt_f1..f5 vía /ir/ pasa go_yt_fN para distinguirlo en el bot.
+  let start = code;
+  if (SEO_CODES.includes(code)) {
+    start = `web_${code}`;
+  } else if (/^yt_f[1-5]$/.test(code)) {
+    start = `go_${code}`;
+  }
   return `https://t.me/${REF_BOT_USERNAME}?start=${start}`;
 }
 
@@ -743,9 +768,8 @@ export default {
         countKey = refCode;
       }
       if (location !== null) {
-        const ua = request.headers.get('User-Agent') || '';
-        // Solo se cuentan GET de navegadores reales; HEAD y bots redirigen sin contar.
-        if (method === 'GET' && ua && !BOT_UA_RE.test(ua)) {
+        // Solo se cuentan GET de navegadores reales; HEAD, precargas (prefetch/prerender/preview) y bots redirigen sin contar.
+        if (method === 'GET' && !isPrefetchOrBotRequest(request)) {
           if (ctx && typeof ctx.waitUntil === 'function') {
             ctx.waitUntil(trackRefClick(env, countKey));
           } else {
@@ -769,7 +793,8 @@ export default {
     if (
       method === 'GET' &&
       !STATIC_EXT_RE.test(path) &&
-      (path === '/' || path === '/index.html' || path === '/calculadora' || path === '/calculadora.html')
+      (path === '/' || path === '/index.html' || path === '/calculadora' || path === '/calculadora.html') &&
+      !isPrefetchOrBotRequest(request)
     ) {
       const ua = request.headers.get('User-Agent') || '';
       if (ctx && typeof ctx.waitUntil === 'function') {

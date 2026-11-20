@@ -67,6 +67,7 @@
     <footer>
       <p><span class="age">+18</span> · Solo para mayores de edad. Juega con responsabilidad: información oficial de la <a href="https://www.ordenacionjuego.es/" rel="noopener">Dirección General de Ordenación del Juego</a>.</p>
       <p>Pinciano Radar es un servicio informativo e independiente. No es un operador de juego, no está afiliado a ningún operador, no acepta importes y no gestiona cuentas de terceros.</p>
+      <p><a href="/aviso-legal">Aviso legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a></p>
     </footer>
   </main>
   <script>
@@ -74,7 +75,7 @@
       var m = /[?&]c=([A-Za-z0-9_-]{1,64})/.exec(location.search);
       if (!m) return;
       var code = m[1].toLowerCase();
-      if (/^(ig_bio|ig_f[1-5]|ad_ig_[1-5]|x_entrada|tg_entrada|web_empieza)$/.test(code)) {
+      if (/^(ig_bio|ig_f[1-5]|ad_ig_[1-5]|yt_f[1-5]|x_entrada|tg_entrada|web_empieza)$/.test(code)) {
         document.getElementById("cta").href = "/ir/" + code;
       }
     })();
