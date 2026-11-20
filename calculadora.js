@@ -108,8 +108,8 @@
   }
 
   function syncLabels() {
-    bookieALbl.textContent = `🏠 ${signalMeta.book1 || 'Casa 1'}`;
-    bookieBLbl.textContent = `🏠 ${signalMeta.book2 || 'Casa 2'}`;
+    bookieALbl.textContent = signalMeta.book1 || 'Casa 1';
+    bookieBLbl.textContent = signalMeta.book2 || 'Casa 2';
     pickALbl.textContent = signalMeta.pick1 || 'Selección 1';
     pickBLbl.textContent = signalMeta.pick2 || 'Selección 2';
 
@@ -144,21 +144,21 @@
     resetLimitsBtn.hidden = activeMode === 'bankroll';
 
     if (activeMode === 'lockA') {
-      modePill.textContent = `🔒 Límite fijado en ${signalMeta.book1}`;
+      modePill.textContent = `Límite fijado en ${signalMeta.book1}`;
       modePill.className = 'mode-pill is-locked';
-      badgeLegA.textContent = '🔒 LÍMITE';
-      badgeLegB.textContent = '→ COBERTURA';
+      badgeLegA.textContent = 'Límite';
+      badgeLegB.textContent = 'Cobertura';
       badgeLegA.className = 'leg-state-badge is-locked';
       badgeLegB.className = 'leg-state-badge is-target';
     } else if (activeMode === 'lockB') {
-      modePill.textContent = `🔒 Límite fijado en ${signalMeta.book2}`;
+      modePill.textContent = `Límite fijado en ${signalMeta.book2}`;
       modePill.className = 'mode-pill is-locked';
-      badgeLegA.textContent = '→ COBERTURA';
-      badgeLegB.textContent = '🔒 LÍMITE';
+      badgeLegA.textContent = 'Cobertura';
+      badgeLegB.textContent = 'Límite';
       badgeLegA.className = 'leg-state-badge is-target';
       badgeLegB.className = 'leg-state-badge is-locked';
     } else {
-      modePill.textContent = 'Modo activo: Capital total';
+      modePill.textContent = 'Modo: Capital total';
       modePill.className = 'mode-pill';
       badgeLegA.textContent = 'Auto';
       badgeLegB.textContent = 'Auto';
@@ -167,8 +167,8 @@
     }
 
     if (!res) {
-      hintLegA.textContent = 'Escribe aquí si esta casa te limita el importe máximo.';
-      hintLegB.textContent = 'Escribe aquí si esta casa te limita el importe máximo.';
+      hintLegA.textContent = 'Escribe aquí si esta casa limita el importe máximo.';
+      hintLegB.textContent = 'Escribe aquí si esta casa limita el importe máximo.';
       return;
     }
 
@@ -176,13 +176,13 @@
     const legB = res.legs[1];
 
     if (activeMode === 'lockA') {
-      hintLegA.textContent = `Máximo fijado: ${fmtMoney(legA.stake, 0)}`;
+      hintLegA.textContent = `Máximo fijado: ${fmtMoney(legA.stake, 1)}`;
       hintLegB.textContent =
         roundTo && Math.abs(legB.stake - legB.exactStake) > 0.009
           ? `Exacto sin redondeo: ${legB.exactStake.toFixed(2)} €`
           : `Retorno igualado: ${legB.potentialReturn.toFixed(2)} €`;
     } else if (activeMode === 'lockB') {
-      hintLegB.textContent = `Máximo fijado: ${fmtMoney(legB.stake, 0)}`;
+      hintLegB.textContent = `Máximo fijado: ${fmtMoney(legB.stake, 1)}`;
       hintLegA.textContent =
         roundTo && Math.abs(legA.stake - legA.exactStake) > 0.009
           ? `Exacto sin redondeo: ${legA.exactStake.toFixed(2)} €`
@@ -190,12 +190,12 @@
     } else {
       hintLegA.textContent =
         roundTo && Math.abs(legA.stake - legA.exactStake) > 0.009
-          ? `Exacto: ${legA.exactStake.toFixed(2)} € · O escribe tu máx.`
-          : 'Escribe aquí si esta casa te limita el importe máximo.';
+          ? `Exacto: ${legA.exactStake.toFixed(2)} € · O escribe tu límite`
+          : 'Escribe aquí si esta casa limita el importe máximo.';
       hintLegB.textContent =
         roundTo && Math.abs(legB.stake - legB.exactStake) > 0.009
-          ? `Exacto: ${legB.exactStake.toFixed(2)} € · O escribe tu máx.`
-          : 'Escribe aquí si esta casa te limita el importe máximo.';
+          ? `Exacto: ${legB.exactStake.toFixed(2)} € · O escribe tu límite`
+          : 'Escribe aquí si esta casa limita el importe máximo.';
     }
   }
 
@@ -215,9 +215,13 @@
     const link = ev.target && ev.target.closest ? ev.target.closest('a[href*="t.me/"]') : null;
     if (!link) return;
     const href = link.getAttribute('href') || '';
-    if (href.includes('t.me/+')) sendFunnelBeacon('click_free_community');
-    else if (href.includes('t.me/pincianoradar')) sendFunnelBeacon('click_free_channel');
-    else if (href.includes('surebets_pinciano_bot')) sendFunnelBeacon('click_vip_bot');
+    if (href.includes('t.me/+') || href.includes('start=comunidad') || /start=web_(index|calc)_/.test(href)) {
+      sendFunnelBeacon('click_free_community');
+    } else if (href.includes('t.me/pincianoradar')) {
+      sendFunnelBeacon('click_free_channel');
+    } else if (href.includes('surebets_pinciano_bot')) {
+      sendFunnelBeacon('click_vip_bot');
+    }
   });
 
   function renderResults(sourceField) {
@@ -266,7 +270,6 @@
 
     const [legA, legB] = res.legs;
 
-    // Update non-focused fields cleanly
     if (activeMode === 'lockA') {
       if (sourceField !== 'stakeB' && document.activeElement !== stakeBInput) {
         stakeBInput.value = formatInputMoney(legB.stake, roundTo === 0);
@@ -297,7 +300,6 @@
     mEl.textContent = res.impliedMargin.toFixed(4);
     totalStakeEl.textContent = `Total invertido: ${fmtMoney(res.totalStake, roundTo)}`;
 
-    // Direct actionable callout
     limitCalloutEl.hidden = false;
     const b1 = escapeHtml(signalMeta.book1 || 'Casa 1');
     const b2 = escapeHtml(signalMeta.book2 || 'Casa 2');
@@ -306,25 +308,24 @@
         roundTo && Math.abs(legA.stake - legA.exactStake) > 0.009
           ? ` <span class="callout-sub">(exacto: ${legA.exactStake.toFixed(2)} €)</span>`
           : '';
-      limitCalloutTextEl.innerHTML = `Máx. <b>${fmtMoney(legB.stake, 0)}</b> en ${b2} (@ ${ob.toFixed(2)}) → Apuesta <b>${fmtMoney(legA.stake, roundTo)}</b>${exactNote} en ${b1} (@ ${oa.toFixed(2)})`;
+      limitCalloutTextEl.innerHTML = `Máx. <b>${fmtMoney(legB.stake, 1)}</b> en ${b2} (@ ${ob.toFixed(2)}) → Apuesta <b>${fmtMoney(legA.stake, roundTo)}</b>${exactNote} en ${b1} (@ ${oa.toFixed(2)})`;
     } else if (activeMode === 'lockA') {
       const exactNote =
         roundTo && Math.abs(legB.stake - legB.exactStake) > 0.009
           ? ` <span class="callout-sub">(exacto: ${legB.exactStake.toFixed(2)} €)</span>`
           : '';
-      limitCalloutTextEl.innerHTML = `Máx. <b>${fmtMoney(legA.stake, 0)}</b> en ${b1} (@ ${oa.toFixed(2)}) → Apuesta <b>${fmtMoney(legB.stake, roundTo)}</b>${exactNote} en ${b2} (@ ${ob.toFixed(2)})`;
+      limitCalloutTextEl.innerHTML = `Máx. <b>${fmtMoney(legA.stake, 1)}</b> en ${b1} (@ ${oa.toFixed(2)}) → Apuesta <b>${fmtMoney(legB.stake, roundTo)}</b>${exactNote} en ${b2} (@ ${ob.toFixed(2)})`;
     } else {
-      limitCalloutTextEl.innerHTML = `Con capital <b>${fmtMoney(res.totalStake, roundTo)}</b> → <b>${fmtMoney(legA.stake, roundTo)}</b> en ${b1} y <b>${fmtMoney(legB.stake, roundTo)}</b> en ${b2}`;
+      limitCalloutTextEl.innerHTML = `Con <b>${fmtMoney(res.totalStake, roundTo)}</b> → <b>${fmtMoney(legA.stake, roundTo)}</b> en ${b1} y <b>${fmtMoney(legB.stake, roundTo)}</b> en ${b2}`;
     }
 
-    // Verdict styling
     if (res.impliedMargin >= 1) {
       roiEl.textContent = `${res.roiPercent.toFixed(2)}%`;
       roiEl.className = 'mono';
       minNetEl.textContent = `${res.minNetProfit >= 0 ? '+' : ''}${res.minNetProfit.toFixed(2)} €`;
       minNetEl.className = 'mono';
       verdictEl.className = 'calc-verdict is-invalid';
-      verdictTextEl.textContent = 'Sin arbitraje (M ≥ 1.0000) · Existe margen negativo';
+      verdictTextEl.textContent = 'Sin arbitraje (M ≥ 1.0000) · Margen negativo';
     } else if (res.minNetProfit <= 0) {
       roiEl.textContent = `+${res.roiPercent.toFixed(2)}%`;
       roiEl.className = 'mono accent';
@@ -347,7 +348,7 @@
       minNetEl.className = 'mono accent';
       verdictEl.className = 'calc-verdict is-warn';
       verdictTextEl.textContent =
-        'ROI > 25% · Verifica manualmente si existe error palpable antes de confirmar';
+        'ROI > 25% · Comprueba si existe error palpable antes de confirmar';
     } else if (res.roiPercent >= 12.0) {
       roiEl.textContent = `+${res.roiPercent.toFixed(2)}%`;
       roiEl.className = 'mono accent';
@@ -355,7 +356,7 @@
       minNetEl.className = 'mono accent';
       verdictEl.className = 'calc-verdict is-valid';
       verdictTextEl.textContent =
-        'Surebet válida de alto margen (+12%+) · Verifica cuotas y límites antes de apostar';
+        'Surebet válida de margen alto (+12%+) · Verifica cuotas y límites en vivo';
     } else {
       roiEl.textContent = `+${res.roiPercent.toFixed(2)}%`;
       roiEl.className = 'mono accent';
@@ -377,7 +378,7 @@
       .map((leg, idx) => {
         const sign = leg.netProfit >= 0 ? '+' : '';
         const cls = leg.netProfit > 0 ? 'is-pos' : 'is-neg';
-        const tag = leg.isLocked ? ' · 🔒 Límite' : '';
+        const tag = leg.isLocked ? ' · Límite' : '';
         const exactSub =
           !leg.isLocked && roundTo && Math.abs(leg.stake - leg.exactStake) > 0.009
             ? `<small class="mono">Exacto: ${leg.exactStake.toFixed(2)} €</small>`
@@ -385,10 +386,10 @@
         return `
         <div class="res-leg ${leg.isLocked ? 'is-locked' : ''}">
           <div class="leg-top">
-            <span class="leg-lbl">${escapeHtml(names[idx])} (@ ${leg.price.toFixed(2)})${tag}</span>
+            <span class="leg-lbl">${escapeHtml(names[idx])} @ ${leg.price.toFixed(2)}${tag}</span>
             <span class="leg-pct">${leg.sharePct.toFixed(1)}%</span>
           </div>
-          <strong class="mono">${fmtMoney(leg.stake, leg.isLocked ? 0 : roundTo)}</strong>
+          <strong class="mono">${fmtMoney(leg.stake, leg.isLocked ? 1 : roundTo)}</strong>
           ${exactSub}
           <small class="mono">Retorno si gana: ${leg.potentialReturn.toFixed(2)} €</small>
           <small class="mono leg-net ${cls}">Neto: ${sign}${leg.netProfit.toFixed(2)} €</small>
@@ -397,7 +398,6 @@
       .join('');
   }
 
-  // Event listeners
   [oddAInput, oddBInput].forEach((el) => {
     el.addEventListener('input', () => renderResults('odds'));
   });
@@ -417,9 +417,7 @@
     renderResults('bankroll');
   });
 
-  // Seleccionar el valor al entrar para poder escribir encima. Se hace de forma síncrona y solo
-  // mientras el usuario no haya tecleado: un setTimeout seleccionaba el primer dígito ya escrito
-  // y el siguiente lo sobrescribía (escribir 2.48 dejaba «.48»).
+  // Seleccionar el valor al entrar para poder escribir encima de forma síncrona (sin setTimeout).
   [stakeAInput, stakeBInput, bankrollInput, oddAInput, oddBInput].forEach((el) => {
     const clearPending = () => {
       el.dataset.selectOnClick = '';
@@ -428,7 +426,6 @@
       el.dataset.selectOnClick = '1';
       el.select();
     });
-    // el clic (mouseup) recoloca el cursor y deshace la selección: se repite una vez, si no se ha tecleado
     el.addEventListener('click', () => {
       if (el.dataset.selectOnClick === '1') {
         el.select();
@@ -551,7 +548,6 @@
         event: '',
         startTime: '',
       };
-      // «Limpiar señal» vacía todos los campos (cuotas, importes y capital), no solo la etiqueta.
       activeMode = 'bankroll';
       [oddAInput, oddBInput, stakeAInput, stakeBInput, bankrollInput].forEach((el) => {
         el.value = '';
@@ -588,7 +584,7 @@
       const shareUrl = `${base}?s=${encodeURIComponent(token)}`;
       try {
         await navigator.clipboard.writeText(shareUrl);
-        copyEncLinkBtn.textContent = 'Enlace cifrado copiado ✓';
+        copyEncLinkBtn.textContent = 'Enlace copiado';
       } catch {
         copyEncLinkBtn.textContent = 'Enlace generado';
       }

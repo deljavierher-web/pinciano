@@ -18,7 +18,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://pinciano.es/" />
     <meta property="og:locale" content="es_ES" />
-    <meta name="theme-color" content="#090b0f" />
+    <meta name="theme-color" content="#f7f6f2" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -58,50 +58,39 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="bg-ambient" aria-hidden="true"></div>
-
     <header class="topbar" id="topbar">
       <div class="container topbar-inner">
         <a href="#" class="brand" aria-label="Pinciano Radar inicio">
           <span class="brand-emblem" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="26" height="26" fill="none">
-              <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-opacity="0.24" stroke-width="1.5" />
-              <circle cx="16" cy="16" r="8" stroke="currentColor" stroke-opacity="0.52" stroke-width="1.5" />
-              <path d="M16 16L25 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-              <circle cx="16" cy="16" r="2.75" fill="currentColor" />
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+              <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-opacity="0.28" stroke-width="1.25" />
+              <circle cx="12" cy="12" r="5.2" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" />
+              <path d="M12 12L18.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <circle cx="12" cy="12" r="2" fill="#0b6b46" />
             </svg>
           </span>
-          <span class="brand-wordmark">PINCIANO</span>
-          <span class="brand-tag">RADAR</span>
+          <span class="brand-wordmark">Pinciano</span>
+          <span class="brand-tag">Radar</span>
         </a>
 
         <nav class="nav-links" aria-label="Navegación principal">
-          <a href="#escaparate">Escaparate +12%</a>
+          <a href="#escaparate">Escaparate</a>
           <a href="calculadora.html">Calculadora</a>
           <a href="/guias/">Guías</a>
           <a href="#metodo">Método</a>
-          <a href="#acceso">Canales</a>
-          <a href="#faq">FAQ</a>
+          <a href="#acceso">Acceso</a>
           <a
             href="https://t.me/surebets_pinciano_bot?start=comunidad"
             target="_blank"
             rel="noopener"
             class="nav-cta"
           >
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
-              <path
-                d="M21 4L3 11.2L9.6 13.7L17.5 7.7L11.4 14.5L11.2 19.3L14.5 16L18.4 18.9L21 4Z"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linejoin="round"
-              />
-            </svg>
             Comunidad Free
           </a>
         </nav>
@@ -134,7 +123,7 @@
             rel="noopener"
             class="btn btn-primary full"
           >
-            Entrar a la Comunidad Free
+            Entrar gratis en Telegram
           </a>
         </div>
       </div>
@@ -145,16 +134,12 @@
       <section class="hero">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <div class="eyebrow">
-              <span class="pulse-dot" aria-hidden="true"></span>
-              ARBITRAJE DEPORTIVO · MERCADO ESPAÑA (.ES)
-            </div>
+            <span class="kicker">España (.es) · Arbitraje deportivo M &lt; 1</span>
             <h1>
-              El mercado se equivoca.<br />
-              <span>La matemática, no.</span>
+              Desajustes de cuotas entre casas reguladas, <em>calculados al euro.</em>
             </h1>
             <p class="lead">
-              Detectamos desajustes de cuotas entre casas reguladas en España (<strong>Bet365, Betfair, Winamax, Sportium</strong> y más) cuando la suma implícita cae por debajo de 1. Consulta en este escaparate señales reales verificadas <strong>desde +12% ROI</strong> con eventos próximos y stakes redondeados al euro.
+              Comparamos mercados en <strong>Bet365, Betfair, Winamax, Sportium</strong> y el resto de operadores con licencia en España. Cuando la suma implícita baja de 1, calculamos el reparto entero y enviamos la alerta en Telegram.
             </p>
             <div class="hero-actions">
               <a
@@ -163,122 +148,112 @@
                 rel="noopener"
                 class="btn btn-primary"
               >
-                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
-                  <path
-                    d="M21 4L3 11.2L9.6 13.7L17.5 7.7L11.4 14.5L11.2 19.3L14.5 16L18.4 18.9L21 4Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                  />
-                </svg>
                 Entrar a la Comunidad Free
               </a>
-              <a href="#escaparate" class="btn btn-ghost">Ver escaparate +12%</a>
+              <a href="calculadora.html" class="btn btn-ghost">Abrir calculadora →</a>
             </div>
 
-            <div class="hero-specs">
-              <div class="spec-card">
-                <span class="spec-label">ESCAPARATE WEB</span>
-                <span class="spec-val accent">SOLO +12% ROI</span>
-                <span class="spec-note">Muestras reales verificadas</span>
+            <div class="hero-ledger-meta">
+              <div class="hero-meta-item">
+                <span class="hero-meta-label">Escaparate web</span>
+                <span class="hero-meta-val accent">≥ +12,0% ROI</span>
+                <span class="hero-meta-note">Muestras reales en diferido</span>
               </div>
-              <div class="spec-card">
-                <span class="spec-label">CASAS PRINCIPALES</span>
-                <span class="spec-val">BET365 · BETFAIR</span>
-                <span class="spec-note">Winamax, Sportium y más</span>
+              <div class="hero-meta-item">
+                <span class="hero-meta-label">Casas núcleo</span>
+                <span class="hero-meta-val">Bet365 · Betfair</span>
+                <span class="hero-meta-note">Winamax, Sportium y más</span>
               </div>
-              <div class="spec-card">
-                <span class="spec-label">ANTI-LIMITACIÓN</span>
-                <span class="spec-val">REDONDEO 1 €</span>
-                <span class="spec-note">Todas las patas en positivo</span>
+              <div class="hero-meta-item">
+                <span class="hero-meta-label">Reparto</span>
+                <span class="hero-meta-val">Euros enteros</span>
+                <span class="hero-meta-note">Validado en ambas patas</span>
               </div>
             </div>
           </div>
 
-          <!-- INTERACTIVE SAMPLE SIGNAL TERMINAL -->
-          <div class="terminal-shell">
-            <div class="terminal-wrap">
-              <div class="terminal-header">
-                <div class="terminal-head-left">
-                  <span class="win-dots" aria-hidden="true">
-                    <i></i><i></i><i></i>
-                  </span>
-                  <span class="terminal-title">MUESTRA REAL +12% · @surebets_pinciano_bot</span>
-                </div>
-                <span class="sample-badge">REAL +12%</span>
+          <!-- INTERACTIVE REAL SPECIMEN -->
+          <div class="specimen-sheet">
+            <div class="specimen-head">
+              <span class="specimen-title">Muestra real archivada · @surebets_pinciano_bot</span>
+              <span class="specimen-tag">Filtro ≥ +12%</span>
+            </div>
+
+            <div class="specimen-toolbar">
+              <div class="sample-tabs" role="tablist" aria-label="Ejemplos reales de señal +12% por deporte">
+                <button class="tab-btn active" data-sample="0" type="button" role="tab" aria-selected="true">
+                  Bet365 · Fútbol
+                </button>
+                <button class="tab-btn" data-sample="1" type="button" role="tab" aria-selected="false">
+                  Betfair · NBA
+                </button>
+                <button class="tab-btn" data-sample="2" type="button" role="tab" aria-selected="false">
+                  Winamax
+                </button>
               </div>
 
-              <div class="terminal-toolbar">
-                <div class="sample-tabs" role="tablist" aria-label="Ejemplos reales de señal +12% por deporte">
-                  <button class="tab-btn active" data-sample="0" type="button" role="tab" aria-selected="true">
-                    Fútbol · Bet365
-                  </button>
-                  <button class="tab-btn" data-sample="1" type="button" role="tab" aria-selected="false">
-                    NBA · Betfair
-                  </button>
-                  <button class="tab-btn" data-sample="2" type="button" role="tab" aria-selected="false">
-                    Fútbol · Winamax
-                  </button>
-                </div>
-
-                <div class="bank-quick" aria-label="Capital de ejemplo">
-                  <span class="bank-quick-lbl">Capital:</span>
-                  <button class="bank-chip active" data-term-bank="100" type="button">100€</button>
-                  <button class="bank-chip" data-term-bank="250" type="button">250€</button>
-                  <button class="bank-chip" data-term-bank="500" type="button">500€</button>
-                </div>
+              <div class="bank-quick" aria-label="Capital de ejemplo">
+                <button class="bank-chip active" data-term-bank="100" type="button">100 €</button>
+                <button class="bank-chip" data-term-bank="250" type="button">250 €</button>
+                <button class="bank-chip" data-term-bank="500" type="button">500 €</button>
               </div>
+            </div>
 
-              <div class="terminal-body" id="signal-preview" aria-live="polite">
-                <!-- Populated by app.js -->
-              </div>
+            <div class="specimen-body" id="signal-preview" aria-live="polite">
+              <!-- Populated by app.js -->
+            </div>
 
-              <div class="terminal-footer">
-                <span class="terminal-hint">Detección real archivada (+12% ROI mínimo).</span>
-                <div class="terminal-footer-actions">
-                  <a href="calculadora.html" class="copy-btn" id="open-sample-calc-link">
-                    Probar en calculadora
-                  </a>
-                  <button type="button" class="copy-btn" id="copy-signal-btn">
-                    Copiar resumen
-                  </button>
-                </div>
+            <div class="specimen-footer">
+              <span class="specimen-hint">Muestra archivada · Comprueba cuotas en vivo</span>
+              <div class="specimen-actions">
+                <a href="calculadora.html" class="action-chip is-primary" id="open-sample-calc-link">
+                  Calculadora →
+                </a>
+                <button type="button" class="action-chip" id="copy-signal-btn">
+                  Copiar
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- BOOKMAKERS STRIP -->
+      <!-- BOOKMAKERS INDEX -->
       <section class="strip" aria-label="Casas de apuestas monitorizadas">
         <div class="container strip-inner">
-          <div class="strip-meta">
-            <span class="strip-label">CASAS MONITORIZADAS (.ES / EU)</span>
-            <span class="strip-sub">Normalización unificada de mercados h2h, spreads y totals</span>
-          </div>
+          <span class="strip-label">Operadores .es monitorizados</span>
           <div class="bookie-list">
-            <span class="bookie-chip"><b>B3</b> Bet365</span>
-            <span class="bookie-chip"><b>BF</b> Betfair</span>
-            <span class="bookie-chip"><b>WM</b> Winamax</span>
-            <span class="bookie-chip"><b>SP</b> Sportium</span>
-            <span class="bookie-chip"><b>CD</b> Codere</span>
-            <span class="bookie-chip"><b>88</b> 888sport</span>
-            <span class="bookie-chip"><b>MA</b> Marca Apuestas</span>
-            <span class="bookie-chip"><b>WH</b> William Hill</span>
-            <span class="bookie-chip"><b>LV</b> LeoVegas</span>
-            <span class="bookie-chip"><b>BW</b> Bwin</span>
+            <span class="bookie-item">Bet365</span>
+            <span>·</span>
+            <span class="bookie-item">Betfair</span>
+            <span>·</span>
+            <span class="bookie-item">Winamax</span>
+            <span>·</span>
+            <span class="bookie-item">Sportium</span>
+            <span>·</span>
+            <span class="bookie-item">Codere</span>
+            <span>·</span>
+            <span class="bookie-item">888sport</span>
+            <span>·</span>
+            <span class="bookie-item">Marca Apuestas</span>
+            <span>·</span>
+            <span class="bookie-item">William Hill</span>
+            <span>·</span>
+            <span class="bookie-item">LeoVegas</span>
+            <span>·</span>
+            <span class="bookie-item">Bwin</span>
           </div>
         </div>
       </section>
 
       <!-- DELAYED +12% SHOWCASE -->
-      <section class="section section-bordered" id="escaparate">
+      <section class="section" id="escaparate">
         <div class="container">
           <div class="section-head">
-            <div class="eyebrow">ESCAPARATE HISTÓRICO VERIFICADO · +12% ROI MÍNIMO</div>
-            <h2>Señales reales desde +12% ROI con casas grandes en España.</h2>
+            <span class="kicker">Escaparate en diferido (&gt; 2 h)</span>
+            <h2>Detecciones reales desde +12% ROI con casas principales.</h2>
             <p class="muted-copy">
-              Publicamos aquí en diferido (&gt;2h) detecciones reales de nuestro escáner que cumplen dos condiciones estrictas: <strong>ROI ≥ +12.0%</strong> y participación de al menos una casa principal (<strong>Bet365, Betfair, Winamax, Sportium, Marca Apuestas, 888sport, William Hill</strong> o <strong>Codere</strong>).
+              Registro histórico extraído directamente de la base de datos del escáner. Solo listamos oportunidades con <strong>ROI ≥ +12,0%</strong> donde participa al menos una casa regulada de primer nivel en España.
             </p>
           </div>
 
@@ -293,10 +268,10 @@
           <div class="showcase-table-card">
             <div class="showcase-table-head">
               <div>
-                <strong>Últimas detecciones +12% en diferido (Casas grandes .ES)</strong>
-                <span>Registro histórico extraído de SQLite con &gt;2h de retardo. El envío en tiempo real (T+0) es exclusivo de Telegram VIP.</span>
+                <strong>Últimas detecciones ≥ +12% en diferido</strong>
+                <span>Publicadas con más de 2 horas de retardo. Las alertas en tiempo real (T+0) salen en Telegram VIP.</span>
               </div>
-              <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="mini-chip">
+              <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="action-chip is-primary">
                 Recibir en vivo T+0 →
               </a>
             </div>
@@ -319,34 +294,38 @@
         </div>
       </section>
 
-      <!-- CALCULATOR LAUNCH SECTION (DEDICATED PAGE) -->
+      <!-- CALCULATOR LAUNCH SECTION -->
       <section class="section" id="calculadora">
         <div class="container">
           <div class="calc-teaser-card">
             <div class="calc-teaser-copy">
-              <div class="eyebrow">HERRAMIENTA INDEPENDIENTE · SOLO 2 VÍAS</div>
-              <h2>¿Bet365 o Winamax te limita una pata? Calcúlalo en 2 segundos.</h2>
+              <span class="kicker">Calculadora 2 vías · Gratuita</span>
+              <h2>Si una casa limita el importe, ajusta la cobertura en dos segundos.</h2>
               <p class="muted-copy">
-                Nuestra calculadora dedicada abre en pantalla completa y funciona tanto por <strong>capital total</strong> como fijando el <strong>máximo permitido en Bet365, Winamax, Sportium o Betfair</strong>. Además, cada alerta incluye un enlace cifrado que precarga ambas cuotas.
+                Funciona por <strong>capital total</strong> o fijando el <strong>máximo permitido</strong> en Bet365, Winamax, Sportium o Betfair. Redondea la contrapartida al euro y verifica al instante si ambas patas quedan en positivo. Cada alerta de Telegram abre la calculadora con las cuotas precargadas.
               </p>
               <div class="calc-teaser-actions">
-                <a href="calculadora.html" class="btn btn-primary">Abrir Calculadora M &lt; 1 →</a>
-                <span class="calc-teaser-note">Ejemplo real +12% · Céntimos exactos o redondeo 1 €</span>
+                <a href="calculadora.html" class="btn btn-primary">Abrir calculadora →</a>
+                <span class="calc-teaser-note">Sin registro · Céntimos o redondeo 1 €</span>
               </div>
             </div>
 
             <div class="calc-teaser-preview" aria-hidden="true">
-              <div class="teaser-mini-row">
-                <span>🏠 Winamax (ES) · Cuota <code>1.57</code></span>
+              <div class="teaser-caption">
+                <span>Ejemplo real · Límite por casa</span>
+                <span class="accent">+12.75% ROI</span>
+              </div>
+              <div class="teaser-mini-row is-limit">
+                <span>Winamax (ES) · Cuota <code>1.57</code></span>
                 <strong>Máx. 30 €</strong>
               </div>
-              <div class="teaser-mini-arrow">↓ Recalcula cobertura exacta (+12.75% ROI)</div>
+              <div class="teaser-mini-arrow">↓ Cobertura calculada automáticamente</div>
               <div class="teaser-mini-row is-accent">
-                <span>🏠 Bet365 · Cuota <code>4.00</code></span>
-                <strong>Apostar 12 € <small>(11.78 €)</small></strong>
+                <span>Bet365 · Cuota <code>4.00</code></span>
+                <strong>12 € <small>(11.78 €)</small></strong>
               </div>
               <div class="teaser-mini-foot">
-                <span>Inversión: 42 €</span>
+                <span>Total: 42 €</span>
                 <span class="accent">Neto mín.: +5.10 €</span>
               </div>
             </div>
@@ -355,77 +334,38 @@
       </section>
 
       <!-- METHOD -->
-      <section class="section section-bordered" id="metodo">
+      <section class="section" id="metodo">
         <div class="container">
           <div class="section-head">
-            <div class="eyebrow">ARQUITECTURA DEL ESCÁNER</div>
-            <h2>Tres filtros que separan ruido de ejecución real.</h2>
+            <span class="kicker">Cómo filtra el escáner</span>
+            <h2>Tres reglas antes de emitir una alerta.</h2>
             <p class="muted-copy">
-              No basta con encontrar <code>M &lt; 1</code>. Cada oportunidad atraviesa un embudo estricto antes de llegar al canal de Telegram o al escaparate público.
+              Encontrar <code>M &lt; 1</code> en bruto produce demasiado ruido. Cada señal pasa estos tres controles antes de llegar al canal.
             </p>
           </div>
 
-          <!-- VISUAL PIPELINE -->
-          <div class="pipeline-bar" aria-label="Flujo de detección">
-            <div class="pipe-node">
-              <span class="pipe-step mono">FASE 01</span>
-              <strong>Ingesta &amp; Normalización</strong>
-              <small>Cruce de mercados h2h, córners, player props y líneas exactas Over/Under</small>
-            </div>
-            <div class="pipe-arrow" aria-hidden="true">→</div>
-            <div class="pipe-node">
-              <span class="pipe-step mono">FASE 02</span>
-              <strong>Filtro Matemático</strong>
-              <small>Margen M &lt; 1, filtro por nivel (Free o VIP +12%), inicio próximo y SQLite</small>
-            </div>
-            <div class="pipe-arrow" aria-hidden="true">→</div>
-            <div class="pipe-node pipe-node-accent">
-              <span class="pipe-step mono">FASE 03</span>
-              <strong>Redondeo 1 € &amp; Alerta T+0</strong>
-              <small>Stakes enteros sin patas negativas y cálculo instantáneo de límites</small>
-            </div>
-          </div>
-
-          <div class="steps-grid">
-            <article class="step-card">
-              <div class="step-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-                  <path d="M12 3L4 7V12C4 16.97 7.42 21.55 12 22.75C16.58 21.55 20 16.97 20 12V7L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                  <path d="M9 12.2L11 14.2L15.2 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <span class="step-num">01 · DESAJUSTES +12% Y BANDA CONSERVADORA</span>
-              <h3>Casas líderes bajo el foco</h3>
+          <div class="method-grid">
+            <article class="method-item">
+              <span class="method-num">01 · MERCADO REGULADO</span>
+              <h3>Casas con licencia en España</h3>
               <p>
-                En este escaparate solo mostramos detecciones <strong>≥ +12% ROI</strong> con casas grandes como Bet365, Betfair o Winamax. En Telegram puedes recibir alertas en vivo T+0 o la selección horaria gratuita.
+                Normalizamos líneas exactas de fútbol, baloncesto, tenis y mercados de jugador entre operadores accesibles en España. En la web pública solo mostramos casos desde +12% ROI con una casa líder.
               </p>
             </article>
 
-            <article class="step-card">
-              <div class="step-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
-                  <path d="M12 7V12L15.5 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <span class="step-num">02 · LIQUIDEZ</span>
-              <h3>Eventos en &lt; 24 horas</h3>
+            <article class="method-item">
+              <span class="method-num">02 · LIQUIDEZ CERCANA</span>
+              <h3>Partidos en menos de 24 horas</h3>
               <p>
-                No inmovilizamos tu banca en partidos a dos semanas vista. Todas las alertas corresponden a encuentros que arrancan en las próximas 24 horas.
+                Descartamos mercados lejanos que dejan la banca bloqueada durante semanas. Priorizamos encuentros próximos donde el capital rota en el mismo día.
               </p>
             </article>
 
-            <article class="step-card">
-              <div class="step-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-                  <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
-                  <path d="M7 10H12M7 14H10M15 10L17 14L19 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <span class="step-num">03 · LONGEVIDAD DE CUENTAS</span>
-              <h3>Redondeo anti-limitación</h3>
+            <article class="method-item">
+              <span class="method-num">03 · EJECUCIÓN EN EUROS</span>
+              <h3>Redondeo comprobado al euro</h3>
               <p>
-                Cada alerta llega con importes redondeados al euro entero y verificación automática de que ningún resultado posible cierre en pérdidas.
+                Apostar cifras como 48,81 € llama la atención de los sistemas de riesgo. Calculamos stakes enteros y verificamos tras el redondeo que ningún escenario cierre en negativo.
               </p>
             </article>
           </div>
@@ -436,27 +376,29 @@
       <section class="section" id="acceso">
         <div class="container">
           <div class="section-head">
-            <div class="eyebrow">COMUNIDAD Y ACCESO EN TELEGRAM</div>
-            <h2>Elige tu ritmo de operativa.</h2>
+            <span class="kicker">Acceso en Telegram</span>
+            <h2>Empieza gratis o prueba el canal en directo.</h2>
             <p class="muted-copy">
-              Empieza en 1 clic desde <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a> para acceder a la Comunidad Free o solicitar tus 48h VIP de Fundador.
+              Todo se gestiona desde <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a>. Puedes entrar gratis ahora mismo o activar 48 horas de prueba VIP sin tarjeta.
             </p>
           </div>
 
           <div class="tiers-grid">
             <div class="tier-card">
               <div class="tier-top">
-                <span class="tier-name">COMUNIDAD FREE</span>
-                <span class="tier-price">0 €</span>
+                <span class="tier-name">Comunidad Free</span>
+                <div class="tier-price-group">
+                  <span class="tier-price">0 €</span>
+                </div>
               </div>
               <p class="tier-desc">
-                Entra gratis al grupo con salas organizadas, chat abierto con otros apostadores, alertas cada hora y Escaparate VIP en directo.
+                Grupo organizado por temas para seguir el ritmo real del escáner, aprender la operativa y consultar alertas sin coste.
               </p>
               <ul class="tier-list">
-                <li>Alertas reales gratis cada hora dentro de la Comunidad Free</li>
-                <li>Escaparate web en diferido con señales verificadas +12% ROI</li>
-                <li>Chat General abierto, Retos y reparto redondeado al euro</li>
-                <li>Acceso directo sin tarjeta ni registro previo</li>
+                <li>Una alerta real cada hora (08:00 a 01:00) con reparto al euro</li>
+                <li>Escaparate diario y tema de promos y superaumentos</li>
+                <li>Chat general abierto y acceso a la calculadora con cuotas precargadas</li>
+                <li>Sin registro previo ni tarjeta</li>
               </ul>
               <a
                 href="https://t.me/surebets_pinciano_bot?start=comunidad"
@@ -469,44 +411,44 @@
             </div>
 
             <div class="tier-card tier-vip">
-              <div class="tier-glow" aria-hidden="true"></div>
               <div class="tier-top">
-                <div class="tier-title-group">
-                  <span class="tier-name accent">CLUB FUNDADORES · VIP T+0</span>
-                  <span class="tier-pill">25 PLAZAS</span>
+                <span class="tier-name">VIP en tiempo real (T+0)</span>
+                <div class="tier-price-group">
+                  <span class="tier-price">25 €/mes</span>
+                  <span class="tier-price-sub">Fundadores: 12,50 €/mes (-50%)</span>
                 </div>
-                <span class="tier-price">48h Gratis</span>
               </div>
               <p class="tier-desc">
-                Prueba el Canal VIP en tiempo real (T+0) durante 48 horas gratis sin tarjeta y bloquea el 50% de descuento vitalicio mientras sigas en la comunidad.
+                Recibe todas las señales en el instante de detección antes de que corrijan la cuota. Empieza con 48 horas gratis sin tarjeta.
               </p>
               <ul class="tier-list">
-                <li>Notificación instantánea T+0 sin retrasos antes de que ajusten cuota</li>
-                <li>Club Fundadores (25 plazas): 48h VIP sin tarjeta + 50% vitalicio</li>
-                <li>Invita a 3 amigos (&gt;48h activos) = +7 días VIP extra (máx. 1/mes)</li>
-                <li>Alta directa en <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a> (pulsa Start o escribe hola)</li>
+                <li>Alertas instantáneas T+0 filtradas por margen y deporte</li>
+                <li>Club Fundadores (primeras 25 suscripciones): 12,50 €/mes vitalicio</li>
+                <li>Pago mensual sin permanencia: te das de baja cuando quieras</li>
+                <li>Activación directa en <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a></li>
               </ul>
               <a
                 href="https://t.me/surebets_pinciano_bot?start=fundadores"
                 target="_blank"
                 rel="noopener"
-                class="btn btn-primary full"
+                class="btn btn-signal full"
               >
-                Solicitar plaza Fundadores
+                Solicitar 48h VIP gratis
               </a>
+              <span class="tier-note">Invita a 3 amigos activos (&gt;48 h) y suma +7 días VIP extra.</span>
             </div>
           </div>
         </div>
       </section>
 
       <!-- FAQ -->
-      <section class="section section-bordered" id="faq">
+      <section class="section" id="faq">
         <div class="container faq-layout">
           <div class="faq-head">
-            <div class="eyebrow">PREGUNTAS FRECUENTES</div>
-            <h2>Claridad operativa antes de empezar.</h2>
+            <span class="kicker">Preguntas frecuentes</span>
+            <h2>Antes de operar.</h2>
             <p class="muted-copy">
-              Las reglas matemáticas del arbitraje son exactas, pero la ejecución en casas reales exige disciplina.
+              La fórmula es exacta; la ejecución en casas reales exige comprobar siempre cuotas, reglas de mercado y límites vigentes.
             </p>
           </div>
 
@@ -518,7 +460,7 @@
               </button>
               <div class="faq-panel">
                 <p>
-                  Cada cuota decimal representa una probabilidad implícita (<code>1 / Cuota</code>). En condiciones normales la suma de todos los resultados supera <code>1.00</code> por el margen de la casa. Cuando combinas la mejor cuota de distintas casas y la suma cae por debajo de <code>1.00</code>, repartir el capital proporcionalmente da un retorno superior al 100% en cualquier resultado, siempre que las cuotas se mantengan al confirmar.
+                  Cada cuota decimal implica una probabilidad (<code>1 / Cuota</code>). En una sola casa, la suma de todos los resultados supera <code>1.00</code> por su comisión. Si combinas la mejor cuota de dos operadores distintos y la suma cae por debajo de <code>1.00</code>, repartir el capital de forma proporcional deja retorno superior al 100% en cualquier desenlace, siempre que ambas cuotas se mantengan al confirmar.
                 </p>
               </div>
             </div>
@@ -530,7 +472,7 @@
               </button>
               <div class="faq-panel" hidden>
                 <p>
-                  En la web auditamos en diferido exclusivamente ineficiencias de alto margen (<code>≥ +12% ROI</code>) donde participa al menos una casa regulada de primer nivel en España (Bet365, Betfair, Winamax, Sportium, Marca Apuestas o 888sport). Al entrar en vivo conviene verificar que las cuotas siguen vigentes antes de confirmar ambas patas.
+                  En la web publicamos en diferido exclusivamente ineficiencias de margen alto (<code>≥ +12% ROI</code>) donde participa al menos una casa principal regulada en España (Bet365, Betfair, Winamax, Sportium, Marca Apuestas o 888sport). En directo conviene revisar siempre la cuota vigente y si existe error manifiesto antes de confirmar.
                 </p>
               </div>
             </div>
@@ -542,19 +484,19 @@
               </button>
               <div class="faq-panel" hidden>
                 <p>
-                  Apostar importes decimales exactos como <code>48.81 €</code> o <code>51.19 €</code> es un patrón clásico que los algoritmos de riesgo detectan rápido. Redondeamos al euro entero y recalculamos todas las patas antes de emitir la alerta para comprobar que el margen mínimo sigue siendo positivo con esos importes.
+                  Apostar importes decimales exactos como <code>48.81 €</code> o <code>51.19 €</code> es una señal habitual de arbitraje para los algoritmos de control de riesgo. Redondear al euro entero reduce fricción y el escáner recalcula el resultado mínimo tras redondear antes de emitir la alerta.
                 </p>
               </div>
             </div>
 
             <div class="faq-item">
               <button class="faq-trigger" type="button" aria-expanded="false">
-                <span>¿Cómo entro a la Comunidad Free o al Club Fundadores?</span>
+                <span>¿Cómo entro a la Comunidad Free o activo las 48h VIP?</span>
                 <span class="faq-icon" aria-hidden="true">+</span>
               </button>
               <div class="faq-panel" hidden>
                 <p>
-                  Abre <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a> y pulsa Start (o escríbele cualquier mensaje). Desde ahí entras en 1 clic a la Comunidad Free o solicitas tus 48h VIP gratis del Club Fundadores (25 plazas).
+                  Abre <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a> y pulsa Iniciar. Desde ahí accedes al grupo gratuito en un toque o solicitas la prueba de 48 horas del canal VIP.
                 </p>
               </div>
             </div>
@@ -566,8 +508,8 @@
       <section class="cta-band">
         <div class="container cta-band-inner">
           <div>
-            <div class="eyebrow">LISTO PARA VERLO EN ACCIÓN</div>
-            <h2>Entra gratis a la Comunidad Free en menos de 10 segundos.</h2>
+            <span class="kicker">Telegram · Acceso directo</span>
+            <h2>Entra gratis y comprueba las próximas alertas por tu cuenta.</h2>
           </div>
           <a
             href="https://t.me/surebets_pinciano_bot?start=comunidad"
@@ -585,15 +527,16 @@
       <div class="container footer-inner">
         <div class="footer-brand">
           <span class="brand-mark" aria-hidden="true"></span>
-          <span>PINCIANO · @surebets_pinciano_bot</span>
+          <span>Pinciano Radar · @surebets_pinciano_bot</span>
         </div>
-        <nav class="footer-links" aria-label="Información legal">
+        <nav class="footer-links" aria-label="Información legal y recursos">
+          <a href="/guias/">Guías</a>
           <a href="/aviso-legal">Aviso legal</a>
           <a href="/privacidad">Privacidad</a>
           <a href="/cookies">Cookies</a>
         </nav>
         <span class="footer-disclaimer">
-          +18 · Herramienta de análisis matemático. Verifica siempre las cuotas en cada casa antes de confirmar.
+          +18 · Software informativo de análisis matemático. No es operador de juego ni garantiza resultados.
         </span>
       </div>
     </footer>

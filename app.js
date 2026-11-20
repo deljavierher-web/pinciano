@@ -46,6 +46,12 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
+function stripLeadingEmoji(str) {
+  return String(str ?? '')
+    .replace(/^[\p{Extended_Pictographic}\uFE0F\s]+/u, '')
+    .trim();
+}
+
 // Mirrors src/engine/calculator.py (_round_stake & _evaluate_selection_group)
 function roundStake(value, roundTo) {
   if (roundTo <= 0) return round2(value);
@@ -137,7 +143,7 @@ if (menuToggle && mobileMenu) {
   });
 }
 
-// Hero sample signal terminal
+// Hero sample signal specimen
 const previewEl = document.getElementById('signal-preview');
 const tabBtns = document.querySelectorAll('.tab-btn');
 const termBankBtns = document.querySelectorAll('.bank-chip');
@@ -176,8 +182,8 @@ function renderSample() {
 
     <div class="sig-edge-bar">
       <div class="sig-edge-labels">
-        <span>Suma implícita: ${marginPct.toFixed(2)}%</span>
-        <span class="accent">Margen libre: +${edgePct.toFixed(2)}%</span>
+        <span>Suma implícita ${marginPct.toFixed(2)}%</span>
+        <span class="accent">Margen libre +${edgePct.toFixed(2)}%</span>
       </div>
       <div class="sig-edge-track" aria-hidden="true">
         <div class="sig-edge-fill" style="width: ${marginPct.toFixed(2)}%"></div>
@@ -192,7 +198,7 @@ function renderSample() {
         <div class="sig-leg">
           <div class="sig-leg-left">
             <span class="sig-pick">${escapeHtml(leg.pick)}</span>
-            <span class="sig-bookie">🏠 ${escapeHtml(leg.bookie)}</span>
+            <span class="sig-bookie">${escapeHtml(leg.bookie)}</span>
           </div>
           <div class="sig-leg-right">
             <div class="sig-odd">${leg.price.toFixed(2)}</div>
@@ -204,8 +210,8 @@ function renderSample() {
     </div>
 
     <div class="sig-foot">
-      <span>Capital invertido: ${fmtMoney(calc.totalStake, 1)} (redondeo 1 €)</span>
-      <span class="accent">Neto mín: +${calc.minNetProfit.toFixed(2)} €</span>
+      <span>Invertido: ${fmtMoney(calc.totalStake, 1)} (redondeo 1 €)</span>
+      <span class="accent">Neto mín.: +${calc.minNetProfit.toFixed(2)} €</span>
     </div>
   `;
 
@@ -251,12 +257,12 @@ if (copySignalBtn) {
     if (!lastRenderedSummary) return;
     try {
       await navigator.clipboard.writeText(lastRenderedSummary);
-      copySignalBtn.textContent = 'Copiado ✓';
+      copySignalBtn.textContent = 'Copiado';
     } catch {
-      copySignalBtn.textContent = 'Resumen listo';
+      copySignalBtn.textContent = 'Listo';
     }
     setTimeout(() => {
-      copySignalBtn.textContent = 'Copiar resumen';
+      copySignalBtn.textContent = 'Copiar';
     }, 1800);
   });
 }
@@ -297,19 +303,19 @@ function renderDelayedShowcase(payload) {
 
   kpiWrap.innerHTML = `
     <div class="showcase-kpi">
-      <span class="kpi-lbl">DETECCIONES EN HISTÓRICO</span>
+      <span class="kpi-lbl">Detecciones en histórico</span>
       <strong class="kpi-val">${Number(stats.total_detected || 0).toLocaleString('es-ES')}</strong>
-      <span class="kpi-sub">Deduplicadas en SQLite real</span>
-    </div>
-    <div class="showcase-kpi is-highlight">
-      <span class="kpi-lbl">SEÑALES +12% O MÁS</span>
-      <strong class="kpi-val accent">${Number(stats.total_12_plus || 0).toLocaleString('es-ES')}</strong>
-      <span class="kpi-sub">Filtro público mínimo +12.0% ROI</span>
+      <span class="kpi-sub">Deduplicadas en SQLite</span>
     </div>
     <div class="showcase-kpi">
-      <span class="kpi-lbl">CASAS GRANDES (+12%)</span>
+      <span class="kpi-lbl">Señales ≥ +12% ROI</span>
+      <strong class="kpi-val accent">${Number(stats.total_12_plus || 0).toLocaleString('es-ES')}</strong>
+      <span class="kpi-sub">Umbral del escaparate público</span>
+    </div>
+    <div class="showcase-kpi">
+      <span class="kpi-lbl">Casas líderes (+12%)</span>
       <strong class="kpi-val kpi-val-sm">${escapeHtml(topHouses || 'Betfair · Bet365 · Winamax · William Hill')}</strong>
-      <span class="kpi-sub">Siempre ≥ 1 operador líder regulado</span>
+      <span class="kpi-sub">Siempre al menos 1 operador líder .es</span>
     </div>
   `;
 
@@ -328,7 +334,7 @@ function renderDelayedShowcase(payload) {
             <div class="sc-leg">
               <div class="sc-leg-main">
                 <span class="sc-leg-pick">${escapeHtml(leg.pick)}</span>
-                <span class="sc-leg-bookie ${isBig ? 'is-big' : ''}">🏠 ${escapeHtml(leg.bookie)}</span>
+                <span class="sc-leg-bookie ${isBig ? 'is-big' : ''}">${escapeHtml(leg.bookie)}</span>
               </div>
               <div class="sc-leg-right">
                 <span class="sc-leg-odd">@ ${Number(leg.price).toFixed(2)}</span>
@@ -342,13 +348,13 @@ function renderDelayedShowcase(payload) {
         <article class="showcase-card">
           <div class="sc-head">
             <span class="sc-roi">+${Number(item.roi_percent).toFixed(2)}% ROI</span>
-            <span class="sc-league">${escapeHtml(item.sport_league)}</span>
+            <span class="sc-league">${escapeHtml(stripLeadingEmoji(item.sport_league))}</span>
           </div>
           <h3 class="sc-match">${escapeHtml(item.match)}</h3>
-          <div class="sc-meta">Inicio ref.: ${escapeHtml(item.starts_at || formatMadridTime(item.detected_at))}</div>
+          <div class="sc-meta">Inicio ref. ${escapeHtml(item.starts_at || formatMadridTime(item.detected_at))}</div>
           <div class="sc-legs">${legsHtml}</div>
           <div class="sc-foot">
-            <span class="sc-big-tag">Casa líder: ${escapeHtml((item.big_bookies || []).join(' + '))}</span>
+            <span class="sc-big-tag">${escapeHtml((item.big_bookies || []).join(' + '))}</span>
             <a href="${calcHref}" class="sc-calc-link">Probar en calculadora →</a>
           </div>
         </article>`;
@@ -388,11 +394,18 @@ async function initDelayedShowcase() {
     const payload = await resp.json();
     renderDelayedShowcase(payload);
   } catch {
-    // Fallback local usando únicamente los ejemplos verificados +12% con casas grandes
     renderDelayedShowcase({
-      stats: { total_detected: 4736, total_12_plus: 388, big_bookies_12_plus: { Betfair: 87, Bet365: 68, Winamax: 52, 'William Hill': 23 } },
+      stats: {
+        total_detected: 4742,
+        total_12_plus: 388,
+        big_bookies_12_plus: { Betfair: 87, Bet365: 68, Winamax: 52, 'William Hill': 23 },
+      },
       featured_cases: SAMPLES.map((s) => {
-        const calc = evaluateArbitrage(s.legs.map((l) => l.price), 100, 0);
+        const calc = evaluateArbitrage(
+          s.legs.map((l) => l.price),
+          100,
+          0
+        );
         return {
           roi_percent: Number(calc.roiPercent.toFixed(2)),
           match: s.match,
@@ -434,7 +447,11 @@ document.addEventListener('click', (ev) => {
   const link = ev.target && ev.target.closest ? ev.target.closest('a[href*="t.me/"]') : null;
   if (!link) return;
   const href = link.getAttribute('href') || '';
-  if (href.includes('t.me/+') || href.includes('start=comunidad') || /start=web_(index|calc)_/.test(href)) sendFunnelBeacon('click_free_community');
-  else if (href.includes('t.me/pincianoradar')) sendFunnelBeacon('click_free_channel');
-  else if (href.includes('surebets_pinciano_bot')) sendFunnelBeacon('click_vip_bot');
+  if (href.includes('t.me/+') || href.includes('start=comunidad') || /start=web_(index|calc)_/.test(href)) {
+    sendFunnelBeacon('click_free_community');
+  } else if (href.includes('t.me/pincianoradar')) {
+    sendFunnelBeacon('click_free_channel');
+  } else if (href.includes('surebets_pinciano_bot')) {
+    sendFunnelBeacon('click_vip_bot');
+  }
 });

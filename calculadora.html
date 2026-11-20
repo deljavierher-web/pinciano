@@ -18,7 +18,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://pinciano.es/calculadora" />
     <meta property="og:locale" content="es_ES" />
-    <meta name="theme-color" content="#080b10" />
+    <meta name="theme-color" content="#f7f6f2" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -73,49 +73,39 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="bg-ambient" aria-hidden="true"></div>
-
     <header class="topbar" id="topbar">
       <div class="container topbar-inner">
         <a href="index.html" class="brand" aria-label="Pinciano Radar inicio">
           <span class="brand-emblem" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="26" height="26" fill="none">
-              <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-opacity="0.24" stroke-width="1.5" />
-              <circle cx="16" cy="16" r="8" stroke="currentColor" stroke-opacity="0.52" stroke-width="1.5" />
-              <path d="M16 16L25 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-              <circle cx="16" cy="16" r="2.75" fill="currentColor" />
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+              <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-opacity="0.28" stroke-width="1.25" />
+              <circle cx="12" cy="12" r="5.2" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" />
+              <path d="M12 12L18.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <circle cx="12" cy="12" r="2" fill="#0b6b46" />
             </svg>
           </span>
-          <span class="brand-wordmark">PINCIANO</span>
-          <span class="brand-tag">RADAR</span>
+          <span class="brand-wordmark">Pinciano</span>
+          <span class="brand-tag">Radar</span>
         </a>
 
         <nav class="nav-links" aria-label="Navegación principal">
           <a href="index.html">Inicio</a>
+          <a href="calculadora.html" class="is-current" aria-current="page">Calculadora</a>
           <a href="/guias/">Guías</a>
-          <a href="index.html#escaparate">Escaparate +12%</a>
-          <a href="index.html#metodo">Método</a>
-          <a href="index.html#acceso">Canales</a>
+          <a href="index.html#escaparate">Escaparate</a>
+          <a href="index.html#acceso">Acceso</a>
           <a
             href="https://t.me/surebets_pinciano_bot?start=comunidad"
             target="_blank"
             rel="noopener"
             class="nav-cta"
           >
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
-              <path
-                d="M21 4L3 11.2L9.6 13.7L17.5 7.7L11.4 14.5L11.2 19.3L14.5 16L18.4 18.9L21 4Z"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linejoin="round"
-              />
-            </svg>
             Comunidad Free
           </a>
         </nav>
@@ -136,7 +126,7 @@
 
       <div class="mobile-menu" id="mobile-menu" hidden>
         <div class="container mobile-menu-inner">
-          <a href="index.html">← Volver a la landing</a>
+          <a href="index.html">← Volver al inicio</a>
           <a href="/guias/">Guías de surebets</a>
           <a href="index.html#escaparate">Escaparate +12%</a>
           <a href="index.html#metodo">Método y filtros</a>
@@ -147,7 +137,7 @@
             rel="noopener"
             class="btn btn-primary full"
           >
-            Entrar a la Comunidad Free
+            Entrar gratis en Telegram
           </a>
         </div>
       </div>
@@ -158,21 +148,19 @@
         <div class="container">
           <div class="calc-page-head">
             <div>
-              <div class="eyebrow">CALCULADORA DEDICADA · SOLO 2 VÍAS</div>
-              <h1>Calcula por <span class="accent">límite de casa</span> o capital total.</h1>
+              <span class="kicker">Calculadora 2 vías · Margen M &lt; 1</span>
+              <h1>Reparto por <em>límite de casa</em> o capital total.</h1>
               <p class="muted-copy">
-                Si una casa te limita la apuesta máxima, escribe ese límite directamente en su casilla: recalculamos al instante cuánto debes meter en la otra casa para cubrir ambos resultados.
+                Escribe el máximo permitido en la casa restrictiva para calcular al instante la cobertura exacta en la contrapartida, o fija un capital total.
               </p>
             </div>
-            <div class="calc-page-head-actions">
-              <a href="index.html" class="btn btn-ghost">← Volver a la landing</a>
-            </div>
+            <a href="index.html" class="btn btn-ghost">← Volver al inicio</a>
           </div>
 
           <!-- Context banner when opened from encrypted Telegram alert URL (?s=...) -->
           <div class="signal-context-banner" id="signal-banner" hidden>
             <div class="signal-context-main">
-              <span class="signal-context-badge">SEÑAL PRECARGADA DESDE TELEGRAM</span>
+              <span class="signal-context-badge">Señal cargada</span>
               <strong id="signal-event-title">Partido</strong>
               <span class="signal-context-meta" id="signal-event-meta"></span>
             </div>
@@ -184,125 +172,126 @@
           </div>
 
           <div class="calc-workspace">
-            <div class="calc-panel calc-panel-wide">
-              <div class="calc-controls-top">
-                <div class="mode-status-group">
-                  <span class="mode-pill" id="mode-pill">Modo activo: Capital total</span>
-                  <button type="button" class="mini-chip" id="reset-limits-btn" hidden>
-                    Volver a Capital
-                  </button>
-                </div>
-
-                <label class="round-toggle">
-                  <input type="checkbox" id="round-toggle" checked />
-                  <span class="toggle-track" aria-hidden="true"></span>
-                  <span>Redondear contrapartida a 1 €</span>
-                </label>
+            <div class="calc-controls-top">
+              <div class="mode-status-group">
+                <span class="mode-pill" id="mode-pill">Modo: Capital total</span>
+                <button type="button" class="mini-chip" id="reset-limits-btn" hidden>
+                  Volver a capital
+                </button>
               </div>
 
-              <!-- 2-WAY BOOKMAKER CARDS WITH DIRECT MAX STAKE / LIMIT INPUT -->
-              <div class="legs-editor-grid">
-                <div class="leg-editor-card" id="card-leg-a">
-                  <div class="leg-editor-head">
-                    <div>
-                      <span class="leg-card-kicker" id="bookie-a-lbl">🏠 Casa 1</span>
-                      <div class="leg-card-pick" id="pick-a-lbl">Selección 1</div>
+              <label class="round-toggle">
+                <input type="checkbox" id="round-toggle" checked />
+                <span class="toggle-track" aria-hidden="true"></span>
+                <span>Redondear contrapartida a 1 €</span>
+              </label>
+            </div>
+
+            <div class="calc-split">
+              <!-- LEFT: INPUTS -->
+              <div class="calc-inputs-col">
+                <div class="legs-editor-grid">
+                  <div class="leg-editor-card" id="card-leg-a">
+                    <div class="leg-editor-head">
+                      <div>
+                        <span class="leg-card-kicker" id="bookie-a-lbl">Casa 1</span>
+                        <div class="leg-card-pick" id="pick-a-lbl">Selección 1</div>
+                      </div>
+                      <span class="leg-state-badge" id="badge-leg-a">Auto</span>
                     </div>
-                    <span class="leg-state-badge" id="badge-leg-a">Auto</span>
-                  </div>
 
-                  <div class="leg-fields-row">
-                    <label class="field">
-                      <span>Cuota 1</span>
-                      <input
-                        id="odd-a"
-                        type="text"
-                        inputmode="decimal"
-                        autocomplete="off"
-                        value="3.25"
-                        placeholder="ej. 3.25"
-                      />
-                    </label>
-                    <label class="field">
-                      <span>Apuesta / Máx. (€)</span>
-                      <input
-                        id="stake-a"
-                        type="text"
-                        inputmode="decimal"
-                        autocomplete="off"
-                        placeholder="Máx. €"
-                      />
-                    </label>
-                  </div>
-                  <div class="leg-editor-hint" id="hint-leg-a">
-                    Escribe aquí si la Casa 1 te limita el importe máximo.
-                  </div>
-                </div>
-
-                <div class="leg-editor-card" id="card-leg-b">
-                  <div class="leg-editor-head">
-                    <div>
-                      <span class="leg-card-kicker" id="bookie-b-lbl">🏠 Casa 2</span>
-                      <div class="leg-card-pick" id="pick-b-lbl">Selección 2</div>
+                    <div class="leg-fields-row">
+                      <label class="field">
+                        <span>Cuota 1</span>
+                        <input
+                          id="odd-a"
+                          type="text"
+                          inputmode="decimal"
+                          autocomplete="off"
+                          value="3.25"
+                          placeholder="3.25"
+                        />
+                      </label>
+                      <label class="field">
+                        <span>Apuesta / Máx. (€)</span>
+                        <input
+                          id="stake-a"
+                          type="text"
+                          inputmode="decimal"
+                          autocomplete="off"
+                          placeholder="Máx. €"
+                        />
+                      </label>
                     </div>
-                    <span class="leg-state-badge" id="badge-leg-b">Auto</span>
+                    <div class="leg-editor-hint" id="hint-leg-a">
+                      Escribe aquí si esta casa limita el importe máximo.
+                    </div>
                   </div>
 
-                  <div class="leg-fields-row">
-                    <label class="field">
-                      <span>Cuota 2</span>
+                  <div class="leg-editor-card" id="card-leg-b">
+                    <div class="leg-editor-head">
+                      <div>
+                        <span class="leg-card-kicker" id="bookie-b-lbl">Casa 2</span>
+                        <div class="leg-card-pick" id="pick-b-lbl">Selección 2</div>
+                      </div>
+                      <span class="leg-state-badge" id="badge-leg-b">Auto</span>
+                    </div>
+
+                    <div class="leg-fields-row">
+                      <label class="field">
+                        <span>Cuota 2</span>
+                        <input
+                          id="odd-b"
+                          type="text"
+                          inputmode="decimal"
+                          autocomplete="off"
+                          value="1.85"
+                          placeholder="1.85"
+                        />
+                      </label>
+                      <label class="field">
+                        <span>Apuesta / Máx. (€)</span>
+                        <input
+                          id="stake-b"
+                          type="text"
+                          inputmode="decimal"
+                          autocomplete="off"
+                          placeholder="Máx. €"
+                        />
+                      </label>
+                    </div>
+                    <div class="leg-editor-hint" id="hint-leg-b">
+                      Escribe aquí si esta casa limita el importe máximo.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bankroll-bar-card">
+                  <div class="bankroll-input-wrap">
+                    <label class="field-inline">
+                      <span>Capital total (€)</span>
                       <input
-                        id="odd-b"
+                        id="bankroll"
                         type="text"
                         inputmode="decimal"
                         autocomplete="off"
-                        value="1.85"
-                        placeholder="ej. 1.85"
+                        value="100"
                       />
                     </label>
-                    <label class="field">
-                      <span>Apuesta / Máx. (€)</span>
-                      <input
-                        id="stake-b"
-                        type="text"
-                        inputmode="decimal"
-                        autocomplete="off"
-                        placeholder="Máx. €"
-                      />
-                    </label>
+                    <div class="bank-presets-btns">
+                      <button type="button" class="mini-chip" data-bank="50">50 €</button>
+                      <button type="button" class="mini-chip active" data-bank="100">100 €</button>
+                      <button type="button" class="mini-chip" data-bank="250">250 €</button>
+                      <button type="button" class="mini-chip" data-bank="500">500 €</button>
+                    </div>
                   </div>
-                  <div class="leg-editor-hint" id="hint-leg-b">
-                    Escribe aquí si la Casa 2 te limita el importe máximo.
-                  </div>
+                  <span class="bankroll-bar-note">
+                    Si introduces un límite en Casa 1 o Casa 2, el capital total se recalcula solo.
+                  </span>
                 </div>
               </div>
 
-              <!-- OPTIONAL TOTAL BANKROLL ROW -->
-              <div class="bankroll-bar-card">
-                <div class="bankroll-input-wrap">
-                  <label class="field-inline">
-                    <span>Capital total opcional (€)</span>
-                    <input
-                      id="bankroll"
-                      type="text"
-                      inputmode="decimal"
-                      autocomplete="off"
-                      value="100"
-                    />
-                  </label>
-                  <div class="bank-presets-btns">
-                    <button type="button" class="mini-chip" data-bank="50">50 €</button>
-                    <button type="button" class="mini-chip active" data-bank="100">100 €</button>
-                    <button type="button" class="mini-chip" data-bank="250">250 €</button>
-                    <button type="button" class="mini-chip" data-bank="500">500 €</button>
-                  </div>
-                </div>
-                <span class="bankroll-bar-note">
-                  Si ya pusiste un límite en Casa 1 o Casa 2, este total se ajusta automáticamente.
-                </span>
-              </div>
-
-              <!-- RESULTS -->
+              <!-- RIGHT: LIVE RESULTS SHEET -->
               <div class="calc-results" id="calc-results">
                 <div class="calc-verdict is-valid" id="calc-verdict">
                   <span class="verdict-dot" aria-hidden="true"></span>
@@ -310,21 +299,21 @@
                 </div>
 
                 <div class="limit-callout" id="limit-callout">
-                  <strong id="limit-callout-text">Calculando reparto…</strong>
+                  <span id="limit-callout-text">Calculando reparto…</span>
                 </div>
 
                 <div class="res-metrics">
                   <div class="res-metric-box">
-                    <span>Margen implícito (M)</span>
-                    <strong id="res-m" class="mono">0.9529</strong>
+                    <span>Margen (M)</span>
+                    <strong id="res-m" class="mono">0.8482</strong>
                   </div>
                   <div class="res-metric-box">
                     <span>ROI teórico</span>
-                    <strong id="res-roi" class="mono accent">+4.94%</strong>
+                    <strong id="res-roi" class="mono accent">+17.89%</strong>
                   </div>
                   <div class="res-metric-box">
-                    <span>Beneficio neto mín.</span>
-                    <strong id="res-min-net" class="mono accent">+4.55 €</strong>
+                    <span>Neto mínimo</span>
+                    <strong id="res-min-net" class="mono accent">+17.00 €</strong>
                   </div>
                 </div>
 
@@ -334,8 +323,8 @@
                     <span class="mono" id="res-total-stake">Total invertido: 100 €</span>
                   </div>
                   <div class="alloc-bar" id="alloc-bar" aria-hidden="true">
-                    <div class="alloc-seg seg-0" style="width: 49%"></div>
-                    <div class="alloc-seg seg-1" style="width: 51%"></div>
+                    <div class="alloc-seg seg-0" style="width: 36%"></div>
+                    <div class="alloc-seg seg-1" style="width: 64%"></div>
                   </div>
                 </div>
 
@@ -350,27 +339,27 @@
                   </button>
                 </div>
               </div>
+            </div>
 
-              <!-- QUICK PRESETS (SOLO +12% CON CASAS GRANDES) -->
-              <div class="preset-wrap">
-                <span class="preset-label">EJEMPLOS REALES +12% CON CASAS PRINCIPALES</span>
-                <div class="preset-row">
-                  <button type="button" class="preset-btn" data-preset="limit">
-                    Límite Bet365/Winamax: 4.00 vs 1.57 (máx 30 €)
-                  </button>
-                  <button type="button" class="preset-btn" data-preset="football">
-                    Fútbol · Bet365: 3.25 vs 1.85 (+17.89%)
-                  </button>
-                  <button type="button" class="preset-btn" data-preset="nba">
-                    NBA · Betfair ES: 3.00 vs 1.93 (+17.44%)
-                  </button>
-                  <button type="button" class="preset-btn" data-preset="winamax">
-                    Córners · Winamax ES: 2.95 vs 1.85 (+13.70%)
-                  </button>
-                  <button type="button" class="preset-btn" data-preset="none">
-                    Sin surebet: 1.90 vs 1.95
-                  </button>
-                </div>
+            <!-- QUICK PRESETS (SOLO +12% CON CASAS GRANDES) -->
+            <div class="preset-wrap">
+              <span class="preset-label">Ejemplos reales (+12%)</span>
+              <div class="preset-row">
+                <button type="button" class="preset-btn" data-preset="limit">
+                  Límite 30 € · Winamax/Bet365
+                </button>
+                <button type="button" class="preset-btn" data-preset="football">
+                  Fútbol · Bet365 (+17.89%)
+                </button>
+                <button type="button" class="preset-btn" data-preset="nba">
+                  NBA · Betfair (+17.44%)
+                </button>
+                <button type="button" class="preset-btn" data-preset="winamax">
+                  Córners · Winamax (+13.70%)
+                </button>
+                <button type="button" class="preset-btn" data-preset="none">
+                  Sin surebet (1.90 / 1.95)
+                </button>
               </div>
             </div>
           </div>
@@ -378,64 +367,64 @@
       </section>
 
       <!-- SEO GUIDE FOR LIMITS IN SPANISH BOOKIES -->
-      <section class="section section-bordered calc-seo-guide" id="guia-limites">
+      <section class="section calc-seo-guide" id="guia-limites">
         <div class="container">
           <div class="section-head">
-            <div class="eyebrow">GUÍA PRÁCTICA EN ESPAÑA (.ES)</div>
+            <span class="kicker">Guía práctica · Operadores .es</span>
             <h2>Cómo cubrir límites de apuesta en Bet365, Winamax, Sportium o Betfair.</h2>
             <p class="muted-copy">
-              En mercados con desajustes altos (<strong>+12% ROI o más</strong>), es habitual que una casa limite el importe máximo por ticket antes de corregir la cuota. Si apuestas primero la pata con límite y cubres después en la otra casa, bloqueas el retorno independientemente del marcador.
+              En desajustes altos (<strong>+12% ROI o más</strong>), es frecuente que una casa reduzca el importe máximo por boleto antes de ajustar la cuota. Confirmar primero la pata limitada y cubrir después en la contrapartida permite cerrar el reparto con precisión.
             </p>
           </div>
 
-          <div class="steps-grid">
-            <article class="step-card">
-              <span class="step-num">01 · PATAS CON LÍMITE</span>
+          <div class="method-grid">
+            <article class="method-item">
+              <span class="method-num">01 · PATA LIMITADA</span>
               <h3>Fija el máximo en la casa restrictiva</h3>
               <p>
-                Escribe tu tope permitido directamente en <em>Apuesta / Máx. (€)</em> de la Casa 1 o Casa 2 (por ejemplo 30 € en Winamax o Bet365). La herramienta bloquea esa pata y calcula la cobertura exacta en Sportium, Betfair o la contrapartida elegida.
+                Escribe tu tope permitido directamente en <em>Apuesta / Máx. (€)</em> de Casa 1 o Casa 2 (por ejemplo 30 € en Winamax o Bet365). La calculadora bloquea esa pata y ajusta la cobertura exacta en la contrapartida.
               </p>
             </article>
 
-            <article class="step-card">
-              <span class="step-num">02 · REDONDEO ANTI-DETECCIÓN</span>
-              <h3>Redondea la contrapartida a 1 €</h3>
+            <article class="method-item">
+              <span class="method-num">02 · REDONDEO AL EURO</span>
+              <h3>Evita decimales sueltos</h3>
               <p>
-                Evitar decimales sueltos reduce señales algorítmicas de arbitraje. Activa el redondeo a 1 € para ajustar la contrapartida al euro entero y confirmar al momento que ambos escenarios siguen en positivo.
+                Activa el redondeo a 1 € para ajustar la contrapartida al euro entero y confirmar al instante que el beneficio neto sigue siendo positivo en los dos resultados posibles.
               </p>
             </article>
 
-            <article class="step-card">
-              <span class="step-num">03 · SEÑALES EN DIRECTO</span>
-              <h3>Del escaparate +12% a Telegram</h3>
+            <article class="method-item">
+              <span class="method-num">03 · SEÑALES EN DIRECTO</span>
+              <h3>Del escaparate a Telegram</h3>
               <p>
-                Consulta casos históricos en nuestro <a href="index.html#escaparate" class="inline-link">Escaparate +12%</a>, entra gratis en la <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">Comunidad Free</a> o solicita el radar en vivo T+0 en <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">@surebets_pinciano_bot</a>.
+                Revisa casos archivados en el <a href="index.html#escaparate" class="inline-link">escaparate +12%</a>, entra gratis a la <a href="https://t.me/surebets_pinciano_bot?start=web" target="_blank" rel="noopener" class="inline-link">Comunidad Free</a> o consulta las <a href="/guias/" class="inline-link">guías prácticas</a>.
               </p>
             </article>
           </div>
 
-          <div class="steps-grid">
-            <article class="step-card">
-              <span class="step-num">FAQ 01 · EJEMPLO LÍMITE +14,9%</span>
+          <div class="calc-guide-faqs">
+            <article class="calc-guide-faq">
+              <span class="method-num">EJEMPLO · LÍMITE +14,9%</span>
               <h3>¿Cómo funciona si una casa me capa la apuesta máxima?</h3>
               <p>
-                En vez de dividir una banca fija, introduce tu tope en Casa 1 o Casa 2. Ejemplo ilustrativo (+14,9% teórico): si <strong>Bet365</strong> a <code>2.35</code> te limita a <strong>40 €</strong> y <strong>Winamax</strong> ofrece <code>2.25</code>, fija 40 € y cubres con <strong>42 €</strong> en Winamax (82 € totales; retorno bruto ilustrativo de 94,00 € o 94,50 €). Verifica siempre cuotas en vivo (+18).
+                Introduce tu tope en Casa 1 o Casa 2 en lugar de dividir una banca fija. Ejemplo ilustrativo (+14,9% teórico): si <strong>Bet365</strong> a <code>2.35</code> limita a <strong>40 €</strong> y <strong>Winamax</strong> ofrece <code>2.25</code>, cubres con <strong>42 €</strong> en Winamax (82 € totales; retorno bruto ilustrativo de 94,00 € o 94,50 €). Verifica siempre las cuotas en vivo (+18).
               </p>
             </article>
 
-            <article class="step-card">
-              <span class="step-num">FAQ 02 · EJEMPLO 2 VÍAS +15,2%</span>
+            <article class="calc-guide-faq">
+              <span class="method-num">EJEMPLO · 2 VÍAS +15,2%</span>
               <h3>¿Cómo evitar errores con céntimos en coberturas de 2 vías?</h3>
               <p>
-                Trabaja solo con mercados de dos resultados sin empate y redondeo a 1 €. Ejemplo ilustrativo (+15,2% teórico): <code>3.20</code> en <strong>Sportium</strong> (<strong>35 €</strong>) y <code>1.80</code> en <strong>Codere</strong> (<strong>62 €</strong>) suman 97 € para retorno bruto ilustrativo de 112,00 € o 111,60 €. Confirma primero el boleto más restrictivo (+18).
+                Opera únicamente sobre mercados de dos desenlaces sin empate y redondeo a 1 €. Ejemplo ilustrativo (+15,2% teórico): <code>3.20</code> en <strong>Sportium</strong> (<strong>35 €</strong>) y <code>1.80</code> en <strong>Codere</strong> (<strong>62 €</strong>) suman 97 € para un retorno bruto ilustrativo de 112,00 € o 111,60 €. Confirma primero el boleto más restrictivo (+18).
               </p>
             </article>
 
-            <article class="step-card">
-              <span class="step-num">FAQ 03 · CASAS ESPAÑOLAS .ES</span>
+            <article class="calc-guide-faq">
+              <span class="method-num">ALCANCE · ESPAÑA (.ES)</span>
               <h3>¿Sirve para casas reguladas en España?</h3>
               <p>
-                Sí. Está pensada para cuotas decimales europeas de operadores con licencia en España (<strong>Bet365, Winamax, Sportium, Betfair, Codere</strong>, entre otros). Herramienta informativa para mayores de 18 años: revisa siempre reglas de mercado (prórrogas o retiradas en tenis) y límites vigentes antes de apostar.
+                Sí. Trabaja con cuotas decimales europeas de operadores con licencia en España (<strong>Bet365, Winamax, Sportium, Betfair, Codere</strong> y más). Herramienta informativa para mayores de 18 años: revisa siempre reglas de mercado (prórrogas o retiradas en tenis) antes de apostar.
               </p>
             </article>
           </div>
@@ -447,9 +436,10 @@
       <div class="container footer-inner">
         <div class="footer-brand">
           <span class="brand-mark" aria-hidden="true"></span>
-          <span>PINCIANO · @surebets_pinciano_bot</span>
+          <span>Pinciano Radar · @surebets_pinciano_bot</span>
         </div>
-        <nav class="footer-links" aria-label="Información legal">
+        <nav class="footer-links" aria-label="Información legal y recursos">
+          <a href="/guias/">Guías</a>
           <a href="/aviso-legal">Aviso legal</a>
           <a href="/privacidad">Privacidad</a>
           <a href="/cookies">Cookies</a>
