@@ -75,7 +75,7 @@
       var m = /[?&]c=([A-Za-z0-9_-]{1,64})/.exec(location.search);
       if (!m) return;
       var code = m[1].toLowerCase();
-      if (/^(ig_bio|ig_f[1-5]|ad_ig_[1-5]|yt_f[1-5]|x_entrada|tg_entrada|web_empieza)$/.test(code)) {
+      if (/^(ig_bio|ig_f[1-5]|ad_ig_[1-5]|tg_entrada|web_empieza)$/.test(code)) {
         document.getElementById("cta").href = "/ir/" + code;
       }
     })();

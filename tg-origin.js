@@ -1,5 +1,5 @@
 /* Atribución de altas: reescribe los enlaces ?start=comunidad y ?start=web del bot a
-   web_<página>_<origen> (solo [A-Za-z0-9_-], <= 64). El origen sale de utm_source o del
+   web_<página>_<origen>, y ?start=fundadores a web_<página>_fund_<origen> (solo [A-Za-z0-9_-], <= 64). El origen sale de utm_source o del
    referrer de la primera visita de la sesión (sessionStorage). Sin cookies ni red. */
 (function () {
   'use strict';
@@ -57,9 +57,16 @@
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(start)) return;
 
   // Botones ?start=comunidad y enlaces de texto ?start=web: ambos pasan a web_<página>_<origen>.
-  var sels = ['a[href="' + BOT + 'comunidad"]', 'a[href="' + BOT + 'web"]'];
-  for (var s = 0; s < sels.length; s++) {
-    var links = document.querySelectorAll(sels[s]);
-    for (var i = 0; i < links.length; i++) links[i].setAttribute('href', BOT + start);
+  // CTA «48h VIP gratis» (?start=fundadores): web_<página>_fund_<origen> (el bot sigue mostrando el texto Fundadores).
+  var startFund = 'web_' + page + '_fund_' + origin;
+  var map = [
+    ['a[href="' + BOT + 'comunidad"]', start],
+    ['a[href="' + BOT + 'web"]', start],
+    ['a[href="' + BOT + 'fundadores"]', /^[A-Za-z0-9_-]{1,64}$/.test(startFund) ? startFund : null]
+  ];
+  for (var s = 0; s < map.length; s++) {
+    if (!map[s][1]) continue;
+    var links = document.querySelectorAll(map[s][0]);
+    for (var i = 0; i < links.length; i++) links[i].setAttribute('href', BOT + map[s][1]);
   }
 })();

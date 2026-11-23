@@ -394,10 +394,13 @@ export function renderPanelHtml() {
     .btn-act { min-height: 42px; border-radius: 10px; font-weight: 700; font-size: 0.86rem; border: 1px solid var(--border); background: var(--surface-2); color: inherit; }
     .btn-act.extend { border-color: var(--border-accent); color: var(--accent); background: var(--accent-soft); }
     .btn-act.kick { border-color: rgba(255,92,108,0.35); color: var(--danger); background: var(--danger-soft); }
+    .btn-act.subtle { border-color: var(--border); color: var(--muted); background: var(--surface-2); font-size: 0.78rem; min-height: 36px; margin-top: 8px; width: 100%; }
     .btn-act:disabled { opacity: 0.45; }
+    .vip-badges { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
     .b-trial { color: #7DD3FC; background: rgba(125,211,252,0.12); border-color: rgba(125,211,252,0.3); }
     .b-paid { color: var(--accent); background: var(--accent-soft); border-color: var(--border-accent); }
     .b-founder { color: #FCD34D; background: rgba(252,211,77,0.12); border-color: rgba(252,211,77,0.35); }
+    .b-courtesy { color: #C4B5FD; background: rgba(196,181,253,0.12); border-color: rgba(196,181,253,0.35); }
     .vip-pending { margin-top: 10px; font-size: 0.78rem; padding: 8px 10px; border-radius: 9px; background: rgba(192,132,252,0.12); border: 1px solid rgba(192,132,252,0.3); color: #E9D5FF; }
     .log-row { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; font-size: 0.8rem; }
     .log-ico { font-size: 0.95rem; line-height: 1.2; }
@@ -425,9 +428,18 @@ export function renderPanelHtml() {
     .tg-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
     .m-actions { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
     .m-err { color: var(--danger); font-size: 0.8rem; min-height: 1em; margin-bottom: 8px; }
-    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
-    .seg button { min-height: 40px; border-radius: 9px; font-weight: 700; font-size: 0.86rem; color: var(--muted); }
+    .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 4px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .seg button { min-height: 40px; border-radius: 9px; font-weight: 700; font-size: 0.82rem; color: var(--muted); }
     .seg button.on { background: var(--accent-soft); color: var(--accent); }
+    .b-ref { color: #38BDF8; background: rgba(56,189,248,0.12); border-color: rgba(56,189,248,0.35); }
+    .ref-prog { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .ref-box { padding: 8px 10px; border-radius: 9px; background: var(--surface-2); border: 1px solid var(--border); font-size: 0.78rem; }
+    .ref-box .k { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .ref-box .v { font-family: var(--font-mono); font-weight: 700; font-size: 1rem; margin-top: 2px; color: var(--accent); }
+    .ref-box .s { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+    .ref-inv-list { display: grid; gap: 6px; margin-top: 8px; }
+    .ref-inv-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 9px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); font-size: 0.78rem; }
+    .ref-inv-meta { font-size: 0.7rem; color: var(--muted); }
     .ul-filters { display: grid; gap: 6px; margin-top: 10px; font-size: 0.8rem; }
     .ul-filters .k { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
     .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
@@ -513,10 +525,11 @@ export function renderPanelHtml() {
       </div>
     </section>
     <!-- 5. VIP -->
-    <section class="view" id="view-vip" aria-label="Clientes VIP y Ultra">
+    <section class="view" id="view-vip" aria-label="Clientes VIP, Ultra y Referidos">
       <div class="seg" id="vip-seg">
-        <button type="button" class="on" data-seg="vip">💎 Comunidad VIP</button>
-        <button type="button" data-seg="ultra">👑 Bot Ultra</button>
+        <button type="button" class="on" data-seg="vip">💎 VIP</button>
+        <button type="button" data-seg="ultra">👑 Ultra</button>
+        <button type="button" data-seg="refs">🤝 Referidos</button>
       </div>
       <div id="pane-ultra" style="display:none;gap:12px">
         <div class="kpi-grid" id="ul-kpis"></div>
@@ -531,6 +544,19 @@ export function renderPanelHtml() {
         </div>
         <div class="list" id="ul-list"></div>
       </div>
+      <div id="pane-refs" style="display:none;gap:12px">
+        <div class="kpi-grid" id="ref-kpis"></div>
+        <div class="card">
+          <div class="card-title"><span>Miembros que han referido</span><span class="badge mono" id="ref-count">0</span></div>
+          <div class="chips" id="ref-flt" style="margin-bottom:0">
+            <button type="button" class="chip on" data-rf="all">Todos</button>
+            <button type="button" class="chip" data-rf="vip">Con pago VIP</button>
+            <button type="button" class="chip" data-rf="ultra">Con premio Ultra</button>
+          </div>
+          <input type="search" class="vip-search" id="ref-q" placeholder="Buscar padrino o invitado por nombre, @alias o ID" autocomplete="off" />
+        </div>
+        <div class="list" id="ref-list"></div>
+      </div>
       <div id="pane-vip" style="display:grid;gap:12px">
       <div class="kpi-grid" id="vip-kpis"></div>
       <div class="card">
@@ -538,8 +564,9 @@ export function renderPanelHtml() {
         <div class="vip-sync" id="vip-sync"><span class="live"></span><span>Cargando...</span></div>
         <div class="chips" id="vip-flt" style="margin-top:10px;margin-bottom:0">
           <button type="button" class="chip on" data-vf="all">Todos</button>
-          <button type="button" class="chip" data-vf="trial">Prueba 48 h</button>
           <button type="button" class="chip" data-vf="paid">De pago</button>
+          <button type="button" class="chip" data-vf="courtesy">Cortesía</button>
+          <button type="button" class="chip" data-vf="trial">Prueba 48 h</button>
           <button type="button" class="chip" data-vf="soon">Caducan &lt; 48 h</button>
         </div>
         <input type="search" class="vip-search" id="vip-q" placeholder="Buscar por nombre, @alias o ID" autocomplete="off" />
@@ -1274,7 +1301,7 @@ export function renderPanelHtml() {
 
 
       // ── Pestaña VIP ──────────────────────────────────────────────────────────
-      var vip = { data: null, filter: 'all', q: '', modal: null, poll: null, tick: null, busy: false, seg: 'vip', uf: 'all' };
+      var vip = { data: null, filter: 'all', q: '', modal: null, poll: null, tick: null, busy: false, seg: 'vip', uf: 'all', rf: 'all', rq: '' };
       var VIP_PRICE = 25, FOUNDER_PRICE = 12.5, FOUNDERS_LIMIT = 25;
       var WD = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
       var MO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -1318,6 +1345,7 @@ export function renderPanelHtml() {
       function planBadge(m) {
         if (m.plan === 'trial') return '<span class="badge b-trial">Prueba 48 h</span>';
         if (m.plan === 'referral') return '<span class="badge b-trial">🤝 Días por referidos</span>';
+        if (m.plan === 'courtesy') return '<span class="badge b-courtesy">🎁 Cortesía · 0 €</span>';
         if (m.founder_number != null) return '<span class="badge b-founder">Fundador #' + m.founder_number + ' · ' + eur(FOUNDER_PRICE) + '</span>';
         return '<span class="badge b-paid">Pagado · ' + eur(VIP_PRICE) + '/mes</span>';
       }
@@ -1355,18 +1383,27 @@ export function renderPanelHtml() {
       function renderUltra() {
         var d = vip.data || {};
         var all = (d.ultra || []).slice();
-        var order = { active: 0, pending: 1, expired: 2, paused: 3, blocked: 4 };
-        function rank(x) { return x.status in order ? order[x.status] : 9; }
+        function rank(x) {
+          if (x.status === 'active') return (x.courtesy || x.is_referral) ? 2 : 0;
+          if (x.status === 'pending') return 1;
+          if (x.status === 'expired') return 3;
+          if (x.status === 'paused') return 4;
+          if (x.status === 'blocked') return 5;
+          return 9;
+        }
         all.sort(function (a, b) { return rank(a) - rank(b) || String(b.updated_at || '').localeCompare(String(a.updated_at || '')); });
         var nAct = all.filter(function (u) { return u.status === 'active'; }).length;
+        var nActPaid = all.filter(function (u) { return u.status === 'active' && !u.courtesy && !u.is_referral; }).length;
+        var nActCourtesy = all.filter(function (u) { return u.status === 'active' && u.courtesy; }).length;
+        var nActRef = all.filter(function (u) { return u.status === 'active' && u.is_referral; }).length;
         var nPend = all.filter(function (u) { return u.status === 'pending'; }).length;
         var nProof = all.filter(function (u) { return u.awaiting_proof; }).length;
         var nBlock = all.filter(function (u) { return u.status === 'blocked' || u.status === 'paused' || u.status === 'expired'; }).length;
         document.getElementById('ul-kpis').innerHTML =
-          kpi('Ultra activos', nAct, 'Reciben alertas por privado') +
+          kpi('Ultra activos', nAct, nActPaid + ' pago · ' + nActCourtesy + ' cortesía' + (nActRef ? ' · ' + nActRef + ' referidos' : '')) +
+          kpi('Ingresos Ultra', eur(nActPaid * 30), nActPaid + (nActPaid === 1 ? ' cliente real' : ' clientes reales') + ' · 30 €/u') +
           kpi('Pendientes de pago', nPend, nProof + ' con pago en curso') +
-          kpi('Sin acceso', nBlock, 'Caducados, en pausa o bloqueados') +
-          kpi('Precio', '30 €', 'Pago único');
+          kpi('Sin acceso', nBlock, 'Caducados, en pausa o bloqueados');
         document.getElementById('ul-count').textContent = all.length;
         var list = all.filter(function (u) {
           if (vip.uf === 'all') return true;
@@ -1377,28 +1414,100 @@ export function renderPanelHtml() {
           var pend = pendingFor(u.telegram_id, true);
           var alias = u.username ? '@' + esc(u.username) + ' · ' : '';
           var since = u.activated_at ? 'Activo desde ' + esc(shortDate(new Date(u.activated_at).getTime())) : (u.created_at ? 'Solicitado ' + esc(shortDate(new Date(u.created_at).getTime())) : '');
+          var expNote = (u.status === 'active' && u.expires_at) ? ' · ⏳ Caduca ' + esc(shortDate(new Date(u.expires_at).getTime())) : '';
           var btn = '';
           if (pend) {
-            btn = '<div class="vip-pending">⏳ En cola: <b>' + (pend.action === 'ultra_block' ? 'bloquear' : 'desbloquear') + '</b> · el bot lo aplica en unos segundos</div>';
+            var pTxt = pend.action === 'ultra_block' ? 'bloquear' : (pend.action === 'ultra_unblock' ? 'desbloquear' : (pend.courtesy ? 'marcar cortesía (0 €)' : 'marcar de pago (30 €)'));
+            btn = '<div class="vip-pending">⏳ En cola: <b>' + pTxt + '</b> · el bot lo aplica en unos segundos</div>';
           } else if (u.status === 'active') {
-            btn = '<div class="vip-actions one"><button type="button" class="btn-act kick" data-vip-act="ultra_block" data-tid="' + u.telegram_id + '">⛔ Bloquear Ultra</button></div>';
+            btn = '<div class="vip-actions one"><button type="button" class="btn-act kick" data-vip-act="ultra_block" data-tid="' + u.telegram_id + '">⛔ Bloquear Ultra</button></div>' +
+              '<button type="button" class="btn-act subtle" data-vip-act="ultra_set_courtesy" data-courtesy="' + ((u.courtesy || u.is_referral) ? '0' : '1') + '" data-tid="' + u.telegram_id + '">' +
+              ((u.courtesy || u.is_referral) ? '💶 Marcar como cliente de pago (30 €)' : '🎁 Marcar como cortesía (0 €)') + '</button>';
           } else if (u.status === 'blocked' || u.status === 'paused' || u.status === 'expired') {
             btn = '<div class="vip-actions one"><button type="button" class="btn-act extend" data-vip-act="ultra_unblock" data-tid="' + u.telegram_id + '">✅ Desbloquear y reactivar</button></div>';
           } else {
             btn = '<div class="vip-sub" style="margin-top:10px">Se activa desde el grupo Admin al validar su justificante.</div>';
           }
+          var typeBadge = u.courtesy ? '<span class="badge b-courtesy">🎁 Cortesía · 0 €</span>'
+            : (u.is_referral ? '<span class="badge b-ref">🤝 Premio referidos · 0 €</span>' : '');
+          var badges = '<div class="vip-badges">' + typeBadge + ultraBadge(u) + '</div>';
           return '<div class="card vip-card">' +
             '<div class="vip-head"><div><div class="vip-name">' + esc(memberName(u)) + '</div>' +
-            '<div class="vip-sub mono">' + alias + u.telegram_id + '</div></div>' + ultraBadge(u) + '</div>' +
+            '<div class="vip-sub mono">' + alias + u.telegram_id + '</div></div>' + badges + '</div>' +
             '<div class="ul-filters">' +
               '<div><span class="k">ROI mínimo</span> <span class="roi-big">≥ ' + esc(Number(u.min_roi || 0).toFixed(0)) + ' %</span></div>' +
               '<div><span class="k">Casas</span>' + tags(u.houses, 'Todas') + '</div>' +
               '<div><span class="k">Deportes</span>' + tags(u.sports, 'Todos') + '</div>' +
               (u.notes ? '<div><span class="k">Comentario</span><div>' + esc(u.notes) + '</div></div>' : '') +
             '</div>' +
-            (since ? '<div class="vip-sub" style="margin-top:8px">' + since + '</div>' : '') +
+            ((since || expNote) ? '<div class="vip-sub" style="margin-top:8px">' + since + expNote + '</div>' : '') +
             btn + '</div>';
         }).join('') : '<div class="card"><p class="empty">' + (all.length ? 'Nadie coincide con el filtro.' : 'Todavía no hay clientes Ultra.') + '</p></div>';
+      }
+
+      function renderRefs() {
+        var d = vip.data || {};
+        var all = (d.referrals || []).slice();
+        var totInv = all.reduce(function (acc, r) { return acc + Number(r.invited_total || 0); }, 0);
+        var totVal = all.reduce(function (acc, r) { return acc + Number(r.free_validated || 0); }, 0);
+        var totVip = all.reduce(function (acc, r) { return acc + Number(r.vip_paid_count || 0); }, 0);
+        var totDays = all.reduce(function (acc, r) { return acc + Number(r.ultra_days_earned || 0); }, 0);
+        document.getElementById('ref-kpis').innerHTML =
+          kpi('Padrinos', all.length, 'Miembros que han invitado') +
+          kpi('Invitados', totInv, totVal + ' validados >48 h') +
+          kpi('VIP por referidos', totVip, totVip * 15 + ' días Ultra otorgados') +
+          kpi('Días Ultra ganados', totDays + ' d', 'Free (5→5d) + VIP (1→15d)');
+        document.getElementById('ref-count').textContent = all.length;
+
+        var q = (vip.rq || '').trim().toLowerCase().replace(/^@/, '');
+        var list = all.filter(function (r) {
+          if (vip.rf === 'vip' && !(r.vip_paid_count > 0)) return false;
+          if (vip.rf === 'ultra' && !(r.ultra_days_earned > 0 || r.ultra_pending_days > 0)) return false;
+          if (!q) return true;
+          var hay = (String(r.first_name || '') + ' ' + String(r.username || '') + ' ' + r.telegram_id).toLowerCase();
+          if (hay.indexOf(q) !== -1) return true;
+          return (r.invitees || []).some(function (inv) {
+            return (String(inv.first_name || '') + ' ' + String(inv.username || '') + ' ' + inv.telegram_id).toLowerCase().indexOf(q) !== -1;
+          });
+        });
+
+        document.getElementById('ref-list').innerHTML = list.length ? list.map(function (r) {
+          var alias = r.username ? '@' + esc(r.username) + ' · ' : '';
+          var badges = '<div class="vip-badges">';
+          if (r.vip_plan === 'monthly') badges += '<span class="badge b-paid">💎 VIP pago</span>';
+          else if (r.vip_plan === 'courtesy') badges += '<span class="badge b-courtesy">🎁 Cortesía</span>';
+          if (r.ultra_pending_days > 0) badges += '<span class="badge b-pendpay">⚡ ' + r.ultra_pending_days + 'd Ultra por activar</span>';
+          else if (r.ultra_status === 'active' && r.ultra_billing === 'referral' && r.ultra_expires_at) {
+            badges += '<span class="badge b-ref">⚡ Ultra hasta ' + esc(shortDate(new Date(r.ultra_expires_at).getTime())) + '</span>';
+          } else if (r.ultra_status === 'active') {
+            badges += '<span class="badge b-paid">👑 Ultra activo</span>';
+          }
+          badges += '</div>';
+
+          var invRows = (r.invitees || []).map(function (inv) {
+            var iName = inv.first_name || (inv.username ? '@' + inv.username : 'Usuario ' + inv.telegram_id);
+            var iAlias = inv.username ? '@' + esc(inv.username) + ' · ' : '';
+            var iDate = inv.created_at ? shortDate(new Date(inv.created_at).getTime()) : '';
+            var iBadge = inv.vip_paid
+              ? '<span class="badge b-paid">💎 Pagó VIP (+15d)</span>'
+              : (inv.free_validated
+                ? '<span class="badge b-ref">✅ Free &gt;48 h</span>'
+                : '<span class="badge b-pendpay">⏳ Pendiente 48 h</span>');
+            return '<div class="ref-inv-row"><div><b>' + esc(iName) + '</b><div class="ref-inv-meta mono">' + iAlias + inv.telegram_id + (iDate ? ' · ' + esc(iDate) : '') + '</div></div>' + iBadge + '</div>';
+          }).join('');
+
+          return '<div class="card vip-card">' +
+            '<div class="vip-head"><div><div class="vip-name">' + esc(memberName(r)) + '</div>' +
+            '<div class="vip-sub mono">' + alias + r.telegram_id + '</div></div>' + badges + '</div>' +
+            '<div class="ref-prog">' +
+              '<div class="ref-box"><div class="k">Free (&gt;48 h → 5d Ultra)</div><div class="v">' + esc(r.free_cycle_display || 0) + '/5</div><div class="s">' + (r.free_validated || 0) + ' validados · ' + (r.pending_48h || 0) + ' pend. 48 h</div></div>' +
+              '<div class="ref-box"><div class="k">VIP pago (1 → 15d Ultra)</div><div class="v">' + esc(r.vip_paid_count || 0) + '</div><div class="s">Total ganado: ' + esc(r.ultra_days_earned || 0) + ' d Ultra</div></div>' +
+            '</div>' +
+            (invRows
+              ? '<details open style="margin-top:10px"><summary class="vip-sub"><b>Invitados (' + (r.invitees || []).length + ')</b></summary><div class="ref-inv-list">' + invRows + '</div></details>'
+              : '<div class="vip-sub" style="margin-top:8px">Sin invitados detallados.</div>') +
+          '</div>';
+        }).join('') : '<div class="card"><p class="empty">' + (all.length ? 'Nadie coincide con el filtro.' : 'Todavía nadie ha traído amigos con su enlace /referidos. En cuanto entre el primero verás aquí quién invitó a quién y sus premios.') + '</p></div>';
       }
       function findMember(tid) {
         var ms = (vip.data && vip.data.members) || [];
@@ -1408,15 +1517,23 @@ export function renderPanelHtml() {
 
       function renderVip() {
         var d = vip.data || { members: [], queue: [], log: [] };
-        var members = (d.members || []).slice().sort(function (a, b) { return new Date(a.limit_at) - new Date(b.limit_at); });
+        function vipRank(m) {
+          if (m.plan === 'monthly') return 0;
+          if (m.plan === 'trial' || m.plan === 'referral') return 1;
+          return 2;
+        }
+        var members = (d.members || []).slice().sort(function (a, b) {
+          return (vipRank(a) - vipRank(b)) || (new Date(a.limit_at) - new Date(b.limit_at));
+        });
         var nTrial = members.filter(function (m) { return m.plan === 'trial' || m.plan === 'referral'; }).length;
         var nPaid = members.filter(function (m) { return m.plan === 'monthly'; }).length;
+        var nCourtesy = members.filter(function (m) { return m.plan === 'courtesy'; }).length;
         var nSoon = members.filter(function (m) { return new Date(m.limit_at).getTime() - Date.now() < 48 * 3600000; }).length;
         var mrr = members.reduce(function (acc, m) { return acc + (m.plan !== 'monthly' ? 0 : (m.founder_number != null ? FOUNDER_PRICE : VIP_PRICE)); }, 0);
         document.getElementById('vip-kpis').innerHTML =
-          kpi('En el VIP', members.length, nTrial + ' gratis · ' + nPaid + ' pago') +
-          kpi('Ingreso mensual', eur(mrr), 'Suscripciones activas') +
-          kpi('Prueba / referidos', nTrial, 'Pendientes de convertir') +
+          kpi('En el VIP', members.length, nPaid + ' pago · ' + nCourtesy + ' cortesía' + (nTrial ? ' · ' + nTrial + ' prueba' : '')) +
+          kpi('Ingreso mensual', eur(mrr), nPaid + (nPaid === 1 ? ' cliente real' : ' clientes reales') + (nCourtesy ? ' · cortesía 0 €' : '')) +
+          kpi('Cortesía / Prueba', nCourtesy + nTrial, nCourtesy + ' cortesía · ' + nTrial + ' prueba/ref.') +
           kpi('Caducan < 48 h', nSoon, 'Revisa renovaciones');
         document.getElementById('vip-count').textContent = members.length;
 
@@ -1430,8 +1547,9 @@ export function renderPanelHtml() {
 
         var q = vip.q.trim().toLowerCase();
         var list = members.filter(function (m) {
-          if (vip.filter === 'trial' && m.plan === 'monthly') return false;
+          if (vip.filter === 'trial' && m.plan !== 'trial' && m.plan !== 'referral') return false;
           if (vip.filter === 'paid' && m.plan !== 'monthly') return false;
+          if (vip.filter === 'courtesy' && m.plan !== 'courtesy') return false;
           if (vip.filter === 'soon' && new Date(m.limit_at).getTime() - Date.now() >= 48 * 3600000) return false;
           if (!q) return true;
           return (String(m.first_name || '') + ' ' + String(m.username || '') + ' ' + m.telegram_id).toLowerCase().indexOf(q.replace('@', '')) !== -1;
@@ -1444,29 +1562,45 @@ export function renderPanelHtml() {
           var pend = pendingFor(m.telegram_id, false);
           var alias = m.username ? '@' + esc(m.username) + ' · ' : '';
           var since = m.granted_at ? 'Dentro desde ' + esc(shortDate(new Date(m.granted_at).getTime())) : '';
+          var refNote = ' · 🤝 ' + (m.referral_count || 0) + ' inv.' + (m.referral_rewarded ? ' (' + m.referral_rewarded + ' >48h' + (m.referral_vip_paid ? ' · ' + m.referral_vip_paid + ' VIP' : '') + ')' : (m.referral_vip_paid ? ' (' + m.referral_vip_paid + ' VIP)' : ''));
+          var byRefNote = m.referrer_label ? ' · invitado por ' + esc(m.referrer_label) : '';
+          var cdLbl = m.plan === 'trial' ? 'Fin de la prueba' : (m.plan === 'referral' ? 'Fin de los días por referidos' : (m.plan === 'courtesy' ? 'Fin de cortesía (0 €)' : 'Fin del mes pagado'));
+          var pendTxt = pend
+            ? (pend.action === 'kick' ? 'echar del VIP' : (pend.action === 'set_courtesy' ? (pend.courtesy ? 'marcar como cortesía (0 €)' : 'marcar como cliente de pago') : ('+' + (pend.days === 30 ? '1 mes' : pend.days + ' días'))))
+            : '';
+          var courtesyBtn = (m.plan === 'monthly' || m.plan === 'courtesy')
+            ? '<button type="button" class="btn-act subtle" data-vip-act="set_courtesy" data-courtesy="' + (m.plan === 'courtesy' ? '0' : '1') + '" data-tid="' + m.telegram_id + '">' +
+              (m.plan === 'courtesy' ? '💶 Marcar como cliente de pago' : '🎁 Marcar como cortesía (0 €)') + '</button>'
+            : '';
           return '<div class="card vip-card ' + cd.cls + '" data-tid="' + m.telegram_id + '">' +
             '<div class="vip-head"><div><div class="vip-name">' + esc(memberName(m)) + '</div>' +
             '<div class="vip-sub mono">' + alias + m.telegram_id + '</div></div>' + planBadge(m) + '</div>' +
             '<div class="vip-cd ' + cd.cls + '" data-cd="' + lim + '">' + esc(cd.txt) + '</div>' +
-            '<div class="vip-cd-lbl">' + (m.plan === 'trial' ? 'Fin de la prueba' : m.plan === 'referral' ? 'Fin de los días por referidos' : 'Fin del mes pagado') + ': ' + esc(shortDate(lim)) + '</div>' +
+            '<div class="vip-cd-lbl">' + cdLbl + ': ' + esc(shortDate(lim)) + '</div>' +
             '<div class="vip-bar"><div style="width:' + pct.toFixed(1) + '%"></div></div>' +
-            (since ? '<div class="vip-sub" style="margin-top:6px">' + since + (m.source ? ' · origen: ' + esc(m.source) : '') + '</div>' : '') +
+            (since ? '<div class="vip-sub" style="margin-top:6px">' + since + (m.source ? ' · origen: ' + esc(m.source) : '') + byRefNote + refNote + '</div>' : '') +
             (pend
-              ? '<div class="vip-pending">⏳ En cola: <b>' + (pend.action === 'kick' ? 'echar del VIP' : '+' + (pend.days === 30 ? '1 mes' : pend.days + ' días')) + '</b> · el bot lo aplica en unos segundos</div>'
+              ? '<div class="vip-pending">⏳ En cola: <b>' + pendTxt + '</b> · el bot lo aplica en unos segundos</div>'
               : '<div class="vip-actions">' +
                   '<button type="button" class="btn-act extend" data-vip-act="extend" data-tid="' + m.telegram_id + '">+1 mes</button>' +
                   '<button type="button" class="btn-act kick" data-vip-act="kick" data-tid="' + m.telegram_id + '">Echar</button>' +
-                '</div>') +
+                '</div>' + courtesyBtn) +
           '</div>';
         }).join('') : '<div class="card"><p class="empty">' + (members.length ? 'Nadie coincide con el filtro.' : 'No hay nadie dentro del VIP ahora mismo.') + '</p></div>';
 
         renderUltra();
+        renderRefs();
         var log = d.log || [];
         document.getElementById('vip-log').innerHTML =
           '<div class="card-title"><span>Últimas acciones</span></div>' +
           (log.length ? '<div class="list">' + log.slice(0, 12).map(function (r) {
-            var ico = !r.ok ? '⚠️' : (r.action === 'kick' || r.action === 'ultra_block' ? '⛔' : (r.action === 'ultra_unblock' ? '✅' : '➕'));
-            var what = r.action === 'kick' ? 'Echar del VIP' : r.action === 'ultra_block' ? 'Bloquear Ultra' : r.action === 'ultra_unblock' ? 'Desbloquear Ultra' : ('+' + (r.days === 30 || !r.days ? '1 mes' : r.days + ' días') + ' VIP');
+            var ico = !r.ok ? '⚠️' : (r.action === 'kick' || r.action === 'ultra_block' ? '⛔' : (r.action === 'set_courtesy' || r.action === 'ultra_set_courtesy' ? '🎁' : (r.action === 'ultra_unblock' ? '✅' : '➕')));
+            var what = r.action === 'kick' ? 'Echar del VIP'
+              : r.action === 'set_courtesy' ? 'Tipo VIP (pago/cortesía)'
+              : r.action === 'ultra_set_courtesy' ? 'Tipo Ultra (pago/cortesía)'
+              : r.action === 'ultra_block' ? 'Bloquear Ultra'
+              : r.action === 'ultra_unblock' ? 'Desbloquear Ultra'
+              : ('+' + (r.days === 30 || !r.days ? '1 mes' : r.days + ' días') + ' VIP');
             return '<div class="row-card log-row"><span class="log-ico">' + ico + '</span><div><b>' + esc(what) + '</b> · ' + esc(r.name || r.telegram_id) +
               '<div>' + esc(r.message || '') + '</div><div class="log-meta">' + esc(r.applied_at ? shortDate(new Date(r.applied_at).getTime()) : '') + '</div></div></div>';
           }).join('') + '</div>' : '<p class="empty">Aún no hay acciones desde el panel.</p>');
@@ -1552,33 +1686,49 @@ export function renderPanelHtml() {
           'Desde ya vuelves a recibir aquí, al instante, las surebets que cumplen tus filtros.';
       }
 
-      function openVipModal(kind, tid) {
+      function openVipModal(kind, tid, courtesy) {
         if (isUltraAct(kind)) {
           var u = findUltra(tid);
           if (!u) return;
-          vip.modal = { kind: kind, tid: tid };
-          var blocked = kind === 'ultra_block';
+          vip.modal = { kind: kind, tid: tid, courtesy: Boolean(courtesy) };
           document.getElementById('vm-err').textContent = '';
-          document.getElementById('vm-title').textContent = (blocked ? 'Bloquear el Ultra de ' : 'Reactivar el Ultra de ') + memberName(u);
-          document.getElementById('vm-sub').textContent = blocked
-            ? 'Deja de recibir alertas personalizadas al momento y no podrá reactivarlo por su cuenta con /ultra.'
-            : 'Vuelve a recibir alertas con sus mismos filtros. No se le cobra de nuevo.';
           var okb = document.getElementById('vm-ok');
           okb.disabled = false;
-          okb.className = 'btn-act ' + (blocked ? 'kick' : 'extend');
-          okb.textContent = blocked ? 'Bloquear ahora' : 'Reactivar Ultra';
+          if (kind === 'ultra_set_courtesy') {
+            document.getElementById('vm-title').textContent = (courtesy ? 'Marcar Ultra de cortesía (0 €): ' : 'Marcar Ultra de pago (30 €): ') + memberName(u);
+            document.getElementById('vm-sub').textContent = courtesy
+              ? 'Seguirá recibiendo alertas Ultra, pero no sumará 30 € a tus ingresos reales.'
+              : 'Pasará a contar como cliente real de pago (+30 €) en los ingresos Ultra.';
+            okb.className = 'btn-act extend';
+            okb.textContent = courtesy ? 'Confirmar cortesía (0 €)' : 'Confirmar cliente de pago';
+          } else {
+            var blocked = kind === 'ultra_block';
+            document.getElementById('vm-title').textContent = (blocked ? 'Bloquear el Ultra de ' : 'Reactivar el Ultra de ') + memberName(u);
+            document.getElementById('vm-sub').textContent = blocked
+              ? 'Deja de recibir alertas personalizadas al momento y no podrá reactivarlo por su cuenta con /ultra.'
+              : 'Vuelve a recibir alertas con sus mismos filtros. No se le cobra de nuevo.';
+            okb.className = 'btn-act ' + (blocked ? 'kick' : 'extend');
+            okb.textContent = blocked ? 'Bloquear ahora' : 'Reactivar Ultra';
+          }
           renderModalBody(u, 0);
           document.getElementById('vip-modal').classList.add('open');
           return;
         }
         var m = findMember(tid);
         if (!m) return;
-        vip.modal = { kind: kind, tid: tid };
+        vip.modal = { kind: kind, tid: tid, courtesy: Boolean(courtesy) };
         var lim = new Date(m.limit_at).getTime();
         document.getElementById('vm-err').textContent = '';
         var ok = document.getElementById('vm-ok');
         ok.disabled = false;
-        if (kind === 'extend') {
+        if (kind === 'set_courtesy') {
+          document.getElementById('vm-title').textContent = (courtesy ? 'Marcar cortesía (0 €): ' : 'Marcar cliente de pago: ') + memberName(m);
+          document.getElementById('vm-sub').textContent = courtesy
+            ? 'Seguirá dentro del VIP, pero no contará en tu ingreso mensual ni en las cifras de clientes de pago.'
+            : 'Volverá a sumar a tu ingreso mensual y aparecerá primero entre tus clientes de pago.';
+          ok.className = 'btn-act extend';
+          ok.textContent = courtesy ? 'Confirmar cortesía (0 €)' : 'Confirmar cliente de pago';
+        } else if (kind === 'extend') {
           document.getElementById('vm-title').textContent = 'Ampliar 1 mes a ' + memberName(m);
           document.getElementById('vm-sub').textContent = (m.plan === 'trial' ? 'Pasa de prueba 48 h a mensualidad. ' : '') + 'El mes se suma a la fecha de fin actual, no se pierde tiempo.';
           ok.className = 'btn-act extend';
@@ -1597,9 +1747,14 @@ export function renderPanelHtml() {
         var kind = vip.modal.kind;
         var paidEl = document.getElementById('vm-paid');
         var notifEl = document.getElementById('vm-notify');
-        var paid = paidEl ? paidEl.checked : true;
+        var paid = paidEl ? paidEl.checked : (m.plan !== 'courtesy');
         var notify = notifEl ? notifEl.checked : true;
         var html = '';
+        if (kind === 'set_courtesy' || kind === 'ultra_set_courtesy') {
+          document.getElementById('vm-body').innerHTML =
+            '<div class="vip-sub" style="margin-bottom:12px">Cambio interno del CRM: <b>no se envía ningún mensaje</b> por Telegram al usuario.</div>';
+          return;
+        }
         if (isUltraAct(kind)) {
           html += '<label class="m-check"><input type="checkbox" id="vm-notify"' + (notify ? ' checked' : '') + '><span>Avisar al usuario por Telegram<small>Le llega este mensaje del bot:</small></span></label>';
           if (notify) html += '<div class="tg-preview">' + ultraPreview(m, kind === 'ultra_block') + '</div>';
@@ -1632,8 +1787,10 @@ export function renderPanelHtml() {
         if (!vip.modal || vip.busy) return;
         var paidEl = document.getElementById('vm-paid');
         var notifEl = document.getElementById('vm-notify');
-        var body = { action: vip.modal.kind, telegram_id: vip.modal.tid, notify: notifEl ? notifEl.checked : true };
+        var isCourtesy = vip.modal.kind === 'set_courtesy' || vip.modal.kind === 'ultra_set_courtesy';
+        var body = { action: vip.modal.kind, telegram_id: vip.modal.tid, notify: isCourtesy ? false : (notifEl ? notifEl.checked : true) };
         if (vip.modal.kind === 'extend') { body.days = 30; body.paid = paidEl ? paidEl.checked : true; }
+        if (isCourtesy) { body.courtesy = Boolean(vip.modal.courtesy); }
         var ok = document.getElementById('vm-ok');
         ok.disabled = true;
         vip.busy = true;
@@ -1661,7 +1818,7 @@ export function renderPanelHtml() {
       function onActClick(e) {
         var b = e.target.closest('[data-vip-act]');
         if (!b) return;
-        openVipModal(b.getAttribute('data-vip-act'), Number(b.getAttribute('data-tid')));
+        openVipModal(b.getAttribute('data-vip-act'), Number(b.getAttribute('data-tid')), b.getAttribute('data-courtesy') === '1');
       }
       document.getElementById('vip-list').addEventListener('click', onActClick);
       document.getElementById('ul-list').addEventListener('click', onActClick);
@@ -1672,6 +1829,7 @@ export function renderPanelHtml() {
         document.querySelectorAll('#vip-seg button').forEach(function (c) { c.classList.toggle('on', c === b); });
         document.getElementById('pane-vip').style.display = vip.seg === 'vip' ? 'grid' : 'none';
         document.getElementById('pane-ultra').style.display = vip.seg === 'ultra' ? 'grid' : 'none';
+        document.getElementById('pane-refs').style.display = vip.seg === 'refs' ? 'grid' : 'none';
       });
       document.getElementById('ul-flt').addEventListener('click', function (e) {
         var b = e.target.closest('[data-uf]');
@@ -1680,6 +1838,14 @@ export function renderPanelHtml() {
         document.querySelectorAll('#ul-flt .chip').forEach(function (c) { c.classList.toggle('on', c === b); });
         renderUltra();
       });
+      document.getElementById('ref-flt').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-rf]');
+        if (!b) return;
+        vip.rf = b.getAttribute('data-rf');
+        document.querySelectorAll('#ref-flt .chip').forEach(function (c) { c.classList.toggle('on', c === b); });
+        renderRefs();
+      });
+      document.getElementById('ref-q').addEventListener('input', function (e) { vip.rq = e.target.value || ''; renderRefs(); });
       document.getElementById('vm-body').addEventListener('change', function () {
         if (!vip.modal) return;
         if (isUltraAct(vip.modal.kind)) { var u = findUltra(vip.modal.tid); if (u) renderModalBody(u, 0); return; }

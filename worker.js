@@ -17,17 +17,22 @@ const ALLOWED_CLICK_EVENTS = new Set([
 // Rutas de atribución pinciano.es/a/<código> -> 302 al deep link del bot.
 // Códigos y bot confirmados por Surebet-Telegram (solo [A-Za-z0-9_-], <=64).
 const REF_BOT_USERNAME = 'surebets_pinciano_bot';
-const REF_CODES = ['yt_entrada', 'x_arb', 'x_promo'];
+// yt_f1..f5 y x_entrada saltan directos al bot (24/11/2026: pasar por /empieza perdía el 100 % del tráfico).
+const REF_CODES = [
+  'yt_entrada', 'x_arb', 'x_promo', 'x_surebet', 'x_entrada',
+  'yt_f1', 'yt_f2', 'yt_f3', 'yt_f4', 'yt_f5',
+];
 // Códigos de Instagram/anuncios/YouTube funnel: NO saltan directos a Telegram. /a/<código> lleva a la landing
 // limpia /empieza?c=<código> y el botón de la landing pasa por /ir/<código> hacia el bot.
 const LANDING_CODES = [
   'ig_bio',
   'ig_f1', 'ig_f2', 'ig_f3', 'ig_f4', 'ig_f5',
   'ad_ig_1', 'ad_ig_2', 'ad_ig_3', 'ad_ig_4', 'ad_ig_5',
-  'yt_f1', 'yt_f2', 'yt_f3', 'yt_f4', 'yt_f5',
-  // Reel «Cómo entrar» (X y Telegram) y tráfico orgánico sin código en /empieza
-  'x_entrada', 'tg_entrada', 'web_empieza',
+  // Reel «Cómo entrar» (Telegram) y tráfico orgánico sin código en /empieza
+  'tg_entrada', 'web_empieza',
 ];
+// Alias de /a/<alias> -> landing con otro código (se cuenta con el alias; el bot recibe el código destino).
+const LANDING_ALIASES = { ig: 'ig_bio' };
 // Guías SEO (/guias/*): su CTA va directo a /ir/seo_<tema> -> bot con ?start=web_seo_<tema>,
 // contado como go_seo_<tema>.
 // No pasan por /empieza ni tienen ruta /a/. Un código por guía (+ el índice /guias/).
@@ -47,7 +52,7 @@ const VIP_QUEUE_KEY = 'vip_queue_v1';
 const VIP_LOG_KEY = 'vip_log_v1';
 const VIP_LOG_MAX = 40;
 const VIP_QUEUE_MAX = 50;
-const VIP_ACTIONS = new Set(['kick', 'extend', 'ultra_block', 'ultra_unblock']);
+const VIP_ACTIONS = new Set(['kick', 'extend', 'set_courtesy', 'ultra_block', 'ultra_unblock', 'ultra_set_courtesy']);
 const isUltraAction = (a) => String(a || '').startsWith('ultra_');
 
 const memoryRateLimit = new Map();
@@ -394,12 +399,10 @@ function isPrefetchOrBotRequest(request) {
 }
 
 function refDestination(code) {
-  // Guías SEO: el bot recibe web_seo_<tema>; yt_f1..f5 vía /ir/ pasa go_yt_fN para distinguirlo en el bot.
+  // Guías SEO: el bot recibe web_seo_<tema>; el resto de códigos pasan tal cual.
   let start = code;
   if (SEO_CODES.includes(code)) {
     start = `web_${code}`;
-  } else if (/^yt_f[1-5]$/.test(code)) {
-    start = `go_${code}`;
   }
   return `https://t.me/${REF_BOT_USERNAME}?start=${start}`;
 }
@@ -417,6 +420,7 @@ async function readRefClicks(env) {
   const tracked = [
     ...REF_CODES,
     ...LANDING_CODES,
+    ...Object.keys(LANDING_ALIASES),
     ...LANDING_CODES.map((c) => GO_KEY_PREFIX + c),
     ...SEO_CODES.map((c) => GO_KEY_PREFIX + c),
   ];
@@ -494,6 +498,7 @@ async function enqueueVipAction(env, body) {
   let days = Math.round(Number(body.days || 30));
   if (!Number.isFinite(days)) days = 30;
   days = Math.max(1, Math.min(62, days));
+  const isCourtesyAct = action === 'set_courtesy' || action === 'ultra_set_courtesy';
   const item = {
     id: newActionId(),
     action,
@@ -501,7 +506,8 @@ async function enqueueVipAction(env, body) {
     name: String(member.first_name || member.username || tid).slice(0, 64),
     days: action === 'extend' ? days : undefined,
     paid: action === 'extend' ? body.paid !== false : undefined,
-    notify: body.notify !== false,
+    courtesy: isCourtesyAct ? body.courtesy !== false : undefined,
+    notify: isCourtesyAct ? false : body.notify !== false,
     requested_at: new Date().toISOString(),
   };
   queue.push(item);
@@ -512,11 +518,12 @@ async function enqueueVipAction(env, body) {
 async function applyVipSync(env, payload) {
   const members = Array.isArray(payload.members) ? payload.members.slice(0, 2000) : [];
   const ultra = Array.isArray(payload.ultra) ? payload.ultra.slice(0, 2000) : [];
+  const referrals = Array.isArray(payload.referrals) ? payload.referrals.slice(0, 1000) : [];
   const results = Array.isArray(payload.results) ? payload.results.slice(0, VIP_QUEUE_MAX) : [];
   const syncedAt = new Date().toISOString();
   await env.PINCIANO_CPM.put(
     VIP_ROSTER_KEY,
-    JSON.stringify({ members, ultra, generated_at: payload.generated_at || syncedAt, synced_at: syncedAt }),
+    JSON.stringify({ members, ultra, referrals, generated_at: payload.generated_at || syncedAt, synced_at: syncedAt }),
   );
   if (results.length) {
     const doneIds = new Set(results.map((r) => String(r.id || '')));
@@ -706,11 +713,11 @@ export default {
           return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
         }
         const [roster, queue, log] = await Promise.all([
-          kvJson(env, VIP_ROSTER_KEY, { members: [], ultra: [], generated_at: null, synced_at: null }),
+          kvJson(env, VIP_ROSTER_KEY, { members: [], ultra: [], referrals: [], generated_at: null, synced_at: null }),
           kvJson(env, VIP_QUEUE_KEY, []),
           kvJson(env, VIP_LOG_KEY, []),
         ]);
-        return jsonResponse({ ok: true, ...roster, queue, log, server_time: new Date().toISOString() }, 200);
+        return jsonResponse({ ok: true, referrals: [], ...roster, queue, log, server_time: new Date().toISOString() }, 200);
       }
 
       if (path === '/cpm/api/vip/action' && method === 'POST') {
@@ -742,8 +749,8 @@ export default {
     }
 
     // 2b) Rutas de atribución /a/<código>: contador por ruta y día + 302
-    //     yt_fN            -> deep link directo del bot
-    //     ig_* / ad_ig_*   -> landing limpia /empieza?c=<código> (solo si la landing está publicada)
+    //     yt_fN, x_entrada… -> deep link directo del bot
+    //     ig_* / ad_ig_* / ig -> landing limpia /empieza?c=<código> (solo si la landing está publicada)
     //     /ir/<código>     -> deep link del bot (botón de la landing), contado como go_<código>
     const isRead = method === 'GET' || method === 'HEAD';
     const refMatch = isRead ? REF_PATH_RE.exec(path) : null;
@@ -751,7 +758,8 @@ export default {
     const refCode = refMatch ? refMatch[1].toLowerCase() : null;
     const goCode = goMatch ? goMatch[1].toLowerCase() : null;
     const isDirectCode = refCode !== null && REF_CODES.includes(refCode);
-    const isLandingCode = refCode !== null && LANDING_CODES.includes(refCode);
+    const isLandingCode =
+      refCode !== null && (LANDING_CODES.includes(refCode) || Object.hasOwn(LANDING_ALIASES, refCode));
     const isGoCode = goCode !== null && (LANDING_CODES.includes(goCode) || SEO_CODES.includes(goCode));
 
     if (isDirectCode || isLandingCode || isGoCode) {
@@ -764,7 +772,7 @@ export default {
         location = refDestination(goCode);
         countKey = GO_KEY_PREFIX + goCode;
       } else if (await landingIsPublished(env, url)) {
-        location = `${url.origin}${LANDING_PATH}?c=${refCode}`;
+        location = `${url.origin}${LANDING_PATH}?c=${LANDING_ALIASES[refCode] || refCode}`;
         countKey = refCode;
       }
       if (location !== null) {
