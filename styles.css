@@ -2466,3 +2466,85 @@ h3 {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Botón azul Telegram (24/11/2026): acciones de entrada gratis / prueba 48h al bot. Solo en index y calculadora. */
+.btn-tg,
+.nav-cta-tg {
+  --tg-blue: #177aae;
+  --tg-blue-hover: #146f9e;
+  background: var(--tg-blue);
+  color: #ffffff;
+  border-color: var(--tg-blue);
+  font-weight: 600;
+}
+
+.btn-tg:hover,
+.nav-cta-tg:hover {
+  background: var(--tg-blue-hover);
+  border-color: var(--tg-blue-hover);
+  color: #ffffff;
+}
+
+.btn-tg:focus-visible,
+.nav-cta-tg:focus-visible {
+  outline: 2px solid var(--tg-blue);
+  outline-offset: 2px;
+}
+
+.btn-tg .tg-ico,
+.nav-cta-tg .tg-ico {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+.nav-cta-tg {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Bloque contextual tras calcular: caso real archivado + CTA a Telegram */
+.calc-alert-cta {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+
+.calc-alert-cta[hidden] {
+  display: none;
+}
+
+.calc-alert-cta .method-num {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.calc-alert-cta-title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.calc-alert-cta-legs {
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+  display: grid;
+  gap: 4px;
+}
+
+.calc-alert-cta-legs li {
+  overflow-wrap: anywhere;
+}
+
+.calc-alert-cta-note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  opacity: 0.75;
+}

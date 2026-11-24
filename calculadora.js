@@ -201,6 +201,52 @@
 
   let calcUseTracked = false;
 
+  // Tras el primer cálculo: caso real archivado del escaparate (data/showcase_12.json) + CTA al bot.
+  // Solo muestra datos que ya publica el escaparate; si no cargan, enseña únicamente el CTA.
+  function fmtEs(n, d) {
+    return Number(n).toFixed(d).replace('.', ',');
+  }
+
+  function showAlertCta() {
+    const box = document.getElementById('calc-alert-cta');
+    if (!box) return;
+    box.hidden = false;
+    if (window.location.protocol === 'file:' || !window.fetch) return;
+    fetch('data/showcase_12.json', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        const cases = data && Array.isArray(data.featured_cases) ? data.featured_cases : [];
+        const best = cases
+          .filter((c) => c && c.match && Array.isArray(c.legs) && c.legs.length >= 2 && c.detected_at)
+          .sort((a, b) => String(b.detected_at).localeCompare(String(a.detected_at)))[0];
+        if (!best) return;
+        const when = new Date(best.detected_at);
+        const day = isNaN(when.getTime())
+          ? ''
+          : when.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Madrid' });
+        const kicker = document.getElementById('calc-alert-kicker');
+        const title = document.getElementById('calc-alert-title');
+        const legs = document.getElementById('calc-alert-legs');
+        const note = document.getElementById('calc-alert-note');
+        if (kicker) kicker.textContent = day ? 'CASO REAL ARCHIVADO · DETECTADO EL ' + day : 'CASO REAL ARCHIVADO';
+        if (title) title.textContent = best.match + ' · ROI +' + fmtEs(best.roi_percent, 2) + ' %';
+        if (legs) {
+          legs.textContent = '';
+          best.legs.slice(0, 3).forEach((l) => {
+            const li = document.createElement('li');
+            li.textContent =
+              l.pick + ' · ' + l.bookie + ' a ' + fmtEs(l.price, 2) + ' → ' + fmtEs(l.stake_100, 2) + ' € de cada 100 €';
+            legs.appendChild(li);
+          });
+        }
+        if (note) {
+          note.textContent =
+            'Caso archivado del escaparate, publicado con retraso. Las alertas en tiempo real salen en Telegram. Herramienta informativa +18: revisa siempre las cuotas antes de apostar.';
+        }
+      })
+      .catch(() => {});
+  }
+
   function sendFunnelBeacon(eventName) {
     if (window.location.protocol === 'file:') return;
     const payload = JSON.stringify({ event: eventName });
@@ -228,6 +274,7 @@
     if (!calcUseTracked && sourceField && sourceField !== 'init') {
       calcUseTracked = true;
       sendFunnelBeacon('calc_use');
+      showAlertCta();
     }
     const oa = parseDecimal(oddAInput.value);
     const ob = parseDecimal(oddBInput.value);
