@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apuesta máxima limitada: cómo recalcular la otra apuesta</title>
+<meta name="description" content="Una casa solo te deja apostar una parte del importe previsto. Cómo fijar ese tope, calcular la otra apuesta, redondear y decidir si el margen sigue compensando.">
+<link rel="canonical" href="https://pinciano.es/guias/apuesta-maxima-limitada-como-recalcular">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apuesta máxima limitada: cómo recalcular la otra apuesta">
+<meta property="og:description" content="Una casa solo te deja apostar una parte del importe previsto. Cómo fijar ese tope, calcular la otra apuesta, redondear y decidir si el margen sigue compensando.">
+<meta property="og:url" content="https://pinciano.es/guias/apuesta-maxima-limitada-como-recalcular">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Pinciano Radar">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#080b10">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Si una casa te limita la apuesta máxima: cómo recalcular la otra pata", "name": "Si una casa te limita la apuesta máxima: cómo recalcular la otra pata", "description": "Una casa solo te deja apostar una parte del importe previsto. Cómo fijar ese tope, calcular la otra apuesta, redondear y decidir si el margen sigue compensando.", "inLanguage": "es-ES", "url": "https://pinciano.es/guias/apuesta-maxima-limitada-como-recalcular", "mainEntityOfPage": "https://pinciano.es/guias/apuesta-maxima-limitada-como-recalcular", "datePublished": "2026-11-24", "dateModified": "2026-11-24", "author": {"@type": "Organization", "name": "Pinciano Radar", "url": "https://pinciano.es/"}, "publisher": {"@type": "Organization", "name": "Pinciano Radar", "url": "https://pinciano.es/"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://pinciano.es/"}, {"@type": "ListItem", "position": 2, "name": "Guías", "item": "https://pinciano.es/guias/"}, {"@type": "ListItem", "position": 3, "name": "Apuesta máxima limitada: cómo recalcular la otra apuesta", "item": "https://pinciano.es/guias/apuesta-maxima-limitada-como-recalcular"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Cómo calculo la otra apuesta si una casa me limita?", "acceptedAnswer": {"@type": "Answer", "text": "Multiplica el importe máximo permitido por su cuota para obtener el retorno, y divide ese retorno entre la cuota de la otra casa. Con 30 € a cuota 1,95 y la otra a 2,25: 30 × 1,95 / 2,25 = 26,00 €. Es un ejemplo con cifras inventadas."}}, {"@type": "Question", "name": "¿Cambia el margen si me limitan el importe?", "acceptedAnswer": {"@type": "Answer", "text": "No. El margen teórico depende solo de las dos cuotas. Lo que baja es el beneficio en euros, porque se juega menos dinero."}}, {"@type": "Question", "name": "¿Qué hago si el límite es muy bajo?", "acceptedAnswer": {"@type": "Answer", "text": "Calcula el beneficio en euros antes de confirmar. Si es de pocos euros y hay riesgo de que una cuota cambie mientras confirmas, puede que no compense."}}, {"@type": "Question", "name": "¿Conviene redondear los importes?", "acceptedAnswer": {"@type": "Answer", "text": "Facilita confirmar importes enteros, pero cambia el resultado en cada caso. Recalcula los dos escenarios con los importes redondeados y comprueba cuál es el peor."}}]}]}</script>
+<style>:root{--bg:#080b10;--surface:#111824;--surface2:#161f2e;--border:rgba(255,255,255,.09);--fg:#f4f7fb;--muted:#93a1b5;--accent:#00e676;--accent-soft:rgba(0,230,118,.12);--accent-border:rgba(0,230,118,.34);--amber:#f59e0b;--amber-soft:rgba(245,158,11,.12)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--bg);color:var(--fg)}
+body{margin:0;font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"DM Sans",Helvetica,Arial,sans-serif;background:radial-gradient(60% 40% at 80% 0,rgba(0,230,118,.08),transparent 65%),var(--bg);min-height:100vh}
+a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+a:focus-visible,summary:focus-visible{outline:3px solid #fff;outline-offset:3px;border-radius:4px}
+.top{position:sticky;top:0;z-index:5;background:rgba(8,11,16,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top-in{max-width:46rem;margin:0 auto;padding:.75rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.brand{font-weight:700;letter-spacing:.06em;color:var(--fg);text-decoration:none;font-size:.95rem}
+.brand b{color:var(--accent);font-weight:700}
+.top nav{display:flex;gap:1.1rem;font-size:.95rem}
+.top nav a{color:var(--muted);text-decoration:none}
+.top nav a:hover{color:var(--fg)}
+main{max-width:46rem;margin:0 auto;padding:1.4rem 1.1rem 2.5rem}
+.crumbs{font-size:.85rem;color:var(--muted);margin:0 0 .6rem}
+.crumbs a{color:var(--muted)}
+h1{font-size:clamp(1.65rem,5.2vw,2.3rem);line-height:1.2;margin:.2rem 0 .8rem;letter-spacing:-.01em}
+h2{font-size:1.3rem;line-height:1.3;margin:2rem 0 .6rem;color:var(--fg)}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+p,ul,ol{margin:.6rem 0}
+ul,ol{padding-left:1.3rem}
+li{margin:.3rem 0}
+.lead{color:#c9d4e2;font-size:1.08rem}
+.meta{color:var(--muted);font-size:.85rem;margin:.2rem 0 1.1rem}
+.resumen{background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:14px;padding:.9rem 1.1rem;margin:1.1rem 0}
+.resumen h2{margin:0 0 .3rem;font-size:1rem;color:var(--accent)}
+.resumen ul{margin:.2rem 0}
+.ejemplo{background:var(--amber-soft);border:1px solid rgba(245,158,11,.35);border-radius:14px;padding:.8rem 1.1rem;margin:1rem 0}
+.ejemplo .tag{margin:0 0 .3rem;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
+.ejemplo p{margin:.4rem 0}
+.tabla{overflow-x:auto;margin:.8rem 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:30rem}
+th,td{border:1px solid var(--border);padding:.5rem .6rem;text-align:left;vertical-align:top}
+thead th{background:var(--surface2)}
+tbody th{background:var(--surface);font-weight:600}
+.cta-box{background:var(--surface);border:1px solid var(--accent-border);border-radius:16px;padding:1.2rem;margin:2.2rem 0 1.4rem;text-align:center}
+.cta-box h2{margin:0 0 .4rem;font-size:1.2rem}
+.cta-box p{color:var(--muted);margin:.3rem 0 .9rem}
+.cta{display:block;background:var(--accent);color:#04130b;font-weight:800;font-size:1.1rem;padding:.95rem 1rem;border-radius:.9rem;text-decoration:none}
+.cta2{display:inline-block;margin-top:.8rem;font-size:.95rem}
+.faq h3{margin-top:1rem}
+.rel{display:grid;gap:.7rem;margin:.6rem 0}
+.rel a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem 1rem;color:var(--fg);text-decoration:none}
+.rel a:hover{border-color:var(--accent-border)}
+.rel strong{display:block;color:var(--accent);margin-bottom:.15rem}
+.rel span{color:var(--muted);font-size:.92rem;line-height:1.45;display:block}
+dl.glosario dt{font-weight:700;margin-top:.9rem;color:var(--accent)}
+dl.glosario dd{margin:.15rem 0 0}
+.todas{display:grid;gap:.7rem}
+footer{max-width:46rem;margin:0 auto;padding:0 1.1rem 2.5rem;color:var(--muted);font-size:.85rem}
+footer nav{display:flex;flex-wrap:wrap;gap:.35rem 1rem;margin:0 0 1rem;padding-top:1.2rem;border-top:1px solid var(--border)}
+footer nav a{color:var(--muted)}
+footer p{margin:.5rem 0}
+footer .age{color:var(--fg);font-weight:700}
+@media (min-width:40rem){.rel{grid-template-columns:repeat(3,1fr)}}</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><a class="brand" href="/">PINCIANO <b>RADAR</b></a>
+<nav aria-label="Navegación principal"><a href="/guias/">Guías</a><a href="/calculadora">Calculadora</a></nav></div></header>
+<main>
+<p class="crumbs"><a href="/">Inicio</a> › <a href="/guias/">Guías</a> › Si una casa te limita la apuesta máxima</p>
+<h1>Si una casa te limita la apuesta máxima: cómo recalcular la otra pata</h1>
+<p class="meta">Actualizado el 24 de noviembre de 2026 · Pinciano Radar · +18</p>
+<p class="lead">Has encontrado dos cuotas que dan margen y, al ir a confirmar, una de las casas solo acepta una parte de lo previsto. Si apuestas solo en un lado, te quedas con una apuesta sin cubrir. La solución es fijar ese tope y recalcular la otra apuesta para que los dos resultados devuelvan lo mismo. Esta guía explica cómo, con ejemplos de números inventados.</p>
+<div class="resumen"><h2>Resumen rápido</h2><ul><li>Fija el importe que acepta la casa limitada y calcula la otra apuesta así: importe_B = importe_A × cuota_A / cuota_B.</li><li>El margen en porcentaje no cambia; lo que baja es el beneficio en euros, que es proporcional al importe.</li><li>Con topes muy bajos el beneficio puede ser de céntimos: conviene decidir antes si merece la pena confirmar.</li><li>Redondear a euros enteros cambia el resultado en cada caso: recalcula los dos escenarios.</li></ul></div>
+<h2>El principio: fijar el tope e igualar el retorno</h2>
+<p>Una surebet reparte el importe para que, gane quien gane, recuperes lo mismo. Si una casa te limita, el reparto ideal deja de ser posible, pero el principio sirve igual: fijas lo que sí te deja apostar y calculas el otro lado para que el retorno coincida.</p>
+<p>Si la casa A te deja apostar como máximo <em>L</em> euros a cuota <em>a</em>, el retorno de esa apuesta es L × a. La apuesta en la casa B, a cuota <em>b</em>, debe devolver lo mismo: <strong>importe_B = L × a / b</strong>.</p>
+<p>Fíjate en que el margen no cambia: sigue siendo 1/M − 1, con M = 1/a + 1/b. Cambia el tamaño de todo lo demás. Si no recuerdas la fórmula de M, está explicada en <a href="/guias/como-calcular-una-surebet">cómo calcular una surebet</a>.</p><aside class="ejemplo"><p class="tag">Ejemplo con cuotas inventadas</p><p>Cuotas inventadas: casa A paga <strong>1,95</strong> y casa B paga <strong>2,25</strong> por el resultado contrario. M = 0,5128 + 0,4444 = 0,9573; margen teórico del <strong>4,46 %</strong>.</p>
+<p>La casa A solo te deja apostar <strong>30 €</strong>. Retorno: 30 × 1,95 = 58,50 €. En B hay que apostar 58,50 / 2,25 = <strong>26,00 €</strong>. Total jugado: 56,00 €. Retorno en cualquier caso: 58,50 €. Beneficio teórico: <strong>2,50 €</strong> (el mismo 4,46 %).</p></aside>
+<h2>Qué cambia según qué casa te limite</h2>
+<p>No es lo mismo que te limite la casa con la cuota baja o la de la cuota alta. El procedimiento es idéntico, pero el reparto resultante cambia.</p><aside class="ejemplo"><p class="tag">Ejemplo con cuotas inventadas</p><p>Mismas cuotas (1,95 en A y 2,25 en B), pero ahora la limitada es B: solo te deja <strong>20 €</strong>.</p>
+<p>Retorno: 20 × 2,25 = 45,00 €. En A hay que apostar 45,00 / 1,95 = <strong>23,08 €</strong>. Total: 43,08 €. Beneficio teórico: <strong>1,92 €</strong> (4,46 % sobre 43,08 €).</p></aside>
+<h2>El beneficio es proporcional al importe</h2>
+<p>El margen en porcentaje es el mismo con cualquier tope. Lo que cambia es el beneficio en euros. Con las cuotas del ejemplo (1,95 y 2,25) y distintos topes en la casa A:</p>
+<div class="tabla"><table>
+<thead><tr><th>Tope en A (cuota 1,95)</th><th>Apuesta en B (cuota 2,25)</th><th>Total jugado</th><th>Retorno</th><th>Beneficio teórico</th></tr></thead>
+<tbody>
+<tr><td>20 €</td><td>17,33 €</td><td>37,33 €</td><td>39,00 €</td><td>1,67 €</td></tr>
+<tr><td>30 €</td><td>26,00 €</td><td>56,00 €</td><td>58,50 €</td><td>2,50 €</td></tr>
+<tr><td>50 €</td><td>43,33 €</td><td>93,33 €</td><td>97,50 €</td><td>4,17 €</td></tr>
+<tr><td>100 €</td><td>86,67 €</td><td>186,67 €</td><td>195,00 €</td><td>8,33 €</td></tr>
+</tbody></table></div>
+<p>Es una tabla de ejemplo con cuotas inventadas, sin descontar comisiones, impuestos ni cambios de cuota. Sirve para ver la escala: con un tope de 20 € la ganancia teórica es de menos de 2 €, y eso antes de contar el tiempo y el riesgo de que una cuota se mueva.</p>
+<h2>Redondear cuando hay un límite</h2>
+<p>Después de calcular el otro lado suele salir una cantidad con céntimos. Si redondeas a euros enteros, comprueba los dos escenarios con los importes ya redondeados y quédate con el peor.</p><aside class="ejemplo"><p class="tag">Ejemplo con cuotas inventadas</p><p>Cuotas inventadas: A paga <strong>2,10</strong> y B paga <strong>2,05</strong>. La casa A solo te deja <strong>37 €</strong>.</p>
+<p>Retorno de A: 37 × 2,10 = 77,70 €. En B, 77,70 / 2,05 = 37,90 €. Dos opciones:</p>
+<ul><li><strong>37 € en B</strong> (total 74 €): si gana A, +3,70 €; si gana B, 37 × 2,05 − 74 = <strong>+1,85 €</strong>. Peor caso: +1,85 €.</li>
+<li><strong>38 € en B</strong> (total 75 €): si gana A, +2,70 €; si gana B, 38 × 2,05 − 75 = <strong>+2,90 €</strong>. Peor caso: +2,70 €.</li></ul>
+<p>Aquí redondear hacia arriba deja mejor el peor caso. No siempre ocurre: hay que comprobarlo con cada par de cuotas.</p></aside><p>La <a href="/calculadora">calculadora gratuita</a> tiene casillas para escribir el máximo permitido en cada casa y una opción de redondeo a 1 €; recalcula el otro lado al momento.</p>
+<h2>Antes de confirmar con un tope bajo</h2>
+<ul>
+<li><strong>¿Compensa el esfuerzo?</strong> Calcula el beneficio en euros, no solo el porcentaje. Con topes muy bajos puede ser de pocos euros.</li>
+<li><strong>Orden de las apuestas:</strong> no hay un orden que sirva siempre. Una opción razonable es empezar por la casa cuya cuota o límite se vea más inestable, de modo que, si algo falla, no hayas comprometido ya el otro lado. Comprueba siempre que ambas cuotas siguen siendo las que calculaste.</li>
+<li><strong>El límite puede cambiar a mitad de proceso:</strong> algunas casas muestran el tope solo cuando intentas confirmar un importe. Si te lo recortan después de haber apostado en la otra casa, vuelves a la situación inicial: una apuesta sin cubrir.</li>
+<li><strong>Mismo mercado y reglas equivalentes:</strong> con un importe pequeño es aún más tentador saltarse esta comprobación. No lo hagas.</li>
+</ul>
+<p>Los topes bajos suelen ser una señal de que la casa ha reducido tus límites. Cómo funciona eso y qué hacer está en <a href="/guias/evitar-limitaciones-casas-de-apuestas">limitaciones en las casas de apuestas</a>.</p>
+<p>Solo para mayores de 18 años (+18) y en operadores con licencia en España. Los ejemplos de esta guía usan cifras inventadas y no implican ningún resultado asegurado: las cuotas cambian en segundos y las casas pueden limitar o anular apuestas.</p>
+<div class="cta-box"><h2>Recibe avisos gratis en Telegram</h2>
+<p>Un aviso cuando dos operadores con licencia en España valoran distinto un mismo partido, con el reparto calculado. Gratis y sin tarjeta.</p>
+<a class="cta" href="/ir/seo_limite" rel="nofollow">Recibir alertas gratis</a>
+<a class="cta2" href="/calculadora">o prueba la calculadora gratuita →</a></div>
+<section class="faq"><h2>Preguntas frecuentes</h2><h3>¿Cómo calculo la otra apuesta si una casa me limita?</h3><p>Multiplica el importe máximo permitido por su cuota para obtener el retorno, y divide ese retorno entre la cuota de la otra casa. Con 30 € a cuota 1,95 y la otra a 2,25: 30 × 1,95 / 2,25 = 26,00 €. Es un ejemplo con cifras inventadas.</p><h3>¿Cambia el margen si me limitan el importe?</h3><p>No. El margen teórico depende solo de las dos cuotas. Lo que baja es el beneficio en euros, porque se juega menos dinero.</p><h3>¿Qué hago si el límite es muy bajo?</h3><p>Calcula el beneficio en euros antes de confirmar. Si es de pocos euros y hay riesgo de que una cuota cambie mientras confirmas, puede que no compense.</p><h3>¿Conviene redondear los importes?</h3><p>Facilita confirmar importes enteros, pero cambia el resultado en cada caso. Recalcula los dos escenarios con los importes redondeados y comprueba cuál es el peor.</p></section>
+<h2>Sigue leyendo</h2><div class="rel"><a href="/guias/como-calcular-una-surebet"><strong>Cómo calcular una surebet: fórmula y calculadora gratis</strong><span>Fórmula para calcular surebets de 2 o 3 resultados, repartir el importe, redondear a euros y recalcular con límite de casa. Con ejemplos y calculadora.</span></a><a href="/guias/evitar-limitaciones-casas-de-apuestas"><strong>Limitaciones en casas de apuestas: por qué pasan y qué hacer</strong><span>Por qué los operadores limitan cuentas, qué hábitos reducen fricciones y qué hacer si te limitan. Sin trucos: no existe una forma segura de evitarlo.</span></a><a href="/guias/cuanto-se-gana-con-surebets"><strong>¿Cuánto se gana con surebets? Ejemplos y riesgos reales</strong><span>Cuánto puede dar una surebet: fórmula, tabla de ejemplos ilustrativos y qué recorta el margen (límites, anulaciones y cambios de cuota). Sin promesas.</span></a></div>
+</main>
+<footer>
+<nav aria-label="Todas las guías"><a href="/guias/que-es-una-surebet">Qué es una surebet</a><a href="/guias/como-calcular-una-surebet">Cómo calcular una surebet</a><a href="/guias/surebets-bet365-winamax">Surebets entre Bet365 y Winamax</a><a href="/guias/evitar-limitaciones-casas-de-apuestas">Limitaciones en casas de apuestas</a><a href="/guias/apuesta-maxima-limitada-como-recalcular">Apuesta máxima limitada</a><a href="/guias/surebets-vs-matched-betting-vs-value-bets">Surebets vs matched betting vs value bets</a><a href="/guias/middle-apuestas-que-es">Middle en apuestas</a><a href="/guias/surebets-tenis">Surebets en tenis</a><a href="/guias/surebets-baloncesto-nba">Surebets en baloncesto y NBA</a><a href="/guias/surebets-futbol-1x2">Surebets en fútbol</a><a href="/guias/son-legales-las-surebets-en-espana">Son legales las surebets en España</a><a href="/guias/cuanto-se-gana-con-surebets">Cuánto se gana con surebets</a><a href="/guias/glosario-arbitraje-deportivo">Glosario de arbitraje deportivo y apuestas</a></nav>
+<p><a href="/aviso-legal">Aviso legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a></p>
+<p><span class="age">+18</span> · Solo para mayores de edad. Juega con responsabilidad: información oficial de la <a href="https://www.ordenacionjuego.es/" rel="noopener">Dirección General de Ordenación del Juego</a> (ordenacionjuego.es).</p>
+<p>Pinciano Radar es un servicio informativo e independiente. No es un operador de juego, no está afiliado a ningún operador, no acepta importes y no gestiona cuentas de terceros. Los ejemplos numéricos son ilustrativos y no garantizan resultados; las cuotas cambian y los operadores pueden limitar o anular apuestas. Esta página no es asesoramiento jurídico ni fiscal.</p>
+</footer>
+</body>
+</html>

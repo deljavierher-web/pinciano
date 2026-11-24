@@ -39,6 +39,7 @@ const LANDING_ALIASES = { ig: 'ig_bio' };
 const SEO_CODES = [
   'seo_guias', 'seo_que_es', 'seo_calcular', 'seo_bet365_winamax', 'seo_limitaciones',
   'seo_comparativa', 'seo_tenis', 'seo_nba', 'seo_legal', 'seo_ganancias', 'seo_glosario',
+  'seo_limite', 'seo_futbol', 'seo_middles',
 ];
 const LANDING_PATH = '/empieza';
 const GO_PATH_RE = /^\/ir\/([A-Za-z0-9_-]{1,64})\/?$/;
